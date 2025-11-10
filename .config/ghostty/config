@@ -1,8 +1,9 @@
-theme = Catppuccin Mocha
+theme = "Vercel"
 font-family = "JetBrains Mono"
 font-size = 18
 font-feature = -liga
 background-opacity = 0.7
 background-blur = 20
 mouse-hide-while-typing = true
-window-decoration = true
+
+keybind = super+shift+r=reload_config
