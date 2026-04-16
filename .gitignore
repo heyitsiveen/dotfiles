@@ -22,7 +22,7 @@ package-lock.json
 
 # Internal docs (local reference only, not pushed to GitHub)
 PRD.md
-docs/
+/docs/
 
 # macOS
 **/.DS_Store

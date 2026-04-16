@@ -102,7 +102,6 @@ dotfiles/
 │   ├── fresh-macos-setup.md
 │   ├── manual-setup.md
 │   ├── mcp-servers.md
-│   ├── plugins.md
 │   └── skills.md
 ├── .claude/                         # Claude Code configuration
 │   ├── CLAUDE.md                    # Project instructions
@@ -208,18 +207,37 @@ echo $(which fish) | sudo tee -a /etc/shells
 chsh -s $(which fish)
 ```
 
-#### 6. Install Fisher and Plugins
+#### 6. Fisher + Tide (Already Configured)
 
-```bash
-# Install Fisher (plugin manager)
+Fisher and Tide ship pre-configured in this repo. Stow symlinks them into place in step 4 — there is nothing to install and no wizard to run. On first launch, `conf.d/70-tide.fish` applies the committed `heyitsiveen` palette automatically, and `tide_palette <name>` switches between `heyitsiveen`, `vercel`, and `vesper` (persisted via the `dotfiles_tide_palette` universal variable).
+
+<details>
+<summary><strong>Fallback: reinstall Fisher and Tide if the prompt is broken</strong></summary>
+
+Use this only if you see one of the following after launching Fish:
+
+- Prompt shows raw text (`>_` or bare `$`) with no icons or git segment
+- `fisher: command not found`
+- `tide: command not found` or `tide_palette: command not found`
+- Tide errors about missing functions or corrupt universal variables
+- Icons render as tofu (`□`) — check your terminal has a Nerd Font first
+
+Then run:
+
+```fish
+# Re-bootstrap Fisher (rewrites functions/fisher.fish from upstream)
 curl -sL https://raw.githubusercontent.com/jorgebucaran/fisher/main/functions/fisher.fish | source && fisher install jorgebucaran/fisher
 
-# Install Tide prompt
-fisher install IlanCosman/tide@v6
+# Reinstall everything declared in fish_plugins (Tide included)
+fisher update
 
-# Configure Tide (interactive wizard)
+# Last resort only — re-runs the interactive wizard
 tide configure
 ```
+
+> **Warning:** `tide configure` overwrites the Tide universal variables committed to `fish_variables`, wiping the shipped prompt look. Afterward, restore it with `tide_palette heyitsiveen` (or `vercel` / `vesper`).
+
+</details>
 
 #### 7. Configure VS Code
 
