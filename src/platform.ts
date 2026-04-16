@@ -59,7 +59,7 @@ export function getDependencyTools(platform: Platform): ToolDep[] {
       {
         name: 'fastfetch',
         binary: 'fastfetch',
-        description: 'System info terminal greeting',
+        description: 'System info tool',
         installCmd: 'brew install fastfetch',
         required: false
       },
@@ -99,7 +99,7 @@ export function getDependencyTools(platform: Platform): ToolDep[] {
     {
       name: 'fastfetch',
       binary: 'fastfetch',
-      description: 'System info terminal greeting',
+      description: 'System info tool',
       installCmd: 'winget install Fastfetch-cli.Fastfetch',
       required: false
     },

@@ -30,7 +30,3 @@ if (Test-Path $bunBin) {
     $env:PATH = "$bunBin;$env:PATH"
 }
 
-# --- Greeting (fastfetch) ---
-if (Get-Command fastfetch -ErrorAction SilentlyContinue) {
-    fastfetch
-}

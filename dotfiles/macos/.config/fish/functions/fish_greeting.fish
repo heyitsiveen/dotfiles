@@ -1,5 +1,2 @@
-function fish_greeting -d "Custom greeting with fastfetch"
-    if type -q fastfetch
-        fastfetch
-    end
+function fish_greeting -d "Disable default greeting"
 end
