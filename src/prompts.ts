@@ -88,15 +88,16 @@ function showPrerequisites(platform: Platform): void {
   }
 }
 
-async function showToolStatus(groups: DotfileGroup[], platform: Platform): Promise<void> {
-  // Combine dependency tools + dotfile-group tools
-  type ToolEntry = {
-    name: string;
-    binary: string;
-    description: string;
-    installCmd: string;
-    required: boolean;
-  };
+type ToolEntry = {
+  name: string;
+  binary: string;
+  description: string;
+  installCmd: string;
+  required: boolean;
+};
+
+/** Detect tools and show status. Returns missing tools (no install). */
+async function showToolStatus(groups: DotfileGroup[], platform: Platform): Promise<ToolEntry[]> {
   const allTools: ToolEntry[] = [];
 
   // Separate forGroup tools (shown indented under their parent) from regular tools
@@ -108,7 +109,6 @@ async function showToolStatus(groups: DotfileGroup[], platform: Platform): Promi
       const ok = detectTool(dep.binary);
       if (!subTools.has(dep.forGroup)) subTools.set(dep.forGroup, []);
       subTools.get(dep.forGroup)!.push({ ...dep, ok });
-      // Still add to allTools for the install prompt
       allTools.push(dep);
     } else {
       allTools.push(dep);
@@ -126,7 +126,7 @@ async function showToolStatus(groups: DotfileGroup[], platform: Platform): Promi
     }
   }
 
-  if (allTools.length === 0) return;
+  if (allTools.length === 0) return [];
 
   // Detect and categorize (exclude forGroup tools — they render as sub-items)
   const forGroupNames = new Set([...subTools.values()].flat().map((t) => t.name));
@@ -163,7 +163,6 @@ async function showToolStatus(groups: DotfileGroup[], platform: Platform): Promi
   log.message(`  ${pc.bold('Required')}`);
   for (const t of requiredTools) {
     showTool(t);
-    // Show indented sub-tools (e.g., tree-sitter-cli under Neovim)
     const subs = subTools.get(t.name);
     if (subs) for (const st of subs) showSubTool(st);
   }
@@ -175,60 +174,34 @@ async function showToolStatus(groups: DotfileGroup[], platform: Platform): Promi
     if (subs) for (const st of subs) showSubTool(st);
   }
 
-  // Offer to install missing tools
-  if (missing.length > 0) {
-    const options = missing.map((t) => ({
-      value: t.name,
-      label: `${t.name} — ${t.description}`,
-      hint: t.installCmd
-    }));
-
-    const selectedNames = await multiselect({
-      message: 'Install missing tools?',
-      options,
-      initialValues: missing.map((t) => t.name),
-      required: false
-    });
-    handleCancel(selectedNames);
-
-    const toInstall = missing.filter((t) => (selectedNames as string[]).includes(t.name));
-
-    if (toInstall.length > 0) {
-      // Install Homebrew first if selected (other brew commands depend on it)
-      const brewFirst = toInstall.filter((t) => t.name === 'Homebrew');
-      const rest = toInstall.filter((t) => t.name !== 'Homebrew');
-      const ordered = [...brewFirst, ...rest];
-      const total = ordered.length;
-      let installed = 0;
-
-      for (const t of ordered) {
-        log.message(`  ${pc.dim('○')} Installing ${t.name}...`);
-        try {
-          execSync(t.installCmd, { stdio: 'pipe', encoding: 'utf-8', timeout: 300000 });
-          installed++;
-          log.message(`  ${pc.green('◆')} ${t.name} installed`);
-        } catch (err) {
-          log.message(`  ${pc.yellow('⚠')} ${t.name} failed`);
-          log.message(
-            `    ${pc.dim(t.installCmd)} — ${pc.dim(err instanceof Error ? err.message : String(err))}`
-          );
-        }
-      }
-
-      log.message('');
-      if (installed === total) {
-        log.message(
-          `  ${pc.green('◆')} ${installed} tool${installed > 1 ? 's' : ''} installed successfully`
-        );
-      } else {
-        log.message(
-          `  ${pc.yellow('⚠')} ${installed}/${total} tools installed (${total - installed} failed)`
-        );
-      }
-    }
-  } else {
+  if (missing.length === 0) {
     log.success('All tools installed!');
   }
+
+  return missing;
+}
+
+/** Show multiselect picker for missing tools. Returns tools to install (no execution). */
+async function pickMissingTools(missing: ToolEntry[]): Promise<ToolEntry[]> {
+  const options = missing.map((t) => ({
+    value: t.name,
+    label: t.name,
+    hint: t.installCmd
+  }));
+
+  const selectedNames = await multiselect({
+    message: 'Install missing tools?',
+    options,
+    initialValues: missing.map((t) => t.name),
+    required: false
+  });
+  handleCancel(selectedNames);
+
+  const toInstall = missing.filter((t) => (selectedNames as string[]).includes(t.name));
+  // Homebrew first if selected (other brew commands depend on it)
+  const brewFirst = toInstall.filter((t) => t.name === 'Homebrew');
+  const rest = toInstall.filter((t) => t.name !== 'Homebrew');
+  return [...brewFirst, ...rest];
 }
 
 const groupCategories: Record<string, string[]> = {
@@ -274,11 +247,22 @@ function showReloadCommands(groups: DotfileGroup[]): void {
     }
   }
   if (reloads.length > 0) {
-    log.message(pc.bold('\n  Reload your configs:'));
+    log.info('Reload your configs:');
     for (const r of reloads) {
-      log.message(`    ${r.name.padEnd(12)} →  ${pc.cyan(r.cmd)}`);
+      log.message(`      ${r.name.padEnd(12)} →  ${pc.cyan(r.cmd)}`);
     }
   }
+
+  const restartMsg = 'Restart your terminal for all changes to take effect.';
+  const w = restartMsg.length + 4;
+  log.message(
+    [
+      '',
+      `    ${pc.dim('╭' + '─'.repeat(w) + '╮')}`,
+      `    ${pc.dim('│')}  ${pc.bold(restartMsg)}  ${pc.dim('│')}`,
+      `    ${pc.dim('╰' + '─'.repeat(w) + '╯')}`
+    ].join('\n')
+  );
 }
 
 // --- Platform selection ---
@@ -313,17 +297,45 @@ async function resolvePlatform(flagPlatform?: string): Promise<Platform> {
 
 // --- First run flow ---
 
-export async function firstRunFlow(flagPlatform?: string, dryRun = false): Promise<void> {
+async function showUpdateNotification(updatePromise?: Promise<string | null>): Promise<void> {
+  if (!updatePromise) return;
+  const latest = await updatePromise;
+  if (!latest) return;
+  const msg = `Update available: ${VERSION} → ${latest}`;
+  const cmd = 'Run: bunx @heyitsiveen/dotfiles@latest';
+  const w = Math.max(msg.length, cmd.length) + 4;
+  log.message(
+    [
+      `  ${pc.dim('╭' + '─'.repeat(w) + '╮')}`,
+      `  ${pc.dim('│')}  ${pc.yellow(msg.padEnd(w - 2))}${pc.dim('│')}`,
+      `  ${pc.dim('│')}  ${pc.cyan(cmd.padEnd(w - 2))}${pc.dim('│')}`,
+      `  ${pc.dim('╰' + '─'.repeat(w) + '╯')}`
+    ].join('\n')
+  );
+}
+
+export async function firstRunFlow(
+  flagPlatform?: string,
+  dryRun = false,
+  updatePromise?: Promise<string | null>
+): Promise<void> {
   showBanner();
   intro(pc.bold('heyitsiveen'));
+
+  await showUpdateNotification(updatePromise);
 
   const platform = await resolvePlatform(flagPlatform);
   showPrerequisites(platform);
 
   const allGroups = getDotfileGroups(platform);
 
-  // Tool detection + install offer
-  await showToolStatus(allGroups, platform);
+  // --- ALL PICKERS ---
+
+  // Tool detection (no install yet)
+  const missingTools = await showToolStatus(allGroups, platform);
+
+  // Tool install picker (right after status so user sees what's missing)
+  const toolsToInstall = missingTools.length > 0 ? await pickMissingTools(missingTools) : [];
 
   showOverview(allGroups);
 
@@ -337,10 +349,11 @@ export async function firstRunFlow(flagPlatform?: string, dryRun = false): Promi
     const warnings: string[] = [];
     if (toolMissing) warnings.push('not installed');
     if (missingDeps.length > 0) warnings.push(`${missingDeps.join(', ')} missing`);
-    const suffix = warnings.length > 0 ? pc.yellow(` ⚠ (${warnings.join(', ')})`) : '';
+    const hint = warnings.length > 0 ? `⚠ ${warnings.join(', ')}` : g.description;
     return {
       value: g.name,
-      label: `${g.name} — ${g.description}${suffix}`
+      label: g.name,
+      hint
     };
   });
 
@@ -369,9 +382,7 @@ export async function firstRunFlow(flagPlatform?: string, dryRun = false): Promi
   });
   handleCancel(theme);
 
-  // Backup check — only prompt if actual dotfiles would be overwritten.
-  // For multi-source groups (Claude Code), check each specific file/dir.
-  // For single-source groups, check if the target directory exists.
+  // Backup check
   let shouldBackup = false;
   for (const g of selectedGroups) {
     const sources = Array.isArray(g.source) ? g.source : [g.source];
@@ -394,14 +405,34 @@ export async function firstRunFlow(flagPlatform?: string, dryRun = false): Promi
     shouldBackup = doBackup as boolean;
   }
 
-  // Install
+  // --- ALL INSTALLATION (per-item progress) ---
+
   if (dryRun) {
     log.info(pc.yellow('Dry run — showing planned operations:'));
   }
 
-  const s = createSpinner();
-  s.start('Installing dotfiles...');
+  // 1. Install tools
+  if (toolsToInstall.length > 0) {
+    log.info('Installing tools...');
+    let toolsInstalled = 0;
+    for (const t of toolsToInstall) {
+      log.message(`    ${pc.dim('○')} ${t.name}...`);
+      try {
+        execSync(t.installCmd, { stdio: 'pipe', encoding: 'utf-8', timeout: 300000 });
+        toolsInstalled++;
+        log.message(`    ${pc.green('◆')} ${t.name} installed`);
+      } catch (err) {
+        log.message(`    ${pc.yellow('⚠')} ${t.name} failed`);
+        log.message(
+          `      ${pc.dim(t.installCmd)} — ${pc.dim(err instanceof Error ? err.message : String(err))}`
+        );
+      }
+    }
+    log.message(`  ${pc.green('◆')} ${toolsInstalled}/${toolsToInstall.length} tools installed`);
+  }
 
+  // 2. Install dotfiles
+  log.info('Installing dotfiles...');
   const result = await install({
     platform,
     selectedGroups,
@@ -409,17 +440,45 @@ export async function firstRunFlow(flagPlatform?: string, dryRun = false): Promi
     backup: shouldBackup,
     dryRun
   });
+  for (const ig of result.installedGroups) {
+    log.message(`    ${pc.green('◆')} ${ig.name} → ${pc.dim(ig.target)}`);
+  }
+  log.message(
+    `  ${pc.green('◆')} ${result.installedGroups.length}/${selectedGroups.length} configs installed`
+  );
 
-  // Apply theme
+  // 3. Apply theme
   const themeGroups = selectedGroups.filter((g) => g.themeSupport);
   if (themeGroups.length > 0) {
+    log.info('Applying theme...');
     const themeInstalledGroups = result.installedGroups.filter((ig) =>
       themeGroups.some((sg) => sg.name === ig.name)
     );
-    await switchTheme(theme as ThemeName, themeInstalledGroups, platform, dryRun);
+    const themeResults = await switchTheme(
+      theme as ThemeName,
+      themeInstalledGroups,
+      platform,
+      dryRun
+    );
+    for (const r of themeResults) {
+      log.message(`    ${pc.green('◆')} ${r}`);
+    }
+    log.message(`  ${pc.green('◆')} Theme: ${theme as string} activated`);
   }
 
-  // Write manifest
+  // 4. Backup list
+  if (result.backedUp.length > 0) {
+    const unique = [...new Set(result.backedUp)];
+    log.info('Backed up existing configs:');
+    for (const name of unique) {
+      log.message(`    ${pc.green('◆')} ${name}`);
+    }
+    log.message(
+      `  ${pc.green('◆')} ${unique.length} configs → ${pc.dim('~/.config/heyitsiveen/dotfiles/backup/')}`
+    );
+  }
+
+  // 5. Write manifest
   if (!dryRun) {
     await createManifest(result, {
       platform,
@@ -430,27 +489,7 @@ export async function firstRunFlow(flagPlatform?: string, dryRun = false): Promi
     });
   }
 
-  s.stop('Installation complete!');
-
-  // Grouped summary
-  if (result.backedUp.length > 0) {
-    const unique = [...new Set(result.backedUp)];
-    log.message(
-      `  ${pc.green('◆')} Backed up ${unique.length} existing configs → ${pc.dim('~/.config/heyitsiveen/dotfiles/backup/')}`
-    );
-  }
-
-  for (const [category, names] of Object.entries(groupCategories)) {
-    const installed = result.installedGroups.filter((ig) => names.includes(ig.name));
-    if (installed.length === 0) continue;
-    log.message(`  ${pc.bold(category)}`);
-    for (const ig of installed) {
-      log.message(`    ${pc.green('◆')} ${ig.name} → ${pc.dim(ig.target)}`);
-    }
-  }
-
-  log.message(`  ${pc.green('◆')} Theme: ${theme as string} activated`);
-
+  // 6. Errors + reload + done
   if (result.errors.length > 0) {
     for (const err of result.errors) {
       log.message(`    ${pc.yellow('⚠')} ${err.file}: ${pc.dim(err.error)}`);
@@ -458,8 +497,6 @@ export async function firstRunFlow(flagPlatform?: string, dryRun = false): Promi
   }
 
   showReloadCommands(selectedGroups);
-  log.message('');
-  log.info(pc.bold('Restart your terminal for all changes to take effect.'));
   outro('Done! Your dotfiles are installed.');
 }
 
@@ -468,10 +505,14 @@ export async function firstRunFlow(flagPlatform?: string, dryRun = false): Promi
 export async function reRunFlow(
   manifest: Manifest,
   flagPlatform?: string,
-  dryRun = false
+  dryRun = false,
+  updatePromise?: Promise<string | null>
 ): Promise<void> {
   showBanner();
   intro(pc.bold('heyitsiveen'));
+
+  await showUpdateNotification(updatePromise);
+
   showPrerequisites(manifest.platform);
   log.info(
     `Existing installation detected (v${manifest.version}, installed ${manifest.installedAt.split('T')[0]})`
@@ -580,7 +621,8 @@ export async function uninstallFlow(manifest: Manifest, dryRun = false): Promise
   if (uninstallConfigs) {
     const groupOptions = manifest.groups.map((g) => ({
       value: g.name,
-      label: `${g.name} — ${g.target}`
+      label: g.name,
+      hint: g.target
     }));
     const selected = await multiselect({
       message: 'Which configs to remove?',
