@@ -2,13 +2,13 @@
 # Prompt — oh-my-posh initialization
 # =============================================================================
 # Converted from: dotfiles-macos/.config/fish/conf.d/70-tide.fish
-# Reads the active palette from ~/.config/dotfiles/prompt-theme.txt
+# Reads the active palette from ~/.config/heyitsiveen/dotfiles/prompt-theme.txt
 # Valid values: solarized-dark (default), vercel, vesper
 
 if (-not (Get-Command oh-my-posh -ErrorAction SilentlyContinue)) { return }
 
 # Read persisted theme preference (defaults to solarized-dark)
-$themeConfigDir  = Join-Path $env:USERPROFILE '.config\dotfiles'
+$themeConfigDir  = Join-Path $env:USERPROFILE '.config\heyitsiveen\dotfiles\oh-my-posh'
 $themeConfigFile = Join-Path $themeConfigDir 'prompt-theme.txt'
 $validThemes     = @('solarized-dark', 'vercel', 'vesper')
 

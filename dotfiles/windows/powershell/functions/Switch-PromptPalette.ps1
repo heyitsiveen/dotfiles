@@ -23,7 +23,7 @@ function Switch-PromptPalette {
     }
 
     # Persist selection
-    $configDir = Join-Path $env:USERPROFILE '.config\dotfiles'
+    $configDir = Join-Path $env:USERPROFILE '.config\heyitsiveen\dotfiles\oh-my-posh'
     if (-not (Test-Path $configDir)) {
         New-Item -ItemType Directory -Path $configDir -Force | Out-Null
     }

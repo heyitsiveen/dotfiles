@@ -271,7 +271,7 @@ The PowerShell configuration uses a **modular structure** with `modules/` and `f
 | `prompt.ps1`      | oh-my-posh init with theme from preference file|
 | `tools.ps1`       | bat, eza, zoxide, ripgrep, delta, PSReadLine   |
 
-`Profile.ps1` dot-sources all `modules/*.ps1` and `functions/*.ps1` alphabetically, then inits fnm, adds bun to PATH, and runs fastfetch.
+`Profile.ps1` dot-sources all `modules/*.ps1` and `functions/*.ps1` alphabetically, then inits fnm and adds bun to PATH.
 
 ### CLI Tools
 
@@ -363,7 +363,7 @@ Switch-PromptPalette vercel
 Switch-PromptPalette vesper
 ```
 
-`solarized-dark` is the default on first load. Running `Switch-PromptPalette <name>` switches immediately and persists the choice across new shells via `~/.config/dotfiles/prompt-theme.txt`.
+`solarized-dark` is the default on first load. Running `Switch-PromptPalette <name>` switches immediately and persists the choice across new shells via `~/.config/heyitsiveen/dotfiles/oh-my-posh/prompt-theme.txt`.
 
 ### Solarized Dark Theme Colors
 

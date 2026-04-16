@@ -4,6 +4,7 @@ import { join } from 'node:path';
 
 import fse from 'fs-extra';
 const { ensureDir, pathExists } = fse;
+import { MANIFEST_DIR } from './constants.js';
 import type { InstalledGroup } from './installer.js';
 import type { ThemeName } from './platform.js';
 
@@ -229,7 +230,7 @@ async function switchTideTheme(targetDir: string, theme: ThemeName): Promise<voi
 // --- oh-my-posh: write theme name to prompt-theme.txt ---
 
 async function switchOmpTheme(theme: ThemeName): Promise<void> {
-  const themeDir = join(homedir(), '.config', 'dotfiles');
+  const themeDir = join(homedir(), MANIFEST_DIR, 'oh-my-posh');
   await ensureDir(themeDir);
   await writeFile(join(themeDir, 'prompt-theme.txt'), theme, 'utf-8');
 }
