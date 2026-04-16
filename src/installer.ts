@@ -277,18 +277,26 @@ export async function uninstallGroups(groups: InstalledGroup[]): Promise<string[
   const errors: string[] = [];
   for (const group of groups) {
     const termDefault = TERMINAL_DEFAULTS[group.name];
-    for (const file of group.files) {
-      try {
-        if (await pathExists(file)) {
-          if (termDefault && file.endsWith(termDefault.file)) {
-            await writeFile(file, termDefault.content, 'utf-8');
-          } else {
+    try {
+      if (termDefault) {
+        // Terminal emulators: replace main config with defaults, remove everything else
+        const configPath = group.files.find((f) => f.endsWith(termDefault.file));
+        if (configPath && (await pathExists(configPath))) {
+          await writeFile(configPath, termDefault.content, 'utf-8');
+        }
+        for (const file of group.files) {
+          if (file !== configPath && (await pathExists(file))) {
             await remove(file);
           }
         }
-      } catch (err) {
-        errors.push(`${file}: ${err instanceof Error ? err.message : String(err)}`);
+      } else {
+        // All other groups: remove the entire target directory
+        if (await pathExists(group.target)) {
+          await remove(group.target);
+        }
       }
+    } catch (err) {
+      errors.push(`${group.name}: ${err instanceof Error ? err.message : String(err)}`);
     }
   }
   return errors;
