@@ -32,7 +32,7 @@ tide_palette vercel
 tide_palette vesper
 ```
 
-Palette choice is persisted in the `dotfiles_tide_palette` universal variable and re-applied on shell startup by `conf.d/70-tide.fish`. Tide itself, Fisher, and the three palettes are all committed to the repo under `.config/fish/` — a fresh `stow .` gives you a working Tide prompt with no `fisher install` or `tide configure` step. If the prompt ever breaks, see the fallback in `README.md` step 6 or `docs/manual-setup.md` section 3.
+Palette choice is persisted in the `dotfiles_tide_palette` universal variable and re-applied on shell startup by `conf.d/70-tide.fish`. Tide itself, Fisher, and the three palettes are all committed to the repo under `.config/fish/` — a fresh `stow .` gives you a working Tide prompt with no `fisher install` or `tide configure` step. If the prompt ever breaks, run `fisher update` — this re-fires `_tide_init_install` which auto-configures the prompt, then run `tide_palette heyitsiveen` to restore your palette.
 
 ---
 

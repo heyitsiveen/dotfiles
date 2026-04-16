@@ -209,7 +209,7 @@ chsh -s $(which fish)
 
 #### 6. Fisher + Tide (Already Configured)
 
-Fisher and Tide ship pre-configured in this repo. Stow symlinks them into place in step 4 — there is nothing to install and no wizard to run. On first launch, `conf.d/70-tide.fish` applies the committed `heyitsiveen` palette automatically, and `tide_palette <name>` switches between `heyitsiveen`, `vercel`, and `vesper` (persisted via the `dotfiles_tide_palette` universal variable).
+Fisher and Tide ship pre-configured in this repo. Stow symlinks them into place in step 4 — there is nothing to install and no wizard to run. On first launch, `_tide_init_install` runs `tide configure --auto` with the correct settings, so the full prompt structure is applied automatically. `conf.d/70-tide.fish` then applies the `heyitsiveen` palette, and `tide_palette <name>` switches between `heyitsiveen`, `vercel`, and `vesper` (persisted via the `dotfiles_tide_palette` universal variable).
 
 <details>
 <summary><strong>Fallback: reinstall Fisher and Tide if the prompt is broken</strong></summary>
@@ -228,14 +228,12 @@ Then run:
 # Re-bootstrap Fisher (rewrites functions/fisher.fish from upstream)
 curl -sL https://raw.githubusercontent.com/jorgebucaran/fisher/main/functions/fisher.fish | source && fisher install jorgebucaran/fisher
 
-# Reinstall everything declared in fish_plugins (Tide included)
+# Reinstall everything declared in fish_plugins — fires _tide_init_install which auto-configures the prompt
 fisher update
 
-# Last resort only — re-runs the interactive wizard
-tide configure
+# Restore your palette choice afterward
+tide_palette heyitsiveen
 ```
-
-> **Warning:** `tide configure` overwrites the Tide universal variables committed to `fish_variables`, wiping the shipped prompt look. Afterward, restore it with `tide_palette heyitsiveen` (or `vercel` / `vesper`).
 
 </details>
 

@@ -59,14 +59,12 @@ Then run:
 # Re-bootstrap Fisher
 curl -sL https://raw.githubusercontent.com/jorgebucaran/fisher/main/functions/fisher.fish | source && fisher install jorgebucaran/fisher
 
-# Reinstall everything in fish_plugins
+# Reinstall everything in fish_plugins — fires _tide_init_install which auto-configures the prompt
 fisher update
 
-# Last resort only — re-runs the interactive wizard
-tide configure
+# Restore your palette choice afterward
+tide_palette heyitsiveen
 ```
-
-> **Warning:** `tide configure` overwrites the Tide universal variables in `fish_variables`, wiping the shipped look. Afterward, restore it with `tide_palette heyitsiveen` (or `vercel` / `vesper`).
 
 </details>
 
