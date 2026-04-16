@@ -1,0 +1,112 @@
+{
+  "printWidth": 100,
+  "tabWidth": 2,
+  "semi": true,
+  "singleQuote": true,
+  "jsxSingleQuote": true,
+  "trailingComma": "none",
+  "arrowParens": "always",
+  "bracketSpacing": true,
+  "sortImports": {
+    "newlinesBetween": true,
+    "order": "asc",
+    "ignoreCase": true,
+    "internalPattern": ["@workspace/**", "@repo/**", "@/**", "~/**", "#**"],
+    "customGroups": [
+      {
+        "groupName": "react",
+        "elementNamePattern": ["react", "react-dom", "react-*"]
+      },
+      {
+        "groupName": "next",
+        "elementNamePattern": ["next", "next/*"]
+      },
+      {
+        "groupName": "tanstack",
+        "elementNamePattern": ["@tanstack/*"]
+      },
+      {
+        "groupName": "expo",
+        "elementNamePattern": [
+          "expo",
+          "expo-*",
+          "@expo/*",
+          "react-native",
+          "react-native-*",
+          "@react-native/*",
+          "@react-native-community/*"
+        ]
+      },
+      {
+        "groupName": "desktop",
+        "elementNamePattern": ["@tauri-apps/*", "electron", "electron-*", "@electron/*"]
+      },
+      {
+        "groupName": "backend",
+        "elementNamePattern": ["hono", "hono/*", "@hono/*", "elysia", "@elysiajs/*"]
+      },
+      {
+        "groupName": "api",
+        "elementNamePattern": ["@trpc/*", "@orpc/*", "orpc"]
+      },
+      {
+        "groupName": "db",
+        "elementNamePattern": [
+          "drizzle-orm",
+          "drizzle-orm/*",
+          "drizzle-kit",
+          "@prisma/*",
+          "prisma",
+          "@neondatabase/*",
+          "neon"
+        ]
+      },
+      {
+        "groupName": "auth",
+        "elementNamePattern": ["better-auth", "better-auth/*"]
+      },
+      {
+        "groupName": "services",
+        "elementNamePattern": ["inngest", "inngest/*", "@polar-sh/*", "@sentry/*", "sentry/*"]
+      },
+      {
+        "groupName": "ui",
+        "elementNamePattern": [
+          "@radix-ui/*",
+          "lucide-react",
+          "class-variance-authority",
+          "cva",
+          "clsx",
+          "tailwind-merge",
+          "tailwind-variants",
+          "fabric",
+          "konva",
+          "react-konva",
+          "@excalidraw/*"
+        ]
+      }
+    ],
+    "groups": [
+      "side_effect",
+      "side_effect_style",
+      { "newlinesBetween": true },
+      "builtin",
+      { "newlinesBetween": true },
+      "react",
+      ["next", "tanstack"],
+      ["expo", "desktop"],
+      ["backend", "api"],
+      ["db", "auth"],
+      "services",
+      "ui",
+      "external",
+      { "newlinesBetween": true },
+      "internal",
+      { "newlinesBetween": true },
+      ["parent", "sibling", "index"],
+      { "newlinesBetween": true },
+      "style",
+      "unknown"
+    ]
+  }
+}

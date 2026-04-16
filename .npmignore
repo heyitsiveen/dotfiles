@@ -1,0 +1,34 @@
+# Source (bundled into dist/)
+src/
+scripts/
+tsconfig.json
+tsdown.config.ts
+.oxlintrc.json
+.oxfmtrc.jsonc
+
+# Git hooks
+.husky/
+
+# Documentation inside dotfiles (not needed by CLI)
+dotfiles/macos/docs/
+dotfiles/macos/README.md
+dotfiles/macos/LICENSE
+dotfiles/macos/.stow-local-ignore
+dotfiles/windows/docs/
+dotfiles/windows/README.md
+dotfiles/windows/LICENSE
+dotfiles/windows/SKIPPED.md
+
+# Project docs
+docs/
+PRD.md
+
+# OS artifacts
+**/.DS_Store
+**/_MACOSX
+Thumbs.db
+desktop.ini
+
+# Lock files
+package-lock.json
+bun.lock

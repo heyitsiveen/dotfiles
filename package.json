@@ -1,0 +1,72 @@
+{
+  "name": "@heyitsiveen/dotfiles",
+  "version": "1.0.0",
+  "description": "Interactive CLI to set up dotfiles for macOS and Windows 11",
+  "type": "module",
+  "bin": {
+    "heyitsiveen-dotfiles": "dist/index.mjs"
+  },
+  "exports": {
+    ".": {
+      "import": "./dist/index.mjs"
+    }
+  },
+  "files": [
+    "dist",
+    "dotfiles",
+    "!dotfiles/*/docs",
+    "!dotfiles/*/README.md",
+    "!dotfiles/*/LICENSE",
+    "!dotfiles/macos/.stow-local-ignore",
+    "!dotfiles/windows/SKIPPED.md"
+  ],
+  "scripts": {
+    "build": "tsdown",
+    "dev": "tsdown --watch",
+    "typecheck": "tsc --noEmit",
+    "lint": "oxlint src/",
+    "fmt": "oxfmt src/",
+    "fmt:check": "oxfmt --check src/",
+    "check": "node scripts/check.mjs",
+    "prepublishOnly": "npm run check",
+    "prepare": "husky && npm run build"
+  },
+  "lint-staged": {
+    "src/**/*.ts": [
+      "oxfmt --write",
+      "oxlint"
+    ]
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/heyitsiveen/dotfiles.git"
+  },
+  "engines": {
+    "node": ">=22.0.0"
+  },
+  "keywords": [
+    "dotfiles",
+    "cli",
+    "setup",
+    "macos",
+    "windows",
+    "interactive"
+  ],
+  "license": "MIT",
+  "dependencies": {
+    "@clack/prompts": "^1.2.0",
+    "citty": "^0.2.2",
+    "fs-extra": "^11.3.4",
+    "picocolors": "^1.1.1"
+  },
+  "devDependencies": {
+    "@types/fs-extra": "^11.0.4",
+    "@types/node": "^22.19.17",
+    "husky": "^9.1.7",
+    "lint-staged": "^16.4.0",
+    "oxfmt": "^0.44.0",
+    "oxlint": "^1.60.0",
+    "tsdown": "^0.21.8",
+    "typescript": "^6.0.2"
+  }
+}

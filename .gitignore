@@ -1,0 +1,33 @@
+# Dependencies
+node_modules/
+.pnp/
+.pnp.js
+
+# Build output
+dist/
+
+# Environment
+.env
+.env.local
+
+# TypeScript
+*.tsbuildinfo
+
+# npm
+*.tgz
+npm-debug.log*
+
+# npm (bun is primary — npm lockfile not needed)
+package-lock.json
+
+# Internal docs (local reference only, not pushed to GitHub)
+PRD.md
+docs/
+
+# macOS
+**/.DS_Store
+**/_MACOSX
+
+# Windows
+Thumbs.db
+desktop.ini

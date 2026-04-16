@@ -1,0 +1,197 @@
+"$schema" = "https://raw.githubusercontent.com/JanDeDobbeleer/oh-my-posh/main/themes/schema.json"
+console_title_template = "{{ .Shell }} in {{ .Folder }}"
+final_space = true
+version = 3
+
+[[blocks]]
+alignment = "left"
+type = "prompt"
+
+[[blocks.segments]]
+type = "os"
+background = "#FFC799"
+foreground = "#101010"
+style = "diamond"
+leading_diamond = "\ue0b2"
+template = " {{ if .WSL }}WSL at {{ end }}{{.Icon}} "
+
+[[blocks.segments]]
+type = "session"
+background = "#FFC799"
+foreground = "#101010"
+style = "powerline"
+template = "{{ .UserName }} "
+
+[[blocks.segments]]
+type = "text"
+background = "#E6B38A"
+foreground = "#101010"
+style = "powerline"
+powerline_symbol = "\ue0b0"
+template = "<parentBackground></>"
+
+[[blocks.segments]]
+type = "text"
+background = "#CC9F7A"
+foreground = "#101010"
+style = "powerline"
+powerline_symbol = "\ue0b0"
+template = "<parentBackground></>"
+
+[[blocks.segments]]
+type = "text"
+background = "#FFC799"
+foreground = "#101010"
+style = "diamond"
+leading_diamond = "<transparent>\ue0b0</>"
+template = " \uf07c "
+
+[[blocks.segments]]
+background = "#161616"
+foreground = "#ffffff"
+style = "powerline"
+powerline_symbol = "\ue0b0"
+template = " {{ .Path }} "
+type = "path"
+
+[blocks.segments.properties]
+style = "folder"
+folder_separator_icon = " \ue0b1 "
+home_icon = "~"
+
+[[blocks.segments]]
+type = "git"
+background = "#FFC799"
+background_templates = [
+  "{{ if or (.Working.Changed) (.Staging.Changed) }}#99FFE4{{ end }}",
+  "{{ if and (gt .Ahead 0) (gt .Behind 0) }}#FF8080{{ end }}",
+  "{{ if gt .Ahead 0 }}#FF8080{{ end }}",
+  "{{ if gt .Behind 0 }}#FF8080{{ end }}"
+]
+foreground = "#101010"
+leading_diamond = "<transparent>\ue0b0</>"
+style = "diamond"
+template = "{{ .UpstreamIcon }} {{ .HEAD }}{{if .BranchStatus }} {{ .BranchStatus }}{{ end }}{{ if .Working.Changed }} {{ .Working.String }}{{ end }}{{ if and (.Working.Changed) (.Staging.Changed) }} |{{ end }}{{ if .Staging.Changed }} {{ .Staging.String }}{{ end }}{{ if gt .StashCount 0 }} {{ .StashCount }}{{ end }} "
+trailing_diamond = "\ue0b0"
+
+[blocks.segments.properties]
+branch_max_length = 25
+fetch_stash_count = true
+fetch_status = true
+fetch_upstream_icon = true
+
+[[blocks]]
+alignment = "right"
+type = "prompt"
+
+[[blocks.segments]]
+type = "react"
+background = "#B9AEDA"
+foreground = "#101010"
+style = "powerline"
+powerline_symbol = "\ue0b2"
+invert_powerline = true
+template = " \ue7ba {{ .Full }} "
+
+[[blocks.segments]]
+type = "tauri"
+background = "#FFC799"
+foreground = "#101010"
+style = "powerline"
+powerline_symbol = "\ue0b2"
+invert_powerline = true
+template = " \ue8bb {{ .Full }} "
+
+[[blocks.segments]]
+type = "rust"
+background = "#FF8080"
+foreground = "#101010"
+style = "powerline"
+powerline_symbol = "\ue0b2"
+invert_powerline = true
+template = " \ue7a8 {{ .Full }} "
+
+[[blocks.segments]]
+type = "go"
+background = "#B9AEDA"
+foreground = "#101010"
+style = "powerline"
+powerline_symbol = "\ue0b2"
+invert_powerline = true
+template = " \ue627 {{ .Full }} "
+
+[[blocks.segments]]
+type = "lua"
+background = "#B9AEDA"
+foreground = "#101010"
+style = "powerline"
+powerline_symbol = "\ue0b2"
+invert_powerline = true
+template = " \ue620 {{ .Full }} "
+
+[[blocks.segments]]
+type = "node"
+background = "#161616"
+foreground = "#FFFFFF"
+style = "diamond"
+leading_diamond = "\ue0b2"
+template = "{{ if .PackageManagerIcon }}{{ .PackageManagerIcon }} {{ end }}{{ .Full }} "
+trailing_diamond = "<transparent,#161616>\ue0b2</>"
+
+[blocks.segments.properties]
+fetch_package_manager = true
+npm_icon = " <#99FFE4>\uE71E</> "
+bun_icon = " <#FFFFFF>\ue76f</> "
+pnpm_icon = " <#FFC799>\ue865</> "
+
+[[blocks.segments]]
+type = "claude"
+background = "#FFC799"
+foreground = "#101010"
+style = "diamond"
+leading_diamond = "\ue0b2"
+template = " \uee0d {{ .Model.DisplayName }} \uf2d0 {{ .TokenUsagePercent.Gauge }} "
+trailing_diamond = "<transparent,#FFC799>\ue0b2</>"
+
+[[blocks.segments]]
+type = "text"
+background = "#CC9F7A"
+foreground = "#101010"
+style = "powerline"
+powerline_symbol = "\ue0b2"
+invert_powerline = true
+template = "<parentBackground></>"
+
+[[blocks.segments]]
+type = "text"
+background = "#E6B38A"
+foreground = "#101010"
+style = "powerline"
+powerline_symbol = "\ue0b2"
+invert_powerline = true
+template = "<parentBackground></>"
+
+[[blocks.segments]]
+type = "time"
+background = "#FFC799"
+foreground = "#101010"
+style = "diamond"
+template = " \uf4ab {{ .CurrentDate | date .Format }} "
+trailing_diamond = "\ue0b0"
+
+[[blocks]]
+alignment = "left"
+newline = true
+type = "prompt"
+
+[[blocks.segments]]
+type = "status"
+foreground = "#FFC799"
+foreground_templates = [
+  "{{ if gt .Code 0 }}#FF8080{{ end }}"
+]
+style = "plain"
+template = "\u276f"
+
+[blocks.segments.properties]
+always_enabled = true
