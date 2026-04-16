@@ -91,29 +91,11 @@ const main = defineCommand({
         return;
       }
 
-      // Interactive flow
+      // Interactive flow (update promise passed so flows can show notification inline)
       if (manifest) {
-        await reRunFlow(manifest, args.platform, dryRun);
+        await reRunFlow(manifest, args.platform, dryRun, updatePromise);
       } else {
-        await firstRunFlow(args.platform, dryRun);
-      }
-
-      // Show update notification (if available)
-      const latest = await updatePromise;
-      if (latest) {
-        const msg = `Update available: ${VERSION} → ${latest}`;
-        const cmd = 'Run: bunx @heyitsiveen/dotfiles@latest';
-        const w = Math.max(msg.length, cmd.length) + 4;
-        console.log(
-          [
-            '',
-            `  ${pc.dim('╭' + '─'.repeat(w) + '╮')}`,
-            `  ${pc.dim('│')}  ${pc.yellow(msg.padEnd(w - 2))}${pc.dim('│')}`,
-            `  ${pc.dim('│')}  ${pc.cyan(cmd.padEnd(w - 2))}${pc.dim('│')}`,
-            `  ${pc.dim('╰' + '─'.repeat(w) + '╯')}`,
-            ''
-          ].join('\n')
-        );
+        await firstRunFlow(args.platform, dryRun, updatePromise);
       }
     } catch (err) {
       if ((err as NodeJS.ErrnoException).code === 'ERR_USE_AFTER_CLOSE') {
