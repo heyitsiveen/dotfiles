@@ -1,6 +1,6 @@
 import fse from 'fs-extra';
 const { copy, ensureDir, pathExists, readJson, remove, writeJson } = fse;
-import { readdir, stat } from 'node:fs/promises';
+import { readdir, stat, writeFile } from 'node:fs/promises';
 import { homedir } from 'node:os';
 import { basename, join, relative } from 'node:path';
 
@@ -265,13 +265,26 @@ export async function deleteManifest(): Promise<void> {
 
 // --- Uninstall ---
 
+// Minimal configs that let terminals hot-reload to defaults without errors.
+// Deleting the config file while the terminal is running triggers a reload error;
+// replacing with a valid minimal file lets it reload cleanly.
+const TERMINAL_DEFAULTS: Record<string, { file: string; content: string }> = {
+  WezTerm: { file: 'wezterm.lua', content: "local wezterm = require 'wezterm'\nreturn {}\n" },
+  Ghostty: { file: 'config', content: '# defaults\n' }
+};
+
 export async function uninstallGroups(groups: InstalledGroup[]): Promise<string[]> {
   const errors: string[] = [];
   for (const group of groups) {
+    const termDefault = TERMINAL_DEFAULTS[group.name];
     for (const file of group.files) {
       try {
         if (await pathExists(file)) {
-          await remove(file);
+          if (termDefault && file.endsWith(termDefault.file)) {
+            await writeFile(file, termDefault.content, 'utf-8');
+          } else {
+            await remove(file);
+          }
         }
       } catch (err) {
         errors.push(`${file}: ${err instanceof Error ? err.message : String(err)}`);
