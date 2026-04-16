@@ -5,6 +5,7 @@ Interactive CLI to set up dotfiles for macOS and Windows 11. One command to inst
 <!-- TODO: Replace with actual recording -->
 <!-- ![Demo](docs/demo.gif) -->
 <!-- [How to record the demo GIF](docs/recording-demo.md) -->
+![Demo](assets/demo.gif)
 
 ## Table of Contents
 
