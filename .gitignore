@@ -17,8 +17,11 @@ dist/
 *.tgz
 npm-debug.log*
 
-# npm (bun is primary — npm lockfile not needed)
-package-lock.json
+# bun (npm is primary — bun lockfile optional)
+bun.lock
+
+# Neovim plugin lock (auto-generated per-machine by LazyVim)
+dotfiles/*/.config/nvim/lazy-lock.json
 
 # Internal docs (local reference only, not pushed to GitHub)
 PRD.md

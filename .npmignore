@@ -32,3 +32,6 @@ desktop.ini
 # Lock files
 package-lock.json
 bun.lock
+
+# Neovim plugin lock (auto-generated per-machine by LazyVim)
+dotfiles/*/.config/nvim/lazy-lock.json

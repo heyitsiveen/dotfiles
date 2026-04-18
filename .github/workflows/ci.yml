@@ -16,24 +16,21 @@ jobs:
     steps:
       - uses: actions/checkout@v6
 
-      - uses: oven-sh/setup-bun@v2
-
-      - uses: actions/cache@v5
+      - uses: actions/setup-node@v6
         with:
-          path: ~/.bun/install/cache
-          key: ${{ runner.os }}-bun-${{ hashFiles('bun.lock') }}
-          restore-keys: ${{ runner.os }}-bun-
+          node-version: 22
+          cache: 'npm'
 
-      - run: bun ci
+      - run: npm ci
 
       - name: Typecheck
-        run: bunx tsc --noEmit
+        run: npx tsc --noEmit
 
       - name: Lint
-        run: bunx oxlint src/
+        run: npx oxlint src/
 
       - name: Format check
-        run: bunx oxfmt --check src/
+        run: npx oxfmt --check src/
 
       - name: Build
-        run: bun run build
+        run: npm run build
