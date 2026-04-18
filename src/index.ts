@@ -1,5 +1,22 @@
 #!/usr/bin/env node
 
+// Node version guard — runs BEFORE any ESM imports.
+// Written in syntax parseable by Node 14+ so the guard itself does not trip a SyntaxError.
+const nodeMajor = Number(process.versions.node.split('.')[0]);
+if (nodeMajor < 22) {
+  process.stderr.write(
+    '\n' +
+      '  \x1b[33m@heyitsiveen/dotfiles\x1b[0m requires \x1b[1mNode.js 22\x1b[0m or newer.\n' +
+      '  You are running Node ' +
+      process.versions.node +
+      '.\n' +
+      '\n' +
+      '  Upgrade:  \x1b[36mhttps://nodejs.org/\x1b[0m  (or via nvm / fnm / volta)\n' +
+      '\n'
+  );
+  process.exit(1);
+}
+
 import { log } from '@clack/prompts';
 import { defineCommand, runMain } from 'citty';
 import pc from 'picocolors';
@@ -7,7 +24,6 @@ import pc from 'picocolors';
 import { PACKAGE_NAME, THEMES, VERSION } from './constants.js';
 import { readManifest } from './installer.js';
 import type { ThemeName } from './platform.js';
-import { firstRunFlow, reRunFlow, restoreFlow, themeFlow, uninstallFlow } from './prompts.js';
 import { checkForUpdate } from './update-check.js';
 
 const main = defineCommand({
@@ -51,6 +67,7 @@ const main = defineCommand({
 
       // Flag bypass: --restore
       if (args.restore) {
+        const { restoreFlow } = await import('./prompts.js');
         await restoreFlow(dryRun);
         return;
       }
@@ -61,6 +78,7 @@ const main = defineCommand({
           log.error('No installation found. Run `npx @heyitsiveen/dotfiles` to install.');
           process.exit(1);
         }
+        const { uninstallFlow } = await import('./prompts.js');
         await uninstallFlow(manifest, dryRun);
         return;
       }
@@ -87,14 +105,17 @@ const main = defineCommand({
           log.error('No installation found. Install dotfiles first, then switch theme.');
           process.exit(1);
         }
+        const { themeFlow } = await import('./prompts.js');
         await themeFlow(manifest, dryRun, args.theme);
         return;
       }
 
       // Interactive flow (update promise passed so flows can show notification inline)
       if (manifest) {
+        const { reRunFlow } = await import('./prompts.js');
         await reRunFlow(manifest, args.platform, dryRun, updatePromise);
       } else {
+        const { firstRunFlow } = await import('./prompts.js');
         await firstRunFlow(args.platform, dryRun, updatePromise);
       }
     } catch (err) {
