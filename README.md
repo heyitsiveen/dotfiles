@@ -21,16 +21,18 @@ Interactive CLI to set up dotfiles for macOS and Windows 11. One command to inst
 ## Quick Start
 
 ```bash
-bunx @heyitsiveen/dotfiles@latest
+npx @heyitsiveen/dotfiles@latest
 ```
 
 Or with other package runners:
 
 ```bash
-npx @heyitsiveen/dotfiles@latest
+bunx @heyitsiveen/dotfiles@latest
 pnpm dlx @heyitsiveen/dotfiles@latest
 yarn dlx @heyitsiveen/dotfiles@latest
 ```
+
+> **This CLI modifies your home directory.** It writes to `~/.config/`, `~/.zshrc` (macOS) or PowerShell profile (Windows), and other tool-specific paths. **Existing configs are backed up to `~/.config/heyitsiveen/dotfiles/backup/` before any overwrite.** Preview with `--dry-run` first. Undo with `--restore` or `--uninstall`.
 
 ## Prerequisites
 
@@ -99,6 +101,8 @@ The CLI automatically detects all tools and offers to install missing ones via H
 | ripgrep | Search config |
 | Claude Code | 6 MCP servers, CLAUDE.md, settings |
 
+> ⚠️ **Claude Code configs are the author's personal setup.** `settings.json` enables specific plugins, sets `effortLevel: xhigh`, `advisorModel: opus`, and skips dangerous-mode permission prompts. `.claude.json` wires three MCP servers (exa, grep, better-auth). `CLAUDE.md` is the author's 13-rule instruction set. If you prefer defaults, **deselect "Claude Code"** when the CLI asks which configs to install — or replace the files in `~/.claude/` after install.
+
 ## Color Themes
 
 Three themes are available across all tools:
@@ -151,20 +155,20 @@ Subsequent runs detect the existing installation and offer:
 ## Development
 
 ```bash
-# Install dependencies (bun is the primary package manager)
-bun install
+# Install dependencies
+npm install
 
 # Build
-bun run build
+npm run build
 
 # Run locally
 node dist/index.mjs
 
 # Run all checks (typecheck + lint + format)
-bun run check
+npm run check
 
-# Or with npm
-npm install && npm run build && npm run check
+# Or with bun
+bun install && bun run build && bun run check
 ```
 
 **Pre-commit hooks** are set up via [husky](https://typicode.github.io/husky/) + [lint-staged](https://github.com/lint-staged/lint-staged). Every `git commit` automatically:

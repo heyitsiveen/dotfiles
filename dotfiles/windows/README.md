@@ -309,6 +309,8 @@ The PowerShell configuration uses a **modular structure** with `modules/` and `f
 
 Configuration for [Claude Code](https://claude.ai/code).
 
+> ⚠️ **This is the author's personal Claude Code setup.** `settings.json` enables specific plugins, sets `effortLevel: xhigh`, `advisorModel: opus`, and skips dangerous-mode permission prompts. `.claude.json` wires three MCP servers (exa, grep, better-auth). `CLAUDE.md` is the author's 13-rule instruction set. If you prefer Claude Code defaults, **deselect "Claude Code"** in the CLI — or replace the installed files afterward.
+
 #### Files
 
 | Path                    | Purpose                   |
