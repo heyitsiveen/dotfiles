@@ -53,6 +53,11 @@ const themeHeaderPatterns: Record<ThemeName, string> = {
   vesper: 'VESPER'
 };
 
+// Format a "skipped" result line when a theme target file is missing
+function skipped(tool: string, path: string): string {
+  return `${tool} → skipped (config missing at ${path.replace(homedir(), '~')})`;
+}
+
 // --- Main entry point ---
 
 export async function switchTheme(
@@ -66,68 +71,88 @@ export async function switchTheme(
   for (const group of installedGroups) {
     try {
       switch (group.name) {
-        case 'Ghostty':
-          if (!dryRun) await switchGhosttyTheme(group.target, theme);
-          results.push(`Ghostty → ${ghosttyThemes[theme]}`);
+        case 'Ghostty': {
+          const missing = dryRun ? null : await switchGhosttyTheme(group.target, theme);
+          results.push(missing ? skipped('Ghostty', missing) : `Ghostty → ${ghosttyThemes[theme]}`);
           break;
+        }
 
-        case 'bat':
-          if (!dryRun) await switchBatTheme(group.target, theme);
-          results.push(`bat → ${batThemes[theme]}`);
+        case 'bat': {
+          const missing = dryRun ? null : await switchBatTheme(group.target, theme);
+          results.push(missing ? skipped('bat', missing) : `bat → ${batThemes[theme]}`);
           break;
+        }
 
-        case 'btop':
-          if (!dryRun)
-            await switchSingleLine(
-              join(group.target, 'btop.conf'),
-              /^color_theme = .*$/m,
-              `color_theme = "${btopThemes[theme]}"`
-            );
-          results.push(`btop → ${btopThemes[theme]}`);
+        case 'btop': {
+          const missing = dryRun
+            ? null
+            : await switchSingleLine(
+                join(group.target, 'btop.conf'),
+                /^color_theme = .*$/m,
+                `color_theme = "${btopThemes[theme]}"`
+              );
+          results.push(missing ? skipped('btop', missing) : `btop → ${btopThemes[theme]}`);
           break;
+        }
 
-        case 'WezTerm':
-          if (!dryRun)
-            await switchSingleLine(
-              join(group.target, 'wezterm.lua'),
-              /^config\.color_scheme = .*$/m,
-              `config.color_scheme = '${weztermThemes[theme]}'`
-            );
-          results.push(`WezTerm → ${weztermThemes[theme]}`);
+        case 'WezTerm': {
+          const missing = dryRun
+            ? null
+            : await switchSingleLine(
+                join(group.target, 'wezterm.lua'),
+                /^config\.color_scheme = .*$/m,
+                `config.color_scheme = '${weztermThemes[theme]}'`
+              );
+          results.push(missing ? skipped('WezTerm', missing) : `WezTerm → ${weztermThemes[theme]}`);
           break;
+        }
 
-        case 'Neovim':
-          if (!dryRun) await switchNeovimTheme(group.target, theme);
-          results.push(`Neovim → ${nvimPlugins[theme]}`);
+        case 'Neovim': {
+          const missing = dryRun ? null : await switchNeovimTheme(group.target, theme);
+          results.push(missing ? skipped('Neovim', missing) : `Neovim → ${nvimPlugins[theme]}`);
           break;
+        }
 
-        case 'Fish Shell':
-          if (!dryRun) {
-            await switchTideTheme(group.target, theme);
-            await switchFzfTheme(
-              join(group.target, 'conf.d', '40-fzf.fish'),
-              theme,
-              /^set -gx FZF_DEFAULT_OPTS/
-            );
+        case 'Fish Shell': {
+          if (dryRun) {
+            results.push(`Fish/Tide palette → ${tidePalettes[theme]}`);
+            results.push(`FZF → ${theme}`);
+            break;
           }
-          results.push(`Fish/Tide palette → ${tidePalettes[theme]}`);
-          results.push(`FZF → ${theme}`);
+          const tideMissing = await switchTideTheme(group.target, theme);
+          const fzfMissing = await switchFzfTheme(
+            join(group.target, 'conf.d', '40-fzf.fish'),
+            theme,
+            /^set -gx FZF_DEFAULT_OPTS/
+          );
+          results.push(
+            tideMissing
+              ? skipped('Fish/Tide palette', tideMissing)
+              : `Fish/Tide palette → ${tidePalettes[theme]}`
+          );
+          results.push(fzfMissing ? skipped('FZF', fzfMissing) : `FZF → ${theme}`);
           break;
+        }
 
-        case 'tmux':
-          if (!dryRun) await switchTmuxTheme(group.target, theme);
-          results.push(`tmux statusbar → ${theme}`);
+        case 'tmux': {
+          const missing = dryRun ? null : await switchTmuxTheme(group.target, theme);
+          results.push(missing ? skipped('tmux statusbar', missing) : `tmux statusbar → ${theme}`);
           break;
+        }
 
-        case 'PowerShell':
-          if (!dryRun)
-            await switchFzfTheme(
-              join(group.target, 'modules', 'fzf.ps1'),
-              theme,
-              /^\$env:FZF_DEFAULT_OPTS/
-            );
-          results.push(`FZF (PowerShell) → ${theme}`);
+        case 'PowerShell': {
+          const missing = dryRun
+            ? null
+            : await switchFzfTheme(
+                join(group.target, 'modules', 'fzf.ps1'),
+                theme,
+                /^\$env:FZF_DEFAULT_OPTS/
+              );
+          results.push(
+            missing ? skipped('FZF (PowerShell)', missing) : `FZF (PowerShell) → ${theme}`
+          );
           break;
+        }
 
         case 'oh-my-posh':
           if (!dryRun) await switchOmpTheme(theme);
@@ -144,9 +169,9 @@ export async function switchTheme(
 
 // --- Ghostty: switch theme + toggle background override ---
 
-async function switchGhosttyTheme(targetDir: string, theme: ThemeName): Promise<void> {
+async function switchGhosttyTheme(targetDir: string, theme: ThemeName): Promise<string | null> {
   const filePath = join(targetDir, 'config');
-  if (!(await pathExists(filePath))) return;
+  if (!(await pathExists(filePath))) return filePath;
   let content = await readFile(filePath, 'utf-8');
 
   // Switch theme line
@@ -164,6 +189,7 @@ async function switchGhosttyTheme(targetDir: string, theme: ThemeName): Promise<
   }
 
   await writeFile(filePath, content, 'utf-8');
+  return null;
 }
 
 // --- Simple single-line replacements ---
@@ -172,18 +198,19 @@ async function switchSingleLine(
   filePath: string,
   pattern: RegExp,
   replacement: string
-): Promise<void> {
-  if (!(await pathExists(filePath))) return;
+): Promise<string | null> {
+  if (!(await pathExists(filePath))) return filePath;
   const content = await readFile(filePath, 'utf-8');
   const updated = content.replace(pattern, replacement);
   await writeFile(filePath, updated, 'utf-8');
+  return null;
 }
 
 // --- bat: toggle commented/uncommented --theme lines ---
 
-async function switchBatTheme(targetDir: string, theme: ThemeName): Promise<void> {
+async function switchBatTheme(targetDir: string, theme: ThemeName): Promise<string | null> {
   const filePath = join(targetDir, 'config');
-  if (!(await pathExists(filePath))) return;
+  if (!(await pathExists(filePath))) return filePath;
   let content = await readFile(filePath, 'utf-8');
 
   // Comment out any active --theme line
@@ -196,13 +223,14 @@ async function switchBatTheme(targetDir: string, theme: ThemeName): Promise<void
   );
 
   await writeFile(filePath, content, 'utf-8');
+  return null;
 }
 
 // --- Neovim: swap plugin name in colorscheme.lua ---
 
-async function switchNeovimTheme(targetDir: string, theme: ThemeName): Promise<void> {
+async function switchNeovimTheme(targetDir: string, theme: ThemeName): Promise<string | null> {
   const filePath = join(targetDir, 'lua', 'plugins', 'colorscheme.lua');
-  if (!(await pathExists(filePath))) return;
+  if (!(await pathExists(filePath))) return filePath;
   const content = await readFile(filePath, 'utf-8');
 
   // Match any of the known plugin names and replace with target
@@ -212,19 +240,21 @@ async function switchNeovimTheme(targetDir: string, theme: ThemeName): Promise<v
   );
   const updated = content.replace(pluginPattern, `"${nvimPlugins[theme]}"`);
   await writeFile(filePath, updated, 'utf-8');
+  return null;
 }
 
 // --- Fish/Tide: change default palette in 70-tide.fish ---
 
-async function switchTideTheme(targetDir: string, theme: ThemeName): Promise<void> {
+async function switchTideTheme(targetDir: string, theme: ThemeName): Promise<string | null> {
   const filePath = join(targetDir, 'conf.d', '70-tide.fish');
-  if (!(await pathExists(filePath))) return;
+  if (!(await pathExists(filePath))) return filePath;
   const content = await readFile(filePath, 'utf-8');
   const updated = content.replace(
     /^(set -l tide_default_palette )\S+$/m,
     `$1${tidePalettes[theme]}`
   );
   await writeFile(filePath, updated, 'utf-8');
+  return null;
 }
 
 // --- oh-my-posh: write theme name to prompt-theme.txt ---
@@ -241,21 +271,23 @@ async function switchFzfTheme(
   filePath: string,
   theme: ThemeName,
   commandStart: RegExp
-): Promise<void> {
-  if (!(await pathExists(filePath))) return;
+): Promise<string | null> {
+  if (!(await pathExists(filePath))) return filePath;
   const content = await readFile(filePath, 'utf-8');
   const updated = toggleThemeBlocks(content, theme, commandStart);
   await writeFile(filePath, updated, 'utf-8');
+  return null;
 }
 
 // --- tmux: toggle comment blocks in statusbar.conf ---
 
-async function switchTmuxTheme(targetDir: string, theme: ThemeName): Promise<void> {
+async function switchTmuxTheme(targetDir: string, theme: ThemeName): Promise<string | null> {
   const filePath = join(targetDir, 'statusbar.conf');
-  if (!(await pathExists(filePath))) return;
+  if (!(await pathExists(filePath))) return filePath;
   const content = await readFile(filePath, 'utf-8');
   const updated = toggleThemeBlocks(content, theme, /^(set|setw) -g /);
   await writeFile(filePath, updated, 'utf-8');
+  return null;
 }
 
 // --- Generic comment-block toggling ---
