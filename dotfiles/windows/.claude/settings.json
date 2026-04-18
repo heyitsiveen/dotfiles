@@ -16,7 +16,10 @@
     "feature-dev@claude-plugins-official": true,
     "figma@claude-plugins-official": true,
     "explanatory-output-style@claude-plugins-official": true,
-    "learning-output-style@claude-plugins-official": true
+    "learning-output-style@claude-plugins-official": true,
+    "skill-creator@claude-plugins-official": true,
+    "security-guidance@claude-plugins-official": true,
+    "commit-commands@claude-plugins-official": true
   },
   "extraKnownMarketplaces": {
     "shopify-ai-toolkit": {
@@ -33,6 +36,7 @@
     }
   },
   "outputStyle": "Learning",
+  "effortLevel": "xhigh",
   "advisorModel": "opus",
   "skipDangerousModePermissionPrompt": true
 }

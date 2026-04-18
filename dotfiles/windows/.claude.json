@@ -1,9 +1,5 @@
 {
   "mcpServers": {
-    "context7": {
-      "type": "http",
-      "url": "https://mcp.context7.com/mcp"
-    },
     "exa": {
       "type": "http",
       "url": "https://mcp.exa.ai/mcp"
@@ -15,18 +11,6 @@
     "better-auth": {
       "type": "http",
       "url": "https://mcp.chonkie.ai/better-auth/better-auth-builder/mcp"
-    },
-    "figma": {
-      "type": "http",
-      "url": "https://mcp.figma.com/mcp"
-    },
-    "shopify-dev-mcp": {
-      "type": "stdio",
-      "command": "npx",
-      "args": ["-y", "@shopify/dev-mcp@latest"],
-      "env": {
-        "LIQUID_VALIDATION_MODE": "full"
-      }
     }
   }
 }

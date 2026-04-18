@@ -1,125 +1,134 @@
 # Manual Setup
 
-Manual, non-wizard setup path for this dotfiles repo.
+Manual, non-Stow setup path for this dotfiles repo.
 
 Follow these steps to set up each tool individually.
 
 ## 1. Terminal Emulator
 
-**WezTerm (Recommended)**
+**Ghostty (Recommended)**
 
-```powershell
-winget install --id wez.wezterm
+```bash
+# Download from https://ghostty.org/download
+# Or via Homebrew
+brew install --cask ghostty
 ```
 
-## 2. PowerShell 7
+**WezTerm (Alternative)**
 
-```powershell
-winget install --id Microsoft.PowerShell
+```bash
+brew install --cask wezterm
 ```
 
-After installation, open a new PowerShell 7 terminal (`pwsh`) instead of Windows PowerShell 5.
+## 2. Homebrew
 
-## 3. oh-my-posh (Prompt)
-
-```powershell
-winget install --id JanDeDobbeleer.OhMyPosh
+```bash
+/bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
 ```
+
+## 3. Fish Shell (+ Pre-Configured Fisher + Tide)
+
+```bash
+# Install Fish
+brew install fish
+
+# Add to shells and set as default
+echo $(which fish) | sudo tee -a /etc/shells
+chsh -s $(which fish)
+
+# Launch Fish
+fish
+```
+
+Fisher and Tide are committed to this repo under `.config/fish/` — they are copied over in step 7 below, so you don't need to bootstrap Fisher or run `tide configure`. On first install, `conf.d/_tide_init.fish` auto-configures the prompt (Rainbow, Angled separators, Two-line Sharp style) via `tide configure --auto` — no interactive wizard runs. The committed `fish_plugins` manifest declares `jorgebucaran/fisher` and `ilancosman/tide@v6`, and `fish_variables` holds the prompt settings for the `heyitsiveen` palette.
+
+<details>
+<summary><strong>Fallback: reinstall Fisher and Tide if the prompt is broken</strong></summary>
+
+Use this only if, after copying configs in step 7 and restarting Fish, you see:
+
+- Prompt shows raw text (`>_` or bare `$`) with no icons or git segment
+- `fisher: command not found`
+- `tide: command not found` or `tide_palette: command not found`
+- Tide errors about missing functions or corrupt universal variables
+- Icons render as tofu (`□`) — check your terminal has a Nerd Font first
+
+Then run:
+
+```fish
+# Re-bootstrap Fisher
+curl -sL https://raw.githubusercontent.com/jorgebucaran/fisher/main/functions/fisher.fish | source && fisher install jorgebucaran/fisher
+
+# Reinstall everything in fish_plugins
+fisher update
+
+# Last resort only — re-runs the interactive wizard
+tide configure
+```
+
+> **Warning:** Running `tide configure` without `--auto` launches an interactive wizard that overwrites the Tide universal variables in `fish_variables`. Restore the shipped look with `tide_palette heyitsiveen` (or `vercel` / `vesper`) afterward.
+
+</details>
 
 ## 4. Core CLI Tools
 
-```powershell
+```bash
 # Fuzzy finder
-winget install --id junegunn.fzf
+brew install fzf
+$(brew --prefix)/opt/fzf/install  # Install key bindings
 
 # Fast find
-winget install --id sharkdp.fd
+brew install fd
 
 # Better cat
-winget install --id sharkdp.bat
+brew install bat
 
 # Modern ls
-winget install --id eza-community.eza
+brew install eza
 
 # Smarter cd
-winget install --id ajeetdsouza.zoxide
+brew install zoxide
 
 # Fast grep
-winget install --id BurntSushi.ripgrep.MSVC
+brew install ripgrep
 
 # Better git diff
-winget install --id dandavison.delta
+brew install delta
 ```
 
-## 5. Utility Tools
+## 5. Tmux
 
-```powershell
-winget install --id JesseDuffield.lazygit
-winget install --id Schniz.fnm
-winget install --id fastfetch-cli.fastfetch
-winget install --id httpie.cli
-
-# btop (optional — install via scoop)
-# scoop install btop
+```bash
+brew install tmux
 ```
 
-## 6. Fonts
+## 6. Utility Tools
 
-```powershell
-winget install --id DEVCOM.JetBrainsMonoNerdFont
+```bash
+brew install lazygit jq httpie btop fastfetch fnm
 ```
 
-## 7. Enable Developer Mode
+## 7. Copy Configuration Files
 
-Required for symlink creation without admin privileges.
+```bash
+# Create config directories
+mkdir -p ~/.config/{fish,ghostty,wezterm,tmux,bat,btop,ripgrep}
 
-Settings → System → For developers → Developer Mode → **On**
-
-## 8. Copy Configuration Files
-
-```powershell
-$repo = "C:\path\to\dotfiles-windows"
-
-# PowerShell profile
-New-Item -ItemType SymbolicLink -Path "$HOME\Documents\PowerShell\Microsoft.PowerShell_profile.ps1" -Target "$repo\powershell\Profile.ps1"
-New-Item -ItemType Junction -Path "$HOME\Documents\PowerShell\modules" -Target "$repo\powershell\modules"
-New-Item -ItemType Junction -Path "$HOME\Documents\PowerShell\functions" -Target "$repo\powershell\functions"
-
-# bat
-New-Item -ItemType Junction -Path "$env:APPDATA\bat" -Target "$repo\.config\bat"
-bat cache --build
-
-# WezTerm
-mkdir "$HOME\.config\wezterm" -Force
-New-Item -ItemType SymbolicLink -Path "$HOME\.config\wezterm\wezterm.lua" -Target "$repo\.config\wezterm\wezterm.lua"
-
-# oh-my-posh themes
-New-Item -ItemType Junction -Path "$HOME\.config\omp-themes" -Target "$repo\.config\omp-themes"
-
-# ripgrep (referenced via $env:RIPGREP_CONFIG_PATH in tools.ps1)
-
-# btop (optional)
-New-Item -ItemType Junction -Path "$env:APPDATA\btop" -Target "$repo\.config\btop"
-
-# VS Code custom CSS
-New-Item -ItemType SymbolicLink -Path "$env:APPDATA\Code\User\zed-style.css" -Target "$repo\vscode\zed-style.css"
-
-# Claude Code
-mkdir "$HOME\.claude" -Force
-New-Item -ItemType SymbolicLink -Path "$HOME\.claude\CLAUDE.md" -Target "$repo\.claude\CLAUDE.md"
-New-Item -ItemType SymbolicLink -Path "$HOME\.claude\settings.json" -Target "$repo\.claude\settings.json"
-New-Item -ItemType SymbolicLink -Path "$HOME\.claude.json" -Target "$repo\.claude.json"
-
-# Git (copy, not symlink)
-Copy-Item "$repo\git\.gitconfig" "$HOME\.gitconfig"
-Copy-Item "$repo\git\.gitignore_global" "$HOME\.gitignore_global"
+# Copy configs manually from this repo
+cp -r .config/fish/* ~/.config/fish/
+cp -r .config/ghostty/* ~/.config/ghostty/
+cp -r .config/wezterm/* ~/.config/wezterm/
+cp -r .config/tmux/* ~/.config/tmux/
+cp -r .config/bat/* ~/.config/bat/
+cp -r .config/btop/* ~/.config/btop/
+cp -r .config/ripgrep/* ~/.config/ripgrep/
 ```
 
-## 9. OXC (Formatter & Linter)
+## 8. OXC (Formatter & Linter)
 
 ### Install Globally
 
-```powershell
+```bash
 # Linter
 npm add -g oxlint
 
@@ -129,7 +138,7 @@ npm add -g oxfmt
 
 ### Install Per-Project
 
-```powershell
+```bash
 # npm
 npm add -D oxlint oxfmt
 
@@ -160,10 +169,10 @@ Add scripts to `package.json`:
 
 Create `~/.oxfmtrc.json` — applies to all projects by default:
 
-```powershell
+```bash
 oxfmt --init
 # or manually
-New-Item "$HOME\.oxfmtrc.json"
+touch ~/.oxfmtrc.json
 ```
 
 Paste the following into `~/.oxfmtrc.json`:
@@ -287,7 +296,7 @@ Paste the following into `~/.oxfmtrc.json`:
 
 In any project root, create `.oxfmtrc.json` to override the global config:
 
-```powershell
+```bash
 # Generate default config
 oxfmt --init
 
@@ -298,11 +307,11 @@ oxfmt --migrate biome
 
 > Oxfmt looks for `.oxfmtrc.json` in the project root first; if not found, it falls back to `~/.oxfmtrc.json`.
 
-## 10. VS Code
+## 9. VS Code
 
 ### Settings
 
-Open the Command Palette (`Ctrl+Shift+P`), run **Preferences: Open User Settings (JSON)**, and paste:
+Open the Command Palette (`Cmd+Shift+P`), run **Preferences: Open User Settings (JSON)**, and paste:
 
 ```jsonc
 {
@@ -314,7 +323,9 @@ Open the Command Palette (`Ctrl+Shift+P`), run **Preferences: Open User Settings
   // --- Typography ---
   "editor.fontSize": 14,
   "editor.fontFamily": "'JetBrains Mono NL','JetBrains Mono', 'Zed Mono', monospace",
+  // "editor.lineHeight": 2,
   "editor.fontWeight": "400",
+  // "editor.letterSpacing": 0.5,
   "editor.fontLigatures": true,
   "editor.codeLensFontFamily": "JetBrains Mono",
   "editor.inlayHints.fontFamily": "JetBrains Mono",
@@ -338,7 +349,7 @@ Open the Command Palette (`Ctrl+Shift+P`), run **Preferences: Open User Settings
   "editor.bracketPairColorization.enabled": true,
   "workbench.secondarySideBar.defaultVisibility": "hidden",
 
-  // --- Breadcrumbs ---
+  // --- Breadcrumbs (The file path bar) ---
   "breadcrumbs.enabled": true,
   "breadcrumbs.icons": false,
   "breadcrumbs.symbolPath": "off",
@@ -403,62 +414,83 @@ Open the Command Palette (`Ctrl+Shift+P`), run **Preferences: Open User Settings
     },
   },
 
-  // --- CSS LOADER ---
-  // "vscode_custom_css.imports": ["file:///C:/Users/USERNAME/AppData/Roaming/Code/User/zed-style.css"],
+  // --- CSS LOADER (This makes the "/" happen) ---
+  // "vscode_custom_css.imports": ["file:///Users/ali/.config/Code/zed-style.css"],
 
   // EDITOR
   "typescript.referencesCodeLens.enabled": true,
   "explorer.compactFolders": false,
   "javascript.updateImportsOnFileMove.enabled": "always",
   "editor.tabSize": 2,
+  // "editor.defaultFormatter": "esbenp.prettier-vscode",
   "editor.defaultFormatter": "biomejs.biome",
+  // "editor.defaultFormatter": "oxc.oxc-vscode",
   "editor.formatOnSave": true,
   "editor.formatOnSaveMode": "file",
   "editor.codeActionsOnSave": {
-    "source.fixAll.oxc": "always",
+    // "source.format.oxc": "always",
+    "source.fixAll.oxc": "always", // OXC lint fixes on save (only applies to files OXC supports)
   },
   "[javascript]": {
-    "editor.defaultFormatter": "oxc.oxc-vscode",
+    "editor.defaultFormatter": "oxc.oxc-vscode", // OXC handles JS family
   },
   "[javascriptreact]": {
-    "editor.defaultFormatter": "oxc.oxc-vscode",
+    "editor.defaultFormatter": "oxc.oxc-vscode", // OXC handles JSX family
   },
   "[typescript]": {
-    "editor.defaultFormatter": "oxc.oxc-vscode",
+    "editor.defaultFormatter": "oxc.oxc-vscode", // OXC handles TS family
   },
   "[typescriptreact]": {
-    "editor.defaultFormatter": "oxc.oxc-vscode",
+    "editor.defaultFormatter": "oxc.oxc-vscode", // OXC handles TSX family
   },
   "[html]": {
-    "editor.defaultFormatter": "oxc.oxc-vscode",
+    "editor.defaultFormatter": "oxc.oxc-vscode", // OXC handles HTML family
   },
   "[css]": {
-    "editor.defaultFormatter": "oxc.oxc-vscode",
+    "editor.defaultFormatter": "oxc.oxc-vscode", // OXC handles CSS family
   },
   "[scss]": {
-    "editor.defaultFormatter": "oxc.oxc-vscode",
+    "editor.defaultFormatter": "oxc.oxc-vscode", // OXC handles SCSS family
   },
   "[less]": {
-    "editor.defaultFormatter": "oxc.oxc-vscode",
+    "editor.defaultFormatter": "oxc.oxc-vscode", // OXC handles LESS family
   },
+  // "[json]": {
+  // 	"editor.defaultFormatter": "oxc.oxc-vscode" // OXC handles JSON family
+  // },
+  // "[jsonc]": {
+  // 	"editor.defaultFormatter": "oxc.oxc-vscode" // OXC handles JSONC family
+  // },
   "[yaml]": {
-    "editor.defaultFormatter": "oxc.oxc-vscode",
+    "editor.defaultFormatter": "oxc.oxc-vscode", // OXC handles YAML family
   },
   "[toml]": {
-    "editor.defaultFormatter": "oxc.oxc-vscode",
+    "editor.defaultFormatter": "oxc.oxc-vscode", // OXC handles TOML family
   },
   "[markdown]": {
-    "editor.defaultFormatter": "oxc.oxc-vscode",
+    "editor.defaultFormatter": "oxc.oxc-vscode", // OXC handles LESS family
   },
+  // "[typescriptreact]": {
+  //   "editor.defaultFormatter": "biomejs.biome",
+  // },
+  // "[liquid]": {
+  //   "editor.defaultFormatter": "Shopify.theme-check-vscode",
+  // },
   "symbols.hidesExplorerArrows": false,
 }
 ```
 
-> **Note:** Update the `vscode_custom_css.imports` path to match your Windows username.
+> **Note:** Update the `vscode_custom_css.imports` path to match your OS and username.
 
 ### Custom CSS
 
-The `zed-style.css` file is included in `vscode/` and symlinked to `%APPDATA%\Code\User\` by the setup wizard.
+Create the config directory and CSS file:
+
+```bash
+mkdir -p ~/.config/Code
+```
+
+Create `~/.config/Code/zed-style.css` with the Zed-inspired breadcrumb/tab/sidebar styling (included in this repo).
 
 ### Extensions
 
@@ -484,7 +516,7 @@ Install the following VS Code extensions:
 
 ### Enable Custom CSS
 
-1. Open the Command Palette (`Ctrl+Shift+P`) and run **Enable Custom CSS and JS**
+1. Open the Command Palette (`Cmd+Shift+P`) and run **Enable Custom CSS and JS**
 2. VS Code will prompt to restart — click **Restart**
 3. If a warning appears: _"Your Code installation appears to be corrupt. Please reinstall."_ — click **Don't Show Again** (this is normal when using Custom CSS and JS Loader)
 4. After restart, the Zed-inspired styling from `zed-style.css` will be applied

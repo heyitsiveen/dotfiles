@@ -38,6 +38,20 @@ If the Anthropic marketplace is not yet added, run this inside Claude Code:
 
 ---
 
+### Skill Creator
+
+[Plugin Page](https://claude.com/plugins/skill-creator)
+
+```
+/plugin install skill-creator@claude-plugins-official
+```
+
+**What it does:** Meta-plugin for authoring, evaluating, and improving skills. Provides four specialized agents — Executor (runs skills against evaluation prompts), Grader (scores outputs against expectations), Comparator (blind A/B comparisons between skill versions), and Analyzer (suggests targeted improvements based on results). Four workflow modes structure the process: Create, Eval, Improve, and Benchmark. Includes utility scripts for skill initialization, configuration validation, evaluation preparation, and results aggregation with variance analysis.
+
+**How to use:** Run `/skill-creator` and select a mode. Example prompts: "Create a new skill that reviews PRs for security issues", "Run evals on my code-review skill", "Improve my deploy skill based on these test cases", "Benchmark my skill across 10 runs and show variance".
+
+---
+
 ### Context7
 
 [Plugin Page](https://claude.com/plugins/context7)
@@ -66,6 +80,20 @@ If the Anthropic marketplace is not yet added, run this inside Claude Code:
 
 ---
 
+### Security Guidance
+
+[Plugin Page](https://claude.com/plugins/security-guidance)
+
+```
+/plugin install security-guidance@claude-plugins-official
+```
+
+**What it does:** Pre-tool hook that intercepts Write, Edit, and MultiEdit operations and scans code for dangerous patterns before changes are applied. Detects eight major vulnerability categories including command injection in GitHub Actions workflows, unsafe `child_process.exec()` calls, `eval()` and `new Function()` usage, XSS vectors like `dangerouslySetInnerHTML` and `innerHTML`, Python pickle deserialization risks, and `os.system()` command injection. Warnings include specific remediation advice — e.g., using `execFileNoThrow()` instead of `child_process.exec()` to prevent shell injection.
+
+**How to use:** Activates automatically once installed — no commands needed. When Claude attempts to write code containing unsafe patterns, a warning with remediation advice appears before the edit proceeds. Warnings are session-scoped so each one surfaces only once.
+
+---
+
 ### Feature Dev
 
 [Plugin Page](https://claude.com/plugins/feature-dev)
@@ -77,6 +105,20 @@ If the Anthropic marketplace is not yet added, run this inside Claude Code:
 **What it does:** Guided 7-phase feature development: discovery, requirements, architecture, implementation, review, and summary. Deploys three specialized agents — code-explorer (traces execution paths and maps architecture), code-architect (proposes approaches with documented trade-offs), and code-reviewer (confidence-scored findings for bugs, security, and conventions).
 
 **How to use:** Run `/feature-dev` with a description or alone for the guided workflow. Example: `/feature-dev Add user authentication with OAuth`.
+
+---
+
+### Commit Commands
+
+[Plugin Page](https://claude.com/plugins/commit-commands)
+
+```
+/plugin install commit-commands@claude-plugins-official
+```
+
+**What it does:** Git workflow slash commands with AI-generated commit messages that match the repository's existing style. Handles automatic staging, sensitive-file protection (blocks `.env` and similar), comprehensive PR description generation with summaries and test checklists, and stale-branch cleanup.
+
+**How to use:** Three slash commands: `/commit` (stage changes and create a commit with an AI-generated message), `/commit-push-pr` (commit, push to a feature branch, and open a pull request in one step), `/clean_gone` (remove local branches that have been deleted from the remote). Requires git installed, GitHub CLI authentication for the PR command, and a configured remote origin.
 
 ---
 
