@@ -18,7 +18,8 @@
     "!dotfiles/*/README.md",
     "!dotfiles/*/LICENSE",
     "!dotfiles/macos/.stow-local-ignore",
-    "!dotfiles/windows/SKIPPED.md"
+    "!dotfiles/windows/SKIPPED.md",
+    "!dotfiles/*/.config/nvim/lazy-lock.json"
   ],
   "scripts": {
     "build": "tsdown",
@@ -41,6 +42,11 @@
     "type": "git",
     "url": "git+https://github.com/heyitsiveen/dotfiles.git"
   },
+  "author": "heyitsiveen",
+  "bugs": {
+    "url": "https://github.com/heyitsiveen/dotfiles/issues"
+  },
+  "homepage": "https://github.com/heyitsiveen/dotfiles#readme",
   "engines": {
     "node": ">=22.0.0"
   },
