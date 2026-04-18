@@ -232,6 +232,14 @@ export async function readManifest(): Promise<Manifest | null> {
   return null;
 }
 
+async function writeManifestAtomic(manifestPath: string, manifest: Manifest): Promise<void> {
+  // Write to a tmp file then rename — atomic on the same filesystem.
+  // Prevents half-written manifests if the process is killed mid-write.
+  const tmpPath = `${manifestPath}.tmp`;
+  await writeJson(tmpPath, manifest, { spaces: 2 });
+  await fse.rename(tmpPath, manifestPath);
+}
+
 export async function createManifest(
   result: InstallResult,
   options: InstallOptions
@@ -245,7 +253,7 @@ export async function createManifest(
   };
   const manifestPath = getManifestPath();
   await ensureDir(join(manifestPath, '..'));
-  await writeJson(manifestPath, manifest, { spaces: 2 });
+  await writeManifestAtomic(manifestPath, manifest);
 }
 
 export async function updateManifest(updates: Partial<Manifest>): Promise<void> {
@@ -253,7 +261,7 @@ export async function updateManifest(updates: Partial<Manifest>): Promise<void> 
   if (!manifest) return;
   const updated = { ...manifest, ...updates };
   const manifestPath = getManifestPath();
-  await writeJson(manifestPath, updated, { spaces: 2 });
+  await writeManifestAtomic(manifestPath, updated);
 }
 
 export async function deleteManifest(): Promise<void> {
