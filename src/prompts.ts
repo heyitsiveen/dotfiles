@@ -107,8 +107,9 @@ async function showToolStatus(groups: DotfileGroup[], platform: Platform): Promi
     if (dep.forGroup) {
       if (!groupNames.has(dep.forGroup)) continue;
       const ok = detectTool(dep.binary);
-      if (!subTools.has(dep.forGroup)) subTools.set(dep.forGroup, []);
-      subTools.get(dep.forGroup)!.push({ ...dep, ok });
+      const bucket = subTools.get(dep.forGroup) ?? [];
+      subTools.set(dep.forGroup, bucket);
+      bucket.push({ ...dep, ok });
       allTools.push(dep);
     } else {
       allTools.push(dep);
@@ -356,6 +357,15 @@ export async function firstRunFlow(
       hint
     };
   });
+
+  // Disclose that Claude Code ships author's personal config before user selects
+  if (allGroups.some((g) => g.name === 'Claude Code')) {
+    log.warn(
+      pc.yellow(
+        "Claude Code config is the author's personal setup (see README) — deselect if you want defaults."
+      )
+    );
+  }
 
   const selectedNames = await multiselect({
     message: 'Which dotfiles would you like to install?',
@@ -672,6 +682,24 @@ export async function uninstallFlow(manifest: Manifest, dryRun = false): Promise
     }
   }
 
+  // Final confirmation with exact paths — uninstall is destructive, show what's going
+  if (uninstallConfigs && selectedConfigGroups.length > 0) {
+    log.warn(pc.yellow('This will permanently delete the following:'));
+    const maxName = Math.max(...selectedConfigGroups.map((g) => g.name.length));
+    for (const g of selectedConfigGroups) {
+      log.message(`    ${pc.bold(g.name.padEnd(maxName))}  ${pc.dim('→')}  ${g.target}`);
+    }
+    log.message(
+      `  ${pc.dim('Backups remain in')} ${pc.dim('~/.config/heyitsiveen/dotfiles/backup/')}`
+    );
+    const confirmed = await confirm({ message: 'Continue with uninstall?' });
+    handleCancel(confirmed);
+    if (!confirmed) {
+      outro('Uninstall cancelled.');
+      return;
+    }
+  }
+
   // Dry run
   if (dryRun) {
     log.info(pc.yellow('Dry run — would remove:'));
@@ -868,38 +896,45 @@ export async function restoreFlow(dryRun = false): Promise<void> {
 
   const s = createSpinner();
   s.start('Restoring...');
+  const errors: string[] = [];
 
   for (const backup of toRestore) {
     const matchingGroup = manifest?.groups.find((g) => g.name === backup.group);
-    if (matchingGroup) {
-      try {
-        const configSubdir = join(backup.path, 'config');
-        if (matchingGroup.extraBackupPaths && (await pathExists(configSubdir))) {
-          // Structured backup: config/ → target, data/ → extra path
-          await copy(configSubdir, matchingGroup.target, { overwrite: true });
-          log.success(`Restored ${backup.group} config → ${matchingGroup.target}`);
-          for (const extra of matchingGroup.extraBackupPaths) {
-            const extraSubdir = join(backup.path, extra.label);
-            if (await pathExists(extraSubdir)) {
-              await copy(extraSubdir, extra.path, { overwrite: true });
-              log.success(`Restored ${backup.group} ${extra.label} → ${extra.path}`);
-            }
+    if (!matchingGroup) {
+      errors.push(`Skipped ${backup.group} — no matching installation record`);
+      continue;
+    }
+    try {
+      const configSubdir = join(backup.path, 'config');
+      if (matchingGroup.extraBackupPaths && (await pathExists(configSubdir))) {
+        // Structured backup: config/ → target, data/ → extra path
+        await copy(configSubdir, matchingGroup.target, { overwrite: true });
+        log.success(`Restored ${backup.group} config → ${matchingGroup.target}`);
+        for (const extra of matchingGroup.extraBackupPaths) {
+          const extraSubdir = join(backup.path, extra.label);
+          if (await pathExists(extraSubdir)) {
+            await copy(extraSubdir, extra.path, { overwrite: true });
+            log.success(`Restored ${backup.group} ${extra.label} → ${extra.path}`);
           }
-        } else {
-          // Flat backup (no extra paths or old format)
-          await copy(backup.path, matchingGroup.target, { overwrite: true });
-          log.success(`Restored ${backup.group} → ${matchingGroup.target}`);
         }
-      } catch (err) {
-        log.warn(
-          `Failed to restore ${backup.group}: ${err instanceof Error ? err.message : String(err)}`
-        );
+      } else {
+        // Flat backup (no extra paths or old format)
+        await copy(backup.path, matchingGroup.target, { overwrite: true });
+        log.success(`Restored ${backup.group} → ${matchingGroup.target}`);
       }
-    } else {
-      log.warn(`Skipped ${backup.group} — no matching installation record`);
+    } catch (err) {
+      errors.push(
+        `Failed to restore ${backup.group}: ${err instanceof Error ? err.message : String(err)}`
+      );
     }
   }
 
-  s.stop('Restore complete!');
-  outro('Dotfiles restored from backup.');
+  s.stop(errors.length === 0 ? 'Restore complete!' : `Restore complete (${errors.length} failed)`);
+  for (const msg of errors) log.warn(msg);
+
+  outro(
+    errors.length === 0
+      ? 'Dotfiles restored from backup.'
+      : `Restore finished with ${errors.length} error(s). Run with --dry-run to diagnose.`
+  );
 }
