@@ -29,3 +29,10 @@ end
 if functions -q tide_palette
     tide_palette $tide_selected_palette
 end
+
+# Palettes hardcode the Linux Tux glyph for tide_os_icon. Override per host
+# so macOS shows an Apple logo; other platforms fall through to the palette default.
+switch (uname)
+    case Darwin
+        set -U tide_os_icon (printf '\uf302')
+end
