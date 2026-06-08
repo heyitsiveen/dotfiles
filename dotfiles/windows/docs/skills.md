@@ -94,6 +94,20 @@ npx skills add figma/mcp-server-guide
 | -------------------------- | -------------------------------------------------- |
 | `figma-implement-design`   | Implement designs from Figma into code             |
 
+## Design Engineering & Animation
+
+```bash
+npx skills add https://github.com/emilkowalski/skill --skill emil-design-eng
+npx skills add https://github.com/pproenca/dot-skills --skill emilkowal-animations
+npx skills add https://github.com/jakubantalik/transitions.dev --skill transitions-dev
+```
+
+| Skill                  | Source                                                                          | Description                                                                          |
+| ---------------------- | ------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------ |
+| `emil-design-eng`      | [emilkowalski/skill](https://github.com/emilkowalski/skill)                     | Craft-focused design engineering — animation framework, component patterns, gestures |
+| `emilkowal-animations` | [pproenca/dot-skills](https://github.com/pproenca/dot-skills)                   | 43 animation rules across easing, timing, transforms, gestures, and accessibility    |
+| `transitions-dev`      | [jakubantalik/transitions.dev](https://github.com/jakubantalik/transitions.dev) | Twelve drop-in, framework-free CSS transitions with reduced-motion guards            |
+
 ## Marketing Skills — [coreyhaines31/marketingskills](https://skills.sh/coreyhaines31/marketingskills/seo-audit)
 
 ```bash
@@ -103,3 +117,20 @@ npx skills add coreyhaines31/marketingskills
 | Skill       | Description                                                                                                   |
 | ----------- | ------------------------------------------------------------------------------------------------------------- |
 | `seo-audit` | Audit, review, and diagnose SEO issues including technical SEO, on-page SEO, meta tags, and SEO health checks |
+
+## Spec-Driven Workflow — [mattpocock/skills](https://github.com/mattpocock/skills)
+
+_A connected flow: `grill-me` (or `grill-with-docs`) → `to-prd` → `to-issues` → `tdd`, with `improve-codebase-architecture` for ongoing refactors._
+
+```bash
+npx skills add mattpocock/skills
+```
+
+| Skill                           | Description                                                                |
+| ------------------------------- | -------------------------------------------------------------------------- |
+| `grill-me`                      | Interview you relentlessly about a plan until every decision is resolved   |
+| `grill-with-docs`               | Grill a plan against the domain model, updating CONTEXT.md and ADRs inline |
+| `to-prd`                        | Turn the current conversation into a PRD on the issue tracker              |
+| `to-issues`                     | Break a plan or PRD into independent, vertically-sliced issues             |
+| `tdd`                           | Test-driven development with a red-green-refactor loop                     |
+| `improve-codebase-architecture` | Find refactors that make a codebase more testable and AI-navigable         |
