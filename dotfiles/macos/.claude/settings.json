@@ -1,6 +1,6 @@
 {
   "permissions": {
-    "defaultMode": "plan"
+    "defaultMode": "auto"
   },
   "statusLine": {
     "type": "command",
@@ -35,8 +35,6 @@
       }
     }
   },
-  "outputStyle": "Learning",
   "effortLevel": "xhigh",
-  "advisorModel": "opus",
-  "skipDangerousModePermissionPrompt": true
+  "theme": "dark-ansi"
 }
