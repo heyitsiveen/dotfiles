@@ -56,13 +56,13 @@ npx skills add expo/skills
 npx skills add better-auth/skills
 ```
 
-| Skill                        | Description                                  |
-| ---------------------------- | -------------------------------------------- |
-| `better-auth-best-practices`                | Better Auth TypeScript framework integration  |
-| `create-auth-skill`                         | Create auth layers using Better Auth          |
-| `email-and-password-best-practices`         | Email & password authentication patterns      |
-| `organization-best-practices`               | Multi-org and team management auth patterns   |
-| `two-factor-authentication-best-practices`  | 2FA setup and best practices with Better Auth |
+| Skill                                      | Description                                                           |
+| ------------------------------------------ | --------------------------------------------------------------------- |
+| `better-auth-best-practices`               | Full server + client setup — DB adapters, sessions, plugins, security |
+| `create-auth-skill`                        | Scaffold auth end to end — framework/DB detection, handlers, OAuth, UI |
+| `email-and-password-best-practices`        | Email verification, password-reset flows, policy & custom hashing     |
+| `organization-best-practices`              | Multi-tenant orgs — members, invitations, roles/permissions, teams    |
+| `two-factor-authentication-best-practices` | 2FA — TOTP, email/SMS OTP, backup codes, trusted-device handling      |
 
 ## Remotion — [remotion-dev/skills](https://github.com/remotion-dev/skills)
 
@@ -118,9 +118,9 @@ npx skills add coreyhaines31/marketingskills
 | ----------- | ------------------------------------------------------------------------------------------------------------- |
 | `seo-audit` | Audit, review, and diagnose SEO issues including technical SEO, on-page SEO, meta tags, and SEO health checks |
 
-## Spec-Driven Workflow — [mattpocock/skills](https://github.com/mattpocock/skills)
+## Engineering Workflow — [mattpocock/skills](https://github.com/mattpocock/skills)
 
-_A connected flow: `grill-me` (or `grill-with-docs`) → `to-prd` → `to-issues` → `tdd`, with `improve-codebase-architecture` for ongoing refactors._
+_Small, composable skills for real engineering — deliberately not a process-owning framework. Official order: run `setup-matt-pocock-skills` once per repo (it wires up your issue tracker, triage labels, and doc layout), then follow the main flow (idea → ship) — align with `grill-me` / `grill-with-docs` → `to-prd` → `to-issues` → build with `tdd`, reaching for `improve-codebase-architecture` to fight entropy and `handoff` to carry context across sessions. Not sure which to use? Run `ask-matt`._
 
 ```bash
 npx skills add mattpocock/skills
@@ -128,9 +128,13 @@ npx skills add mattpocock/skills
 
 | Skill                           | Description                                                                |
 | ------------------------------- | -------------------------------------------------------------------------- |
+| `setup-matt-pocock-skills`      | Run once per repo — sets up issue tracker, triage labels, and doc layout   |
+| `ask-matt`                      | Router that points you to the right skill or flow for your situation       |
 | `grill-me`                      | Interview you relentlessly about a plan until every decision is resolved   |
 | `grill-with-docs`               | Grill a plan against the domain model, updating CONTEXT.md and ADRs inline |
 | `to-prd`                        | Turn the current conversation into a PRD on the issue tracker              |
 | `to-issues`                     | Break a plan or PRD into independent, vertically-sliced issues             |
 | `tdd`                           | Test-driven development with a red-green-refactor loop                     |
 | `improve-codebase-architecture` | Find refactors that make a codebase more testable and AI-navigable         |
+| `handoff`                       | Compact a conversation into a handoff doc so a fresh agent can continue    |
+| `writing-great-skills`          | Reference for authoring predictable, well-scoped skills                    |
