@@ -120,7 +120,7 @@ npx skills add coreyhaines31/marketingskills
 
 ## Engineering Workflow — [mattpocock/skills](https://github.com/mattpocock/skills)
 
-_Small, composable skills for real engineering — deliberately not a process-owning framework. Official order: run `setup-matt-pocock-skills` once per repo (it wires up your issue tracker, triage labels, and doc layout), then follow the main flow (idea → ship) — align with `grill-me` / `grill-with-docs` → `to-prd` → `to-issues` → build with `tdd`, reaching for `improve-codebase-architecture` to fight entropy and `handoff` to carry context across sessions. Not sure which to use? Run `ask-matt`._
+_Small, composable skills for real engineering — deliberately not a process-owning framework. Official order: run `setup-matt-pocock-skills` once per repo (it wires up your issue tracker, triage labels, and doc layout), then follow the main flow (idea → ship) — align with `grill-me` / `grill-with-docs` → `to-prd` → `to-issues` → build with `tdd`, reaching for `improve-codebase-architecture` to fight entropy and `handoff` to carry context across sessions. Not sure which to use? Run `ask-matt`. Off the main flow, `teach` is standalone — a stateful, multi-session workspace for learning a concept._
 
 ```bash
 npx skills add mattpocock/skills
@@ -138,3 +138,4 @@ npx skills add mattpocock/skills
 | `improve-codebase-architecture` | Find refactors that make a codebase more testable and AI-navigable         |
 | `handoff`                       | Compact a conversation into a handoff doc so a fresh agent can continue    |
 | `writing-great-skills`          | Reference for authoring predictable, well-scoped skills                    |
+| `teach`                         | Learn a concept over multiple sessions in a stateful workspace             |
