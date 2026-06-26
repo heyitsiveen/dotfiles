@@ -86,13 +86,21 @@ npx skills add https://github.com/shadcn/ui --skill shadcn
 
 ## Figma — [figma/mcp-server-guide](https://github.com/figma/mcp-server-guide)
 
+_Skills for Figma's official Dev Mode MCP server — design → code, Code Connect, design-system rules, and writing to the canvas. Formerly `figma/dev-mode-mcp-server-guide`, which now redirects here._
+
 ```bash
 npx skills add figma/mcp-server-guide
 ```
 
-| Skill                      | Description                                        |
-| -------------------------- | -------------------------------------------------- |
-| `figma-implement-design`   | Implement designs from Figma into code             |
+| Skill                              | Description                                                              |
+| ---------------------------------- | ------------------------------------------------------------------------ |
+| `figma-use`                        | Create/edit Figma nodes, variables, and components via the Plugin API    |
+| `figma-generate-design`            | Build a full page, screen, or layout in Figma from code or a description |
+| `figma-implement-design`           | Implement a Figma design as production code                              |
+| `figma-code-connect`               | Map Figma components to code components (Code Connect)                   |
+| `figma-create-design-system-rules` | Create design-system rules so generated code matches your system        |
+| `figma-create-new-file`            | Create a new blank Figma, FigJam, or Slides file                         |
+| `figma-generate-diagram`           | Generate a flowchart or diagram in FigJam                                |
 
 ## Design Engineering & Animation
 
