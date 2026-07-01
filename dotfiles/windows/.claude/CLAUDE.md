@@ -11,3 +11,5 @@
 11. Always use Exa MCP for web searches, code searches, and research tasks.
 12. Always use Grep MCP when searching across GitHub repositories for code patterns, implementations, or examples.
 13. Always use the frontend-design skill when developing any frontend interface or UI components.
+14. Make the plan extremely concise. Sacrifice grammar for the sake of concision.
+15. At the end of each plan, give me a list of unresolved questions to answer, if any.
