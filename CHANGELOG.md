@@ -7,7 +7,7 @@ Format loosely follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/).
 
 ### Added
 
-- Five more `mattpocock/skills` to the Skills reference (`docs/skills.md`, both platforms): `setup-matt-pocock-skills`, `ask-matt`, `handoff`, `writing-great-skills`, and `teach` — the last marked standalone (a stateful, multi-session learning workspace), off the `idea → ship` flow.
+- Eight more `mattpocock/skills` to the Skills reference (`docs/skills.md`, both platforms): `setup-matt-pocock-skills`, `ask-matt`, `handoff`, `writing-great-skills`, `teach`, `prototype`, `triage`, and `diagnose` — each placed in Matt's official taxonomy: main flow (with the `prototype` detour), the `triage` on-ramp, `diagnose` / `tdd` for building, and the standalone `teach` / `writing-great-skills`.
 - `review-animations` and `animation-vocabulary` to the Skills reference (`docs/skills.md`, both platforms) under a new consolidated **Emil Kowalski** section (`emilkowalski/skills`) — a motion-code review skill held to a high craft bar, and a reverse-lookup glossary that turns a vague motion description into the precise term.
 
 ### Changed

@@ -138,7 +138,7 @@ npx skills add coreyhaines31/marketingskills
 
 ## Engineering Workflow — [mattpocock/skills](https://github.com/mattpocock/skills)
 
-_Small, composable skills for real engineering — deliberately not a process-owning framework. Official order: run `setup-matt-pocock-skills` once per repo (it wires up your issue tracker, triage labels, and doc layout), then follow the main flow (idea → ship) — align with `grill-me` / `grill-with-docs` → `to-prd` → `to-issues` → build with `tdd`, reaching for `improve-codebase-architecture` to fight entropy and `handoff` to carry context across sessions. Not sure which to use? Run `ask-matt`. Off the main flow, `teach` is standalone — a stateful, multi-session workspace for learning a concept._
+_Small, composable skills for real engineering — deliberately not a process-owning framework. Official order: run `setup-matt-pocock-skills` once per repo (it wires up your issue tracker, triage labels, and doc layout), then follow the main flow — idea → ship: align with `grill-me` / `grill-with-docs` (detour through `prototype` when a question needs runnable code) → `to-prd` → `to-issues` → build with `tdd`, reaching for `diagnose` on hard bugs. On-ramp: `triage` turns raw bugs and incoming requests into agent-ready issues that feed the flow. `improve-codebase-architecture` fights entropy; `handoff` carries context across sessions; `ask-matt` routes you when unsure. Standalone, off the flow: `teach` (multi-session learning) and `writing-great-skills`._
 
 ```bash
 npx skills add mattpocock/skills
@@ -150,9 +150,12 @@ npx skills add mattpocock/skills
 | `ask-matt`                      | Router that points you to the right skill or flow for your situation       |
 | `grill-me`                      | Interview you relentlessly about a plan until every decision is resolved   |
 | `grill-with-docs`               | Grill a plan against the domain model, updating CONTEXT.md and ADRs inline |
+| `prototype`                     | Build throwaway code to answer a design question (state/logic or UI)       |
 | `to-prd`                        | Turn the current conversation into a PRD on the issue tracker              |
 | `to-issues`                     | Break a plan or PRD into independent, vertically-sliced issues             |
+| `triage`                        | Move issues and external PRs through triage roles into agent-ready briefs  |
 | `tdd`                           | Test-driven development with a red-green-refactor loop                     |
+| `diagnose`                      | Disciplined loop for hard bugs — repro, hypothesise, fix, regression-test  |
 | `improve-codebase-architecture` | Find refactors that make a codebase more testable and AI-navigable         |
 | `handoff`                       | Compact a conversation into a handoff doc so a fresh agent can continue    |
 | `writing-great-skills`          | Reference for authoring predictable, well-scoped skills                    |
