@@ -102,19 +102,29 @@ npx skills add figma/mcp-server-guide
 | `figma-create-new-file`            | Create a new blank Figma, FigJam, or Slides file                         |
 | `figma-generate-diagram`           | Generate a flowchart or diagram in FigJam                                |
 
-## Design Engineering & Animation
+## Emil Kowalski — [emilkowalski/skills](https://github.com/emilkowalski/skills)
+
+_Craft-focused design engineering and motion from Emil Kowalski (animations.dev)._
 
 ```bash
-npx skills add https://github.com/emilkowalski/skill --skill emil-design-eng
-npx skills add https://github.com/pproenca/dot-skills --skill emilkowal-animations
+npx skills add emilkowalski/skills
+```
+
+| Skill                  | Description                                                                            |
+| ---------------------- | -------------------------------------------------------------------------------------- |
+| `emil-design-eng`      | Craft-focused design engineering — animation framework, component patterns, gestures   |
+| `review-animations`    | Review animation & motion code against a high craft bar — ten non-negotiable standards |
+| `animation-vocabulary` | Turn a loose description of a motion effect into the precise term                      |
+
+## CSS Transitions — [jakubantalik/transitions.dev](https://github.com/jakubantalik/transitions.dev)
+
+```bash
 npx skills add https://github.com/jakubantalik/transitions.dev --skill transitions-dev
 ```
 
-| Skill                  | Source                                                                          | Description                                                                          |
-| ---------------------- | ------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------ |
-| `emil-design-eng`      | [emilkowalski/skill](https://github.com/emilkowalski/skill)                     | Craft-focused design engineering — animation framework, component patterns, gestures |
-| `emilkowal-animations` | [pproenca/dot-skills](https://github.com/pproenca/dot-skills)                   | 43 animation rules across easing, timing, transforms, gestures, and accessibility    |
-| `transitions-dev`      | [jakubantalik/transitions.dev](https://github.com/jakubantalik/transitions.dev) | Twelve drop-in, framework-free CSS transitions with reduced-motion guards            |
+| Skill             | Description                                                               |
+| ----------------- | ------------------------------------------------------------------------- |
+| `transitions-dev` | Twelve drop-in, framework-free CSS transitions with reduced-motion guards |
 
 ## Marketing Skills — [coreyhaines31/marketingskills](https://skills.sh/coreyhaines31/marketingskills/seo-audit)
 

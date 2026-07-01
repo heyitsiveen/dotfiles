@@ -8,12 +8,18 @@ Format loosely follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/).
 ### Added
 
 - Five more `mattpocock/skills` to the Skills reference (`docs/skills.md`, both platforms): `setup-matt-pocock-skills`, `ask-matt`, `handoff`, `writing-great-skills`, and `teach` — the last marked standalone (a stateful, multi-session learning workspace), off the `idea → ship` flow.
+- `review-animations` and `animation-vocabulary` to the Skills reference (`docs/skills.md`, both platforms) under a new consolidated **Emil Kowalski** section (`emilkowalski/skills`) — a motion-code review skill held to a high craft bar, and a reverse-lookup glossary that turns a vague motion description into the precise term.
 
 ### Changed
 
 - Reordered the `mattpocock/skills` section to follow the upstream official flow — `setup-matt-pocock-skills` runs once per repo first, then the `idea → ship` flow — and retitled it from "Spec-Driven Workflow" to "Engineering Workflow" to match Matt's framing (small, composable skills, not a process-owning framework).
 - Refreshed the Better Auth skill descriptions to match the latest upstream summaries.
 - Expanded the Figma Skills section (`figma/mcp-server-guide`) from the single `figma-implement-design` entry to the current curated skill set (`figma-use`, `figma-generate-design`, `figma-code-connect`, `figma-create-design-system-rules`, and more), and noted that the old `figma/dev-mode-mcp-server-guide` slug redirects to this repo.
+- Consolidated Emil Kowalski's skills under the `emilkowalski/skills` repo: `emil-design-eng` now installs from `emilkowalski/skills` (previously the single-skill `emilkowalski/skill`), grouped with `review-animations` and `animation-vocabulary` in one section. `transitions-dev` moved to its own **CSS Transitions** section (`jakubantalik/transitions.dev`).
+
+### Removed
+
+- The third-party `emilkowal-animations` mirror (`pproenca/dot-skills`) from the Skills reference — superseded by Emil's official `review-animations` and its `STANDARDS.md` rule catalog.
 
 ## [1.1.2] — 2026-06-08
 
