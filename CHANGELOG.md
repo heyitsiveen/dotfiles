@@ -3,6 +3,17 @@
 All notable changes to `@heyitsiveen/dotfiles` are documented here.
 Format loosely follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/).
 
+## [Unreleased]
+
+### Added
+
+- `matt-pocock-workflow.md` deep reference (`docs/`, both platforms): Matt Pocock's full AI coding workflow from primary sources — the 7 phases, the current five-step skill chain (`grill-with-docs → to-prd → to-issues → implement → code-review`), model strategy (frontier for grilling, Sonnet-implements/Opus-reviews, Opus 4.8 medium as daily driver), session hygiene (~100–120k smart zone; clear vs compact vs handoff), CLAUDE.md philosophy (never `/init`; undiscoverable + globally relevant), the v1 user-invoked/model-invoked taxonomy, subagent patterns (Sandcastle, DIY sub-agents via handoff), per-skill walkthroughs for the 20-skill promoted set, install/repair commands, decisions, glossary, and dated source links.
+- Six skills to the `mattpocock/skills` table (`docs/skills.md`, both platforms): `implement`, `code-review`, `grilling`, `domain-modeling`, `codebase-design`, and `resolving-merge-conflicts` — the v1.0.0 shared model-invoked layer plus the post-v1 build and review steps.
+
+### Changed
+
+- Engineering Workflow section (`docs/skills.md`, both platforms) updated to the upstream flow as of 2026-07-01: the main chain now ends `implement → code-review` instead of `tdd` (tdd runs inside implement at pre-agreed seams); `diagnose` renamed `diagnosing-bugs` (v1.0.0 breaking rename); `grill-me` noted as de-emphasized for coding in favour of `grill-with-docs`; the table gains an Invocation column (user-invoked orchestrators vs model-invoked disciplines) and a pointer to the new deep reference.
+
 ## [1.1.3] — 2026-07-02
 
 ### Added

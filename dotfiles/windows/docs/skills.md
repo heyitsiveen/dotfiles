@@ -138,25 +138,31 @@ npx skills add coreyhaines31/marketingskills
 
 ## Engineering Workflow — [mattpocock/skills](https://github.com/mattpocock/skills)
 
-_Small, composable skills for real engineering — deliberately not a process-owning framework. Official order: run `setup-matt-pocock-skills` once per repo (it wires up your issue tracker, triage labels, and doc layout), then follow the main flow — idea → ship: align with `grill-me` / `grill-with-docs` (detour through `prototype` when a question needs runnable code) → `to-prd` → `to-issues` → build with `tdd`, reaching for `diagnose` on hard bugs. On-ramp: `triage` turns raw bugs and incoming requests into agent-ready issues that feed the flow. `improve-codebase-architecture` fights entropy; `handoff` carries context across sessions; `ask-matt` routes you when unsure. Standalone, off the flow: `teach` (multi-session learning) and `writing-great-skills`._
+_Small, composable skills for real engineering — deliberately not a process-owning framework. Official order: run `setup-matt-pocock-skills` once per repo (it wires up your issue tracker, triage labels, and doc layout), then the main chain — idea → ship: align with `grill-with-docs` (`grill-me` for plans outside a codebase — Matt has de-emphasized it for coding; detour through `prototype` + `handoff` when a question needs runnable code) → `to-prd` → `to-issues` → `implement` (drives `tdd` at pre-agreed seams) → `code-review`. On-ramps: `triage` turns raw issues and external PRs into agent-ready briefs; `diagnosing-bugs` (renamed from `diagnose` in v1.0.0) for anything broken. `improve-codebase-architecture` fights entropy; `handoff` carries context across sessions; `ask-matt` routes you when unsure. Standalone: `teach` (multi-session learning) and `writing-great-skills`. Since v1.0.0 (2026-06-17), skills split into **user-invoked** orchestrators (you type them) and **model-invoked** disciplines the model reaches for — `grilling`, `domain-modeling`, and `codebase-design` are the shared layer other skills call. Deep reference with per-skill walkthroughs, model/session strategy, and sources: [matt-pocock-workflow.md](matt-pocock-workflow.md)._
 
 ```bash
 npx skills add mattpocock/skills
 ```
 
-| Skill                           | Description                                                                |
-| ------------------------------- | -------------------------------------------------------------------------- |
-| `setup-matt-pocock-skills`      | Run once per repo — sets up issue tracker, triage labels, and doc layout   |
-| `ask-matt`                      | Router that points you to the right skill or flow for your situation       |
-| `grill-me`                      | Interview you relentlessly about a plan until every decision is resolved   |
-| `grill-with-docs`               | Grill a plan against the domain model, updating CONTEXT.md and ADRs inline |
-| `prototype`                     | Build throwaway code to answer a design question (state/logic or UI)       |
-| `to-prd`                        | Turn the current conversation into a PRD on the issue tracker              |
-| `to-issues`                     | Break a plan or PRD into independent, vertically-sliced issues             |
-| `triage`                        | Move issues and external PRs through triage roles into agent-ready briefs  |
-| `tdd`                           | Test-driven development with a red-green-refactor loop                     |
-| `diagnose`                      | Disciplined loop for hard bugs — repro, hypothesise, fix, regression-test  |
-| `improve-codebase-architecture` | Find refactors that make a codebase more testable and AI-navigable         |
-| `handoff`                       | Compact a conversation into a handoff doc so a fresh agent can continue    |
-| `writing-great-skills`          | Reference for authoring predictable, well-scoped skills                    |
-| `teach`                         | Learn a concept over multiple sessions in a stateful workspace             |
+| Skill                           | Invocation | Description                                                                   |
+| ------------------------------- | ---------- | ----------------------------------------------------------------------------- |
+| `setup-matt-pocock-skills`      | user       | Run once per repo — sets up issue tracker, triage labels, and doc layout      |
+| `ask-matt`                      | user       | Router that points you to the right skill or flow for your situation          |
+| `grill-me`                      | user       | Interview you relentlessly about a plan — for plans outside a codebase        |
+| `grill-with-docs`               | user       | Grill a plan against the domain model, updating CONTEXT.md and ADRs inline    |
+| `grilling`                      | model      | The shared interview loop behind grill-me/grill-with-docs — one question at a time |
+| `domain-modeling`               | model      | Maintain the domain glossary (CONTEXT.md) and ADRs as decisions land          |
+| `codebase-design`               | model      | Deep-module vocabulary — interfaces, seams, depth, the deletion test          |
+| `prototype`                     | model      | Build throwaway code to answer a design question (state/logic or UI)          |
+| `to-prd`                        | user       | Turn the current conversation into a PRD on the issue tracker                 |
+| `to-issues`                     | user       | Break a plan or PRD into tracer-bullet vertical-slice issues                  |
+| `triage`                        | user       | Move issues and external PRs through triage roles into agent-ready briefs     |
+| `implement`                     | user       | Build from a PRD/issues — tdd at pre-agreed seams, then code-review, commit   |
+| `tdd`                           | model      | Test-driven development — spec-like tests only at pre-agreed seams            |
+| `code-review`                   | model      | Two-axis review (Standards + Spec) in parallel sub-agents since a fixed point |
+| `diagnosing-bugs`               | model      | Disciplined loop for hard bugs — feedback loop first, falsifiable hypotheses  |
+| `improve-codebase-architecture` | user       | Scan for deepening opportunities, visual HTML report, grill through your pick |
+| `resolving-merge-conflicts`     | model      | Resolve in-progress merge/rebase conflicts from primary sources — never abort |
+| `handoff`                       | user       | Compact a conversation into a handoff doc so a fresh agent can continue       |
+| `writing-great-skills`          | user       | Reference for authoring predictable, well-scoped skills                       |
+| `teach`                         | user       | Learn a concept over multiple sessions in a stateful workspace                |
