@@ -3,6 +3,13 @@
 All notable changes to `@heyitsiveen/dotfiles` are documented here.
 Format loosely follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/).
 
+## [Unreleased]
+
+### Added
+
+- "The system on one page" summary table at the top of `matt-pocock-workflow.md` (both platforms) — the full official pattern (chain, branches, on-ramps, models, session hygiene, docs lifecycle, CLAUDE.md stance, humans-vs-agents split) readable without scrolling into the deep sections.
+- "What's literally in his own files" inventory in the CLAUDE.md section of `matt-pocock-workflow.md` (both platforms): his six-word global CLAUDE.md, the generated per-repo `## Agent skills` block, the thin AGENTS.md glossary pointer, and the plan-mode rules he has since dropped.
+
 ## [1.1.4] — 2026-07-02
 
 ### Added

@@ -14,6 +14,22 @@ Matt Pocock ([aihero.dev](https://www.aihero.dev), [mattpocock/skills](https://g
 
 **State of the world (2026-07-02):** skills repo v1.0.1 (v1.0.0 shipped 2026-06-17 with breaking renames and a new shared-skill layer); a major docs/promotion wave landed 2026-07-01. ~153K GitHub stars, 5M+ installs reported via skills.sh.
 
+## The system on one page
+
+Read only this table and you have the current official pattern (as of 2026-07-01). Everything below it is depth.
+
+| Layer | The rule |
+|---|---|
+| **Setup** | `/setup-matt-pocock-skills` once per repo (issue tracker, triage labels, domain-doc paths) |
+| **Main chain** | `/grill-with-docs` → `/to-prd` → `/to-issues` → `/implement` (runs `/tdd` at pre-agreed seams) → `/code-review` |
+| **Branches** | Question needs runnable code? `/handoff` → `/prototype` → `/handoff` back. Single-session work? Skip PRD/issues — `/implement` in place after grilling |
+| **On-ramps** | `/triage` for issues/PRs you didn't create; `/diagnosing-bugs` when something's broken; `/improve-codebase-architecture` every few days |
+| **Models** | Smart frontier model for grilling/planning (needs parametric knowledge); implementation can run smaller (he used Sonnet — the plan + codebase carry it); review on Opus in a **fresh session**; daily driver: Opus 4.8, medium effort; wait ~a month before adopting brand-new models |
+| **Session** | Stay in the smart zone (~100–120k tokens; keep a token statusline visible). Clear > compact for new work; `/compact` only for long single-threaded debugging; `/handoff` to fork a concern. Don't clear between plan→execute. One task per cleared window. Max 2–3 parallel grilling sessions |
+| **Docs** | PRD = destination, issues = journey — both die at sprint end (close, don't keep). `CONTEXT.md` = glossary only. ADR only when hard-to-reverse + surprising + real trade-off |
+| **CLAUDE.md** | Nearly empty — only what's undiscoverable AND globally relevant; never `/init`; enforcement via hooks, not prose; steering lives in skills (pull, not push) |
+| **Humans vs agents** | Humans own planning and QA ("QA is how I impose my taste"); agents own implementation (AFK: Ralph loops / Sandcastle) |
+
 ## When to use this workflow
 
 - Feature work on a real codebase where misalignment, context rot, or architectural drift are the failure modes it targets (his "four failure modes": misalignment, verbosity, code that doesn't work, ball of mud — repo README).
@@ -92,6 +108,11 @@ Meta-position: "Everyone's obsessed with the model and I think they should be mo
 
 - **"Never run claude /init. It'll burn tokens, go out of date in days, and bloat your system prompt"** ([never-run-claude-init](https://www.aihero.dev/never-run-claude-init), 2026-02-24 + [video](https://www.youtube.com/watch?v=9tmsq-Gvx6g)). Everything `/init` generates is discoverable, stale-prone, or both: "Your file system is the documentation."
 - **Bar for inclusion**: "only include what is both undiscoverable and globally relevant." His entire personal CLAUDE.md is six words: "you are on WSL on Windows."
+- **What's literally in his own files** (the complete sourced inventory):
+  - *Global CLAUDE.md*: `you are on WSL on Windows` — the whole file ([never-run-claude-init](https://www.aihero.dev/never-run-claude-init), 2026-02-24).
+  - *Per-repo CLAUDE.md*: usually nothing hand-written — "Do I have a claude.md? Maybe I don't. I really don't use [it] very much" (workshop, 2026-04-24). Repos set up with his skills carry only the generated `## Agent skills` block: issue-tracker location, triage-label mapping, domain-doc paths — pointers, progressively disclosed.
+  - *AGENTS.md*: a thin reference to the domain glossary — "I keep a reference to it in agents.md. I'm very nervous about putting too much in" (Latent Space, 2026-05-07).
+  - *Dropped*: his once-viral plan-mode rules ("Make the plan extremely concise. Sacrifice grammar for the sake of concision." + "At the end of each plan, give me a list of unresolved questions to answer, if any.", 2026-01-13) — "I've since dropped this idea in preference to a grilling session" (workshop, 2026-04-24).
 - **Instruction budget is real**: "LLMs can realistically handle around 300 to 400 instructions" (2026-02-24); HumanLayer's stricter "~150–200 instructions" is quoted in [A Complete Guide to AGENTS.md](https://www.aihero.dev/a-complete-guide-to-agents-md) (2026-01-18). Every CLAUDE.md line loads in every session, relevant or not.
 - **Minimal root AGENTS.md**: one-sentence project description; package manager if not npm; non-standard commands. "That's honestly it." Progressive-disclosure pointers ("For TypeScript conventions, see docs/TYPESCRIPT.md" — "no 'always,' no all-caps"); nested AGENTS.md merge in monorepos; symlink `AGENTS.md` ↔ `CLAUDE.md`.
 - **Push vs pull**: CLAUDE.md *pushes* (always sent); skills *pull* (loaded on demand). Steering belongs in pull. Exception: an automated reviewer should have standards **pushed** into its prompt (workshop, 2026-04-24).
