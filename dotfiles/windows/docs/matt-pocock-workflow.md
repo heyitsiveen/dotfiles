@@ -14,21 +14,37 @@ Matt Pocock ([aihero.dev](https://www.aihero.dev), [mattpocock/skills](https://g
 
 **State of the world (2026-07-02):** skills repo v1.0.1 (v1.0.0 shipped 2026-06-17 with breaking renames and a new shared-skill layer); a major docs/promotion wave landed 2026-07-01. ~153K GitHub stars, 5M+ installs reported via skills.sh.
 
-## The system on one page
+## Quick reference — official order
 
-Read only this table and you have the current official pattern (as of 2026-07-01). Everything below it is depth.
+The numbered walk through the current official pipeline (2026-07-01). Model and session notes are sourced; gaps are marked rather than guessed.
 
-| Layer | The rule |
-|---|---|
-| **Setup** | `/setup-matt-pocock-skills` once per repo (issue tracker, triage labels, domain-doc paths) |
-| **Main chain** | `/grill-with-docs` → `/to-prd` → `/to-issues` → `/implement` (runs `/tdd` at pre-agreed seams) → `/code-review` |
-| **Branches** | Question needs runnable code? `/handoff` → `/prototype` → `/handoff` back. Single-session work? Skip PRD/issues — `/implement` in place after grilling |
-| **On-ramps** | `/triage` for issues/PRs you didn't create; `/diagnosing-bugs` when something's broken; `/improve-codebase-architecture` every few days |
-| **Models** | Smart frontier model for grilling/planning (needs parametric knowledge); implementation can run smaller (he used Sonnet — the plan + codebase carry it); review on Opus in a **fresh session**; daily driver: Opus 4.8, medium effort; wait ~a month before adopting brand-new models |
-| **Session** | Stay in the smart zone (~100–120k tokens; keep a token statusline visible). Clear > compact for new work; `/compact` only for long single-threaded debugging; `/handoff` to fork a concern. Don't clear between plan→execute. One task per cleared window. Max 2–3 parallel grilling sessions |
-| **Docs** | PRD = destination, issues = journey — both die at sprint end (close, don't keep). `CONTEXT.md` = glossary only. ADR only when hard-to-reverse + surprising + real trade-off |
-| **CLAUDE.md** | Nearly empty — only what's undiscoverable AND globally relevant; never `/init`; enforcement via hooks, not prose; steering lives in skills (pull, not push) |
-| **Humans vs agents** | Humans own planning and QA ("QA is how I impose my taste"); agents own implementation (AFK: Ralph loops / Sandcastle) |
+**Step 1.** `/setup-matt-pocock-skills` — model: any (not specified by Pocock) · session: any, **once per repo**
+When to use: before first use in a repo — wires issue tracker, triage labels, and domain-doc paths into `docs/agents/*.md`.
+
+**Step 2.** `/grill-with-docs` — model: big frontier model (his daily driver: Opus 4.8, **medium** effort) · session: **new**
+When to use: every coding task in a repo — relentless interview that maintains `CONTEXT.md` + ADRs as decisions land. `/grill-me` instead only for plans outside a codebase ("I stopped using /grill-me for coding").
+
+**Step 3.** `/to-prd` — model: same as step 2 · session: **same as step 2** ("Do not clear the context… just to write a PRD")
+When to use: multi-session work only — synthesizes the grilled conversation into a PRD on the issue tracker. If the work fits one session, skip steps 3–4 and run `/implement` in place.
+
+**Step 4.** `/to-issues` — model: same · session: **same as steps 2–3** (grill → prd → issues in "one unbroken window")
+When to use: break the PRD into tracer-bullet vertical slices with Blocked-by edges, published blockers-first.
+
+**Step 5.** `/implement` — model: smaller is fine here ("Sonnet for implementation"; the plan + codebase carry it) · session: **new — one per issue** (or in place, same session, if the work fit the grilling window)
+When to use: build from the PRD/issues — drives `/tdd` at pre-agreed seams, typechecks + single test files regularly, full suite once at the end, then hands to `/code-review` and commits.
+
+**Step 6.** `/code-review` — model: Opus ("I need the smarts") · session: **fresh context — never the implementer's window** ("the reviewer will be dumber than the thing that implemented it")
+When to use: after every implement — two parallel sub-agents check **Standards** (repo rules + Fowler-smell baseline) and **Spec** (diff vs the originating issue/PRD).
+
+**Between any steps** — `/handoff`: packages just the relevant context into a markdown file so you can continue in a **new, clean session**. Two triggers: (1) this session is growing toward the ~100–120k-token **dumb zone** (watch the token statusline) — hand off and continue the same work fresh; (2) a side-question needs throwaway code to answer — hand off that one question to a second session, build the `/prototype` there, then `/handoff` the conclusion back while your main session stays clean (his "DIY sub-agent" pattern). Contrast: `/compact` summarizes **in place** and the same session continues — legitimate only for long single-threaded debugging.
+
+**Off the chain** — `/triage` (issues/PRs you didn't create) · `/diagnosing-bugs` (something's broken) · `/improve-codebase-architecture` (every few days).
+
+**Standing rules (not steps)** — Docs: PRD = destination, issues = journey, both die at sprint end (close, don't keep); `CONTEXT.md` = glossary only; ADR only when hard-to-reverse + surprising + real trade-off · CLAUDE.md: nearly empty — undiscoverable AND globally relevant only; hooks over prose; never `/init` · Humans own planning + QA; agents own implementation.
+
+Per-step effort/thinking settings: not specified by Pocock — the only sourced setting is his general daily driver "Opus 4.8 with medium effort" (Ondrej interview, 2026-06-18). Sonnet-implements/Opus-reviews is from the AI Engineer workshop (2026-04-24).
+
+Verified 2026-07-02 — sources: [things-people-get-wrong](https://www.aihero.dev/things-people-get-wrong-with-grill-me-and-grill-with-docs) (2026-05-25) · [skills-handoff](https://www.aihero.dev/skills-handoff) (2026-05-13) · [skills-domain-model](https://www.aihero.dev/skills-domain-model) (2026-05-05) · [mattpocock/skills](https://github.com/mattpocock/skills) ask-matt/implement/code-review SKILL.md (2026-07-01) · [AI Engineer workshop](https://www.youtube.com/watch?v=-QFHIoCo-Ko) (2026-04-24) · [David Ondrej interview](https://www.youtube.com/watch?v=nQwJVHCtDDY) (2026-06-18)
 
 ## When to use this workflow
 
@@ -236,6 +252,7 @@ Recorded during the 2026-07-02 grilling session that produced this doc:
 4. **Full census over promoted-only** — including the shared model-invoked layer and clearly-marked drafts; drafts get one line each because they rename weekly.
 5. **X claims allowed via mirrors, always marked** *[via secondary source]*; unverifiable claims excluded.
 6. **Local install repaired** (2026-07-02): added `grilling`, `domain-modeling`, `codebase-design`, `diagnosing-bugs`, `code-review`, `implement` — an install predating v1.0.0 had wrappers pointing at skills that were never installed (`npx skills update` can't add new upstream skills).
+7. **One quick-ref only** (2026-07-02, second grilling session): the numbered "Quick reference — official order" replaced "The system on one page" rather than stacking beside it — never add a second summary view; extend this one. `/handoff` is documented as a between-steps tool, not a numbered step, because no primary source sequences it.
 
 ## Glossary
 

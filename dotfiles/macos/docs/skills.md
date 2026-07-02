@@ -138,7 +138,39 @@ npx skills add coreyhaines31/marketingskills
 
 ## Engineering Workflow — [mattpocock/skills](https://github.com/mattpocock/skills)
 
-_Small, composable skills for real engineering — deliberately not a process-owning framework. Official order: run `setup-matt-pocock-skills` once per repo (it wires up your issue tracker, triage labels, and doc layout), then the main chain — idea → ship: align with `grill-with-docs` (`grill-me` for plans outside a codebase — Matt has de-emphasized it for coding; detour through `prototype` + `handoff` when a question needs runnable code) → `to-prd` → `to-issues` → `implement` (drives `tdd` at pre-agreed seams) → `code-review`. On-ramps: `triage` turns raw issues and external PRs into agent-ready briefs; `diagnosing-bugs` (renamed from `diagnose` in v1.0.0) for anything broken. `improve-codebase-architecture` fights entropy; `handoff` carries context across sessions; `ask-matt` routes you when unsure. Standalone: `teach` (multi-session learning) and `writing-great-skills`. Since v1.0.0 (2026-06-17), skills split into **user-invoked** orchestrators (you type them) and **model-invoked** disciplines the model reaches for — `grilling`, `domain-modeling`, and `codebase-design` are the shared layer other skills call. Deep reference with per-skill walkthroughs, model/session strategy, and sources: [matt-pocock-workflow.md](matt-pocock-workflow.md)._
+### Quick reference — official order
+
+The numbered walk through the current official pipeline (2026-07-01). Model and session notes are sourced; gaps are marked rather than guessed.
+
+**Step 1.** `/setup-matt-pocock-skills` — model: any (not specified by Pocock) · session: any, **once per repo**
+When to use: before first use in a repo — wires issue tracker, triage labels, and domain-doc paths into `docs/agents/*.md`.
+
+**Step 2.** `/grill-with-docs` — model: big frontier model (his daily driver: Opus 4.8, **medium** effort) · session: **new**
+When to use: every coding task in a repo — relentless interview that maintains `CONTEXT.md` + ADRs as decisions land. `/grill-me` instead only for plans outside a codebase ("I stopped using /grill-me for coding").
+
+**Step 3.** `/to-prd` — model: same as step 2 · session: **same as step 2** ("Do not clear the context… just to write a PRD")
+When to use: multi-session work only — synthesizes the grilled conversation into a PRD on the issue tracker. If the work fits one session, skip steps 3–4 and run `/implement` in place.
+
+**Step 4.** `/to-issues` — model: same · session: **same as steps 2–3** (grill → prd → issues in "one unbroken window")
+When to use: break the PRD into tracer-bullet vertical slices with Blocked-by edges, published blockers-first.
+
+**Step 5.** `/implement` — model: smaller is fine here ("Sonnet for implementation"; the plan + codebase carry it) · session: **new — one per issue** (or in place, same session, if the work fit the grilling window)
+When to use: build from the PRD/issues — drives `/tdd` at pre-agreed seams, typechecks + single test files regularly, full suite once at the end, then hands to `/code-review` and commits.
+
+**Step 6.** `/code-review` — model: Opus ("I need the smarts") · session: **fresh context — never the implementer's window** ("the reviewer will be dumber than the thing that implemented it")
+When to use: after every implement — two parallel sub-agents check **Standards** (repo rules + Fowler-smell baseline) and **Spec** (diff vs the originating issue/PRD).
+
+**Between any steps** — `/handoff`: packages just the relevant context into a markdown file so you can continue in a **new, clean session**. Two triggers: (1) this session is growing toward the ~100–120k-token **dumb zone** (watch the token statusline) — hand off and continue the same work fresh; (2) a side-question needs throwaway code to answer — hand off that one question to a second session, build the `/prototype` there, then `/handoff` the conclusion back while your main session stays clean (his "DIY sub-agent" pattern). Contrast: `/compact` summarizes **in place** and the same session continues — legitimate only for long single-threaded debugging.
+
+**Off the chain** — `/triage` (issues/PRs you didn't create) · `/diagnosing-bugs` (something's broken) · `/improve-codebase-architecture` (every few days).
+
+**Standing rules (not steps)** — Docs: PRD = destination, issues = journey, both die at sprint end (close, don't keep); `CONTEXT.md` = glossary only; ADR only when hard-to-reverse + surprising + real trade-off · CLAUDE.md: nearly empty — undiscoverable AND globally relevant only; hooks over prose; never `/init` · Humans own planning + QA; agents own implementation.
+
+Per-step effort/thinking settings: not specified by Pocock — the only sourced setting is his general daily driver "Opus 4.8 with medium effort" (Ondrej interview, 2026-06-18). Sonnet-implements/Opus-reviews is from the AI Engineer workshop (2026-04-24).
+
+Verified 2026-07-02 — sources: [things-people-get-wrong](https://www.aihero.dev/things-people-get-wrong-with-grill-me-and-grill-with-docs) (2026-05-25) · [skills-handoff](https://www.aihero.dev/skills-handoff) (2026-05-13) · [skills-domain-model](https://www.aihero.dev/skills-domain-model) (2026-05-05) · [mattpocock/skills](https://github.com/mattpocock/skills) ask-matt/implement/code-review SKILL.md (2026-07-01) · [AI Engineer workshop](https://www.youtube.com/watch?v=-QFHIoCo-Ko) (2026-04-24) · [David Ondrej interview](https://www.youtube.com/watch?v=nQwJVHCtDDY) (2026-06-18)
+
+_Small, composable skills for real engineering — deliberately not a process-owning framework. On-ramps: `triage` turns raw issues and external PRs into agent-ready briefs; `diagnosing-bugs` (renamed from `diagnose` in v1.0.0) for anything broken. `improve-codebase-architecture` fights entropy; `handoff` carries context across sessions; `ask-matt` routes you when unsure. Standalone: `teach` (multi-session learning) and `writing-great-skills`. Since v1.0.0 (2026-06-17), skills split into **user-invoked** orchestrators (you type them) and **model-invoked** disciplines the model reaches for — `grilling`, `domain-modeling`, and `codebase-design` are the shared layer other skills call. Deep reference with per-skill walkthroughs, model/session strategy, and sources: [matt-pocock-workflow.md](matt-pocock-workflow.md)._
 
 ```bash
 npx skills add mattpocock/skills
