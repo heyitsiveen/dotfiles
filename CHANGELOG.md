@@ -3,6 +3,12 @@
 All notable changes to `@heyitsiveen/dotfiles` are documented here.
 Format loosely follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/).
 
+## [Unreleased]
+
+### Added
+
+- `setup-pre-commit` and `git-guardrails-claude-code` to the `mattpocock/skills` reference (`docs/skills.md` table + full entries in `matt-pocock-workflow.md`, both platforms): husky + lint-staged commit-time quality gates, and the PreToolUse hook that blocks dangerous git commands — both model-invoked, from the upstream misc bucket (non-promoted since 2026-07-01), documented because they're part of the local install. Their one-line rows moved out of the "Not promoted / drafts" table into the model-invoked reference.
+
 ## [1.1.5] — 2026-07-02
 
 ### Added

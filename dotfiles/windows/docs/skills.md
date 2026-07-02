@@ -195,6 +195,8 @@ npx skills add mattpocock/skills
 | `diagnosing-bugs`               | model      | Disciplined loop for hard bugs — feedback loop first, falsifiable hypotheses  |
 | `improve-codebase-architecture` | user       | Scan for deepening opportunities, visual HTML report, grill through your pick |
 | `resolving-merge-conflicts`     | model      | Resolve in-progress merge/rebase conflicts from primary sources — never abort |
+| `setup-pre-commit`              | model      | Husky + lint-staged pre-commit scaffold — format, typecheck, test on commit   |
+| `git-guardrails-claude-code`    | model      | PreToolUse hook blocking dangerous git — push, reset --hard, clean -f, -D     |
 | `handoff`                       | user       | Compact a conversation into a handoff doc so a fresh agent can continue       |
 | `writing-great-skills`          | user       | Reference for authoring predictable, well-scoped skills                       |
 | `teach`                         | user       | Learn a concept over multiple sessions in a stateful workspace                |

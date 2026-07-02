@@ -227,6 +227,10 @@ npx skills@latest add mattpocock/skills \
 
 **`resolving-merge-conflicts`** — five steps: see the state; find primary sources per conflict (commit messages, PRs, issues); resolve preserving both intents — "Do **not** invent new behaviour. Always resolve; never `--abort`"; run typecheck→tests→format; finish the merge/rebase.
 
+**`setup-pre-commit`** — scaffolds commit-time quality gates in the current repo: detects the package manager, installs husky + lint-staged + prettier, runs `husky init`, writes `.husky/pre-commit` (lint-staged formatting → typecheck → tests) and a `.lintstagedrc`. The commit-side half of his feedback-loop doctrine ("green CI is non-negotiable" — cohort curriculum). Misc bucket upstream, not in the promoted set since 2026-07-01 — documented here because it's installed locally.
+
+**`git-guardrails-claude-code`** — installs a Claude Code `PreToolUse` hook from its bundled `scripts/block-dangerous-git.sh` that blocks dangerous git before it executes — `git push`, `reset --hard`, `clean -f`, `branch -D`, `checkout .` / `restore .` — asking project-vs-global scope, then writing the settings JSON. The concrete working example of his "enforcement belongs in hooks, not CLAUDE.md prose" rule. Misc bucket upstream, not in the promoted set since 2026-07-01 — documented here because it's installed locally.
+
 ### Not promoted / drafts (⚠ unannounced, repo evidence only — expect churn)
 
 | Skill | Bucket | One-liner |
@@ -235,8 +239,6 @@ npx skills@latest add mattpocock/skills \
 | `loop-me` | in-progress | Stateful grilling that produces workflow specs in `workflows/*.md`; done when an implementer agent could build it without one question |
 | `wizard` | in-progress | Generates an interactive bash setup wizard from a bundled template; scope from `.env*`/CI secrets; verified statically, never run end-to-end |
 | `writing-fragments` / `-beats` / `-shape` | in-progress | Explore/exploit writing pipeline: mine heterogeneous fragments → pick beats (choose-your-own-adventure of 2–3 candidates) → shape paragraph-by-paragraph with a grounding discipline |
-| `git-guardrails-claude-code` | misc | Installs a PreToolUse hook blocking dangerous git (`push`, `reset --hard`, `clean -f`, `branch -D`, `checkout .`) |
-| `setup-pre-commit` | misc | husky + lint-staged + prettier pre-commit scaffold |
 | `scaffold-exercises`, `migrate-to-shoehorn` | misc | Course-tooling and test-cast migration utilities |
 | `edit-article`, `obsidian-vault` | personal | His own writing/vault tooling (vault path hardcoded) |
 
