@@ -3,6 +3,12 @@
 All notable changes to `@heyitsiveen/dotfiles` are documented here.
 Format loosely follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/).
 
+## [Unreleased]
+
+### Added
+
+- Global-install hygiene rule to the Claude Code `CLAUDE.md` (both platforms): prefer `npx`/project-local/venv over global installs; track and remove any temporary install. Distilled from the `figma-shopify-builder` skill's cleanup discipline.
+
 ## [1.1.6] — 2026-07-02
 
 ### Added
