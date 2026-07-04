@@ -78,7 +78,7 @@ The CLI automatically detects all tools and offers to install missing ones via H
 
 | Tool | Description |
 |---|---|
-| Fish Shell | config.fish, 8 conf.d modules, 7 functions, 3 Tide palette themes |
+| Fish Shell | config.fish, 8 conf.d modules, 8 functions, 3 Tide palette themes |
 | Ghostty | Terminal emulator with JetBrains Mono, 0.9 opacity, 3 themes |
 | WezTerm | Cross-platform terminal with Solarized/Vercel/Vesper color schemes |
 | tmux | 7 config files (main, keybinds, statusbar, pane, notifications, popup) |

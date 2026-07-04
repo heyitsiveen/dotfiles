@@ -3,6 +3,16 @@
 All notable changes to `@heyitsiveen/dotfiles` are documented here.
 Format loosely follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/).
 
+## [Unreleased]
+
+### Added
+
+- `brew` Fish function (macOS) that guards against tmux display corruption: after `brew upgrade`/`update` it warns when the tmux binary was replaced while an older tmux server is still running — the version mismatch makes TUIs (Claude Code, lazygit, Neovim) render with missing/blank text until the server is restarted. Documented in `docs/command-reference.md` and the README Troubleshooting section.
+
+### Fixed
+
+- tmux truecolor `terminal-features` pattern for Ghostty (macOS): `ghostty:RGB` → `xterm-ghostty:RGB` so it matches the terminal's real `TERM` (`xterm-ghostty`). The old pattern silently never matched; 24-bit color only worked via Ghostty's `COLORTERM=truecolor` auto-detection.
+
 ## [1.1.7] — 2026-07-04
 
 ### Added

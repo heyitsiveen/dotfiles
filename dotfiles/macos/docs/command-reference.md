@@ -21,6 +21,16 @@ Restart Fish into a fresh shell using the current config.
 reload-fish      # Exec into a fresh Fish shell
 ```
 
+### `brew <command>` (tmux-upgrade guard)
+
+Thin wrapper around Homebrew — every command passes straight through to real `brew`. The only addition: after `brew upgrade`/`brew update`, if the tmux binary was replaced while its server is still running, it prints a warning. A stale tmux server makes TUIs (Claude Code, lazygit, Neovim) render with missing/blank text until you restart it.
+
+```fish
+brew upgrade     # runs Homebrew, then warns if the tmux server is now stale
+```
+
+When warned, force a redraw with detach + reattach (`Ctrl-b d`, then `tmux attach`), or do a clean `tmux kill-server` (closes all tmux windows) and relaunch.
+
 ### `tide_palette <palette|list>`
 
 Switch Tide palette presets and persist the choice for future Fish sessions.

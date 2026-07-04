@@ -73,6 +73,7 @@ dotfiles/
 │   │       ├── _tide_palette_vercel.fish
 │   │       ├── _tide_palette_vesper.fish
 │   │       ├── backup.fish
+│   │       ├── brew.fish
 │   │       ├── fish_greeting.fish
 │   │       ├── reload-fish.fish
 │   │       └── tide_palette.fish
@@ -592,6 +593,23 @@ echo $TERM
 # Add to tmux.conf if needed
 set -g default-terminal "tmux-256color"
 ```
+
+### TUI text is missing / blank after `brew upgrade`
+
+Symptom: after a Homebrew upgrade, tmux panes and TUIs (Claude Code, lazygit, Neovim) draw with missing or blank text. Cause: `brew upgrade` replaced the tmux binary while the tmux **server** was still running, so the in-memory server (old version) no longer matches the binary on disk (new version).
+
+```bash
+# Confirm the mismatch — different versions = stale server
+tmux display-message -p '#{version}'   # running server
+tmux -V                                # binary on disk
+
+# Fix, keeping your panes: force a full redraw
+#   detach + reattach → Ctrl-b d, then: tmux attach
+# Or restart the server cleanly (closes all tmux windows):
+tmux kill-server
+```
+
+The bundled `brew` function (see `docs/command-reference.md`) prints this warning automatically. To avoid it, run `brew upgrade` outside tmux, or restart the server right after.
 
 ### Stow reports conflicts
 
