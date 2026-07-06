@@ -208,6 +208,23 @@ echo $(which fish) | sudo tee -a /etc/shells
 chsh -s $(which fish)
 ```
 
+Then **log out and back in** (or open a new terminal window) for it to take effect.
+
+**Verify it applied** — both should now report Fish:
+
+```bash
+dscl . -read ~/ UserShell   # → UserShell: /opt/homebrew/bin/fish
+echo $SHELL                 # → /opt/homebrew/bin/fish
+```
+
+> **You never set `$SHELL` by hand.** It is an environment variable macOS _derives_ from the login-shell record above (the `UserShell` field `chsh` edits); on your next login it becomes Fish automatically. Forcing `set -gx SHELL …` in `config.fish` desyncs it from your real login shell — don't. Before you run `chsh`, `$SHELL` stays `/bin/zsh` even if a terminal launches Fish, which is exactly why hardcoding Fish per-terminal used to be necessary.
+
+**Your terminal inherits this automatically.** Because Fish is now your login shell, Ghostty and WezTerm launch it with no per-terminal shell setting — Ghostty falls back to `$SHELL` → your login shell, and WezTerm reads the same login-shell record directly (it ignores `$SHELL`). That is why this repo's `ghostty/config` keeps its `command = …` line **commented out** and the macOS WezTerm config sets no `default_prog`. If you skip this step, uncomment the Ghostty `command` line (or set WezTerm's `default_prog = { '/opt/homebrew/bin/fish', '-l' }`) to force Fish per-terminal instead.
+
+This changes your **account's login shell** — the `UserShell` field in `dscl`, not just whichever shell your terminal happens to launch. This matters because GUI apps that spawn their own embedded terminal (Zed, Claude Desktop, etc.) use that account-level setting, not whatever shell you have open elsewhere. Skip this step and those apps keep opening macOS's stock login shell, zsh, regardless of Fish being installed.
+
+This repo ships **zero zsh dotfiles** on purpose — every PATH addition (fnm, Bun, `~/.local/bin`) lives only in Fish's `config.fish`/`conf.d/` (see [Fish Shell](#fish-shell) under Tool Configuration Details below). A bare zsh still finds `brew`, because the Homebrew installer drops `/opt/homebrew/bin` into the system-wide `/etc/paths.d/homebrew`, which macOS's `path_helper` merges into every login shell automatically. It will **not** find `node`, `npm`, `npx`, or Bun — those need the fnm/Bun exports that only exist in the Fish config. If some other tool ever spawns `/bin/zsh` or `/bin/sh` directly instead of your configured login shell, that's why those commands go missing there even though they work everywhere else.
+
 #### 6. Fisher + Tide (Already Configured)
 
 Fisher and Tide ship pre-configured in this repo. Stow symlinks them into place in step 4 — there is nothing to install and no wizard to run. On first launch, `_tide_init_install` runs `tide configure --auto` with the correct settings, so the full prompt structure is applied automatically. `conf.d/70-tide.fish` then applies the `heyitsiveen` palette, and `tide_palette <name>` switches between `heyitsiveen`, `vercel`, and `vesper` (persisted via the `dotfiles_tide_palette` universal variable).
@@ -302,6 +319,7 @@ It keeps the full manual path in one place: terminal setup, Fish/Fisher/Tide, CL
 - **Features**: GPU rendering, native macOS feel
 - **Cursor**: Bar style
 - **Window**: Background blur (20), opacity (0.9)
+- **Shell**: Inherits your login shell (Fish) via `$SHELL`; the explicit `command` line is commented out — see [Set Fish as Default Shell](#5-set-fish-as-default-shell)
 
 #### WezTerm
 
@@ -310,6 +328,7 @@ It keeps the full manual path in one place: terminal setup, Fish/Fisher/Tide, CL
 - **Features**: Multiplexing, Lua configuration, cross-platform
 - **Cursor**: Blinking bar
 - **Window**: Background blur (20), opacity (0.9)
+- **Shell**: Uses your login-shell record directly (ignores `$SHELL`); no `default_prog` on macOS — see [Set Fish as Default Shell](#5-set-fish-as-default-shell)
 - **Windows/WSL**: Prefers the first detected WSL domain and falls back to PowerShell when none are available
 
 ### Fish Shell
@@ -567,6 +586,8 @@ chsh -s /bin/bash
 # or
 chsh -s /bin/zsh
 ```
+
+> **Locked out by a bad shell path?** If `chsh` ever points at a shell that won't launch, you don't need terminal access to fix it: open **System Settings → Users & Groups → (ctrl-click your user) → Advanced Options… → Login shell** and set it back to `/bin/zsh`.
 
 ---
 

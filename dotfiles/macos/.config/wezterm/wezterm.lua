@@ -4,6 +4,10 @@ local config = {}
 config.window_close_confirmation = 'NeverPrompt'
 
 --! DEFAULT SHELL
+-- WezTerm runs your login shell from the password database by default (it ignores
+-- $SHELL), so once Fish is your login shell (`chsh -s $(which fish)`) it starts
+-- automatically. Uncomment below ONLY if Fish is NOT your login shell:
+-- config.default_prog = { '/opt/homebrew/bin/fish', '-l' }
 -- config.default_prog = {"pwsh"}
 -- config.default_prog = { 'nu.exe' }
 local target = wezterm.target_triple or ''

@@ -1,5 +1,8 @@
 # Shell
-command = /opt/homebrew/bin/fish
+# Fish starts via your login shell (setup docs: `chsh -s $(which fish)`), which
+# Ghostty inherits through $SHELL — so setting `command` is redundant. Uncomment
+# below ONLY if you have NOT made Fish your login shell:
+# command = /opt/homebrew/bin/fish
 shell-integration = detect
 
 # Colors

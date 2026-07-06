@@ -3,6 +3,18 @@
 All notable changes to `@heyitsiveen/dotfiles` are documented here.
 Format loosely follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/).
 
+## [Unreleased]
+
+### Added
+
+- Explanation under "Set Fish as Default Shell" (`dotfiles/macos/README.md`, macOS only): documents that `chsh -s $(which fish)` changes the account-level `UserShell`, which is what GUI apps like Zed and Claude Desktop use for their embedded terminals — and why a bare zsh still finds `brew` (via the system-wide `/etc/paths.d/homebrew`) but not `node`/`npm`/`npx`/Bun (fnm/Bun PATH setup lives only in the Fish config). Prompted by a support case where Claude Code commands failed in Zed/Claude Desktop because those apps were opening zsh instead of Fish.
+- Terminal configs no longer hardcode Fish (macOS only): `command = /opt/homebrew/bin/fish` commented out in `dotfiles/macos/.config/ghostty/config`, and a commented `default_prog` example added to `dotfiles/macos/.config/wezterm/wezterm.lua`. Once Fish is your login shell (`chsh`), both terminals launch it automatically — Ghostty via its `$SHELL`/passwd fallback, WezTerm via the password-database login shell (it ignores `$SHELL`) — so hardcoding Fish per-terminal is redundant; the commented lines stay as an opt-in for anyone who has not changed their login shell. The "Set Fish as Default Shell" (`README.md` step 5) and manual-setup (`docs/manual-setup.md` steps 1 & 3) docs now cover: log-out/verify (`dscl . -read ~/ UserShell`), that `$SHELL` is derived from the login-shell record (never set by hand), revert (`chsh -s /bin/zsh`), System Settings recovery, and that both terminals inherit the login shell.
+
+### Fixed
+
+- `dotfiles/windows/docs/manual-setup.md` was an unconverted copy of the macOS manual setup guide — `brew install --cask`, Homebrew, Fish + `chsh`, `cp -r .config/fish` paths, and `Cmd+Shift+P` throughout, none of it valid on Windows. Rewritten to match the Windows README's actual conventions: winget package IDs, PowerShell 7 + oh-my-posh, profile linking to `$HOME\Documents\PowerShell\Microsoft.PowerShell_profile.ps1` and real Windows config paths (`$env:APPDATA\bat`, `$HOME\.config\wezterm`, etc.), and `Ctrl+Shift+P`.
+- Root `README.md`'s home-directory disclosure said the CLI writes to `~/.zshrc` (macOS) — stale, the macOS payload is Fish, not zsh, and nothing in `src/` ever touches `.zshrc`. Reworded to `~/.config/` (Fish config on macOS).
+
 ## [1.1.8] — 2026-07-04
 
 ### Added

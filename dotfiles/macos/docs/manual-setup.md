@@ -20,6 +20,8 @@ brew install --cask ghostty
 brew install --cask wezterm
 ```
 
+> **Shell note:** Neither terminal config hardcodes Fish — Ghostty's `command` line is commented out and the macOS WezTerm config sets no `default_prog`, so both inherit whatever your login shell is. Set Fish as your login shell in step 3 and both launch it automatically. (Skipping step 3? Uncomment the Ghostty `command` line or set WezTerm's `default_prog = { '/opt/homebrew/bin/fish', '-l' }`.)
+
 ## 2. Homebrew
 
 ```bash
@@ -39,6 +41,17 @@ chsh -s $(which fish)
 # Launch Fish
 fish
 ```
+
+Then **log out and back in** (or open a new terminal) so the login shell takes effect, and verify:
+
+```bash
+dscl . -read ~/ UserShell   # → UserShell: /opt/homebrew/bin/fish
+echo $SHELL                 # → /opt/homebrew/bin/fish
+```
+
+`$SHELL` is derived from that login-shell record — `chsh` updates it and macOS sets `$SHELL` to Fish on your next login; never set it by hand. Because Fish is now your login shell, **Ghostty and WezTerm launch it automatically** — which is why their configs don't hardcode Fish (see step 1). Revert with `chsh -s /bin/zsh`; if a bad path locks you out, reset the login shell in **System Settings → Users & Groups → (ctrl-click user) → Advanced Options…**.
+
+See **Set Fish as Default Shell** (step 5) in the main [README](../README.md) for why the `chsh` step matters and a zsh-PATH gotcha it avoids.
 
 Fisher and Tide are committed to this repo under `.config/fish/` — they are copied over in step 7 below, so you don't need to bootstrap Fisher or run `tide configure`. The committed `fish_plugins` manifest declares `jorgebucaran/fisher` and `ilancosman/tide@v6`, and `fish_variables` holds the prompt settings for the `heyitsiveen` palette.
 
