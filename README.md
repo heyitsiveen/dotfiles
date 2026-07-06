@@ -32,7 +32,7 @@ pnpm dlx @heyitsiveen/dotfiles@latest
 yarn dlx @heyitsiveen/dotfiles@latest
 ```
 
-> **This CLI modifies your home directory.** It writes to `~/.config/`, `~/.zshrc` (macOS) or PowerShell profile (Windows), and other tool-specific paths. **Existing configs are backed up to `~/.config/heyitsiveen/dotfiles/backup/` before any overwrite.** Preview with `--dry-run` first. Undo with `--restore` or `--uninstall`.
+> **This CLI modifies your home directory.** It writes to `~/.config/` (Fish config on macOS) or PowerShell profile (Windows), and other tool-specific paths. **Existing configs are backed up to `~/.config/heyitsiveen/dotfiles/backup/` before any overwrite.** Preview with `--dry-run` first. Undo with `--restore` or `--uninstall`.
 
 ## Prerequisites
 
