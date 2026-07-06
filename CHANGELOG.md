@@ -3,7 +3,7 @@
 All notable changes to `@heyitsiveen/dotfiles` are documented here.
 Format loosely follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/).
 
-## [Unreleased]
+## [1.1.9] — 2026-07-06
 
 ### Added
 
