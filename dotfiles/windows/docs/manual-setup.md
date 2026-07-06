@@ -1,134 +1,78 @@
 # Manual Setup
 
-Manual, non-Stow setup path for this dotfiles repo.
+Manual, non-wizard setup path for this dotfiles repo.
 
 Follow these steps to set up each tool individually.
 
 ## 1. Terminal Emulator
 
-**Ghostty (Recommended)**
+**WezTerm**
 
-```bash
-# Download from https://ghostty.org/download
-# Or via Homebrew
-brew install --cask ghostty
+```powershell
+winget install --id wez.wezterm
 ```
 
-**WezTerm (Alternative)**
+## 2. PowerShell 7 + oh-my-posh
 
-```bash
-brew install --cask wezterm
+```powershell
+winget install --id Microsoft.PowerShell
+winget install --id JanDeDobbeleer.OhMyPosh
 ```
 
-## 2. Homebrew
+oh-my-posh renders the prompt; the theme palette is wired up once the profile is linked in step 5 below.
 
-```bash
-/bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
+## 3. Core CLI Tools
+
+```powershell
+winget install --id sharkdp.bat
+winget install --id eza-community.eza
+winget install --id junegunn.fzf
+winget install --id sharkdp.fd
+winget install --id BurntSushi.ripgrep.MSVC
+winget install --id dandavison.delta
+winget install --id ajeetdsouza.zoxide
 ```
 
-## 3. Fish Shell (+ Pre-Configured Fisher + Tide)
+## 4. Utility Tools
 
-```bash
-# Install Fish
-brew install fish
-
-# Add to shells and set as default
-echo $(which fish) | sudo tee -a /etc/shells
-chsh -s $(which fish)
-
-# Launch Fish
-fish
+```powershell
+winget install --id JesseDuffield.lazygit
+winget install --id Schniz.fnm
+winget install --id fastfetch-cli.fastfetch
+winget install --id httpie.cli
 ```
 
-Fisher and Tide are committed to this repo under `.config/fish/` — they are copied over in step 7 below, so you don't need to bootstrap Fisher or run `tide configure`. On first install, `conf.d/_tide_init.fish` auto-configures the prompt (Rainbow, Angled separators, Two-line Sharp style) via `tide configure --auto` — no interactive wizard runs. The committed `fish_plugins` manifest declares `jorgebucaran/fisher` and `ilancosman/tide@v6`, and `fish_variables` holds the prompt settings for the `heyitsiveen` palette.
+Optional: `scoop install btop` (system monitor — no winget package) and `winget install --id DEVCOM.JetBrainsMonoNerdFont` (Nerd Font, needed for icons in eza/oh-my-posh).
 
-<details>
-<summary><strong>Fallback: reinstall Fisher and Tide if the prompt is broken</strong></summary>
+## 5. Link PowerShell Profile + Config Files
 
-Use this only if, after copying configs in step 7 and restarting Fish, you see:
+```powershell
+# PowerShell profile — entry point + modules/functions
+New-Item -ItemType Directory -Force -Path "$HOME\Documents\PowerShell" | Out-Null
+Copy-Item .\powershell\Profile.ps1 "$HOME\Documents\PowerShell\Microsoft.PowerShell_profile.ps1"
+Copy-Item -Recurse -Force .\powershell\modules "$HOME\Documents\PowerShell\modules"
+Copy-Item -Recurse -Force .\powershell\functions "$HOME\Documents\PowerShell\functions"
 
-- Prompt shows raw text (`>_` or bare `$`) with no icons or git segment
-- `fisher: command not found`
-- `tide: command not found` or `tide_palette: command not found`
-- Tide errors about missing functions or corrupt universal variables
-- Icons render as tofu (`□`) — check your terminal has a Nerd Font first
+# Tool configs
+New-Item -ItemType Directory -Force -Path "$HOME\.config\wezterm", "$HOME\.config\omp-themes", "$HOME\.config\ripgrep", "$HOME\.config\btop", "$env:APPDATA\bat" | Out-Null
+Copy-Item .\.config\wezterm\wezterm.lua "$HOME\.config\wezterm\wezterm.lua"
+Copy-Item -Recurse -Force .\.config\omp-themes\* "$HOME\.config\omp-themes\"
+Copy-Item .\.config\ripgrep\config "$HOME\.config\ripgrep\config"
+Copy-Item -Recurse -Force .\.config\btop\* "$HOME\.config\btop\"
+Copy-Item .\.config\bat\config "$env:APPDATA\bat\config"
+Copy-Item -Recurse -Force .\.config\bat\themes "$env:APPDATA\bat\themes"
 
-Then run:
-
-```fish
-# Re-bootstrap Fisher
-curl -sL https://raw.githubusercontent.com/jorgebucaran/fisher/main/functions/fisher.fish | source && fisher install jorgebucaran/fisher
-
-# Reinstall everything in fish_plugins
-fisher update
-
-# Last resort only — re-runs the interactive wizard
-tide configure
+# Open a new PowerShell 7 window to load the profile
+pwsh
 ```
 
-> **Warning:** Running `tide configure` without `--auto` launches an interactive wizard that overwrites the Tide universal variables in `fish_variables`. Restore the shipped look with `tide_palette heyitsiveen` (or `vercel` / `vesper`) afterward.
+`Profile.ps1` dot-sources everything under `modules/` and `functions/` alphabetically, then inits fnm and adds Bun to PATH.
 
-</details>
-
-## 4. Core CLI Tools
-
-```bash
-# Fuzzy finder
-brew install fzf
-$(brew --prefix)/opt/fzf/install  # Install key bindings
-
-# Fast find
-brew install fd
-
-# Better cat
-brew install bat
-
-# Modern ls
-brew install eza
-
-# Smarter cd
-brew install zoxide
-
-# Fast grep
-brew install ripgrep
-
-# Better git diff
-brew install delta
-```
-
-## 5. Tmux
-
-```bash
-brew install tmux
-```
-
-## 6. Utility Tools
-
-```bash
-brew install lazygit jq httpie btop fastfetch fnm
-```
-
-## 7. Copy Configuration Files
-
-```bash
-# Create config directories
-mkdir -p ~/.config/{fish,ghostty,wezterm,tmux,bat,btop,ripgrep}
-
-# Copy configs manually from this repo
-cp -r .config/fish/* ~/.config/fish/
-cp -r .config/ghostty/* ~/.config/ghostty/
-cp -r .config/wezterm/* ~/.config/wezterm/
-cp -r .config/tmux/* ~/.config/tmux/
-cp -r .config/bat/* ~/.config/bat/
-cp -r .config/btop/* ~/.config/btop/
-cp -r .config/ripgrep/* ~/.config/ripgrep/
-```
-
-## 8. OXC (Formatter & Linter)
+## 6. OXC (Formatter & Linter)
 
 ### Install Globally
 
-```bash
+```powershell
 # Linter
 npm add -g oxlint
 
@@ -138,7 +82,7 @@ npm add -g oxfmt
 
 ### Install Per-Project
 
-```bash
+```powershell
 # npm
 npm add -D oxlint oxfmt
 
@@ -169,10 +113,10 @@ Add scripts to `package.json`:
 
 Create `~/.oxfmtrc.json` — applies to all projects by default:
 
-```bash
+```powershell
 oxfmt --init
 # or manually
-touch ~/.oxfmtrc.json
+New-Item "$HOME\.oxfmtrc.json"
 ```
 
 Paste the following into `~/.oxfmtrc.json`:
@@ -296,7 +240,7 @@ Paste the following into `~/.oxfmtrc.json`:
 
 In any project root, create `.oxfmtrc.json` to override the global config:
 
-```bash
+```powershell
 # Generate default config
 oxfmt --init
 
@@ -307,11 +251,11 @@ oxfmt --migrate biome
 
 > Oxfmt looks for `.oxfmtrc.json` in the project root first; if not found, it falls back to `~/.oxfmtrc.json`.
 
-## 9. VS Code
+## 7. VS Code
 
 ### Settings
 
-Open the Command Palette (`Cmd+Shift+P`), run **Preferences: Open User Settings (JSON)**, and paste:
+Open the Command Palette (`Ctrl+Shift+P`), run **Preferences: Open User Settings (JSON)**, and paste:
 
 ```jsonc
 {
@@ -415,7 +359,7 @@ Open the Command Palette (`Cmd+Shift+P`), run **Preferences: Open User Settings 
   },
 
   // --- CSS LOADER (This makes the "/" happen) ---
-  // "vscode_custom_css.imports": ["file:///Users/ali/.config/Code/zed-style.css"],
+  // "vscode_custom_css.imports": ["file:///C:/Users/YourUsername/.config/Code/zed-style.css"],
 
   // EDITOR
   "typescript.referencesCodeLens.enabled": true,
@@ -480,14 +424,14 @@ Open the Command Palette (`Cmd+Shift+P`), run **Preferences: Open User Settings 
 }
 ```
 
-> **Note:** Update the `vscode_custom_css.imports` path to match your OS and username.
+> **Note:** Update the `vscode_custom_css.imports` path to match your username.
 
 ### Custom CSS
 
 Create the config directory and CSS file:
 
-```bash
-mkdir -p ~/.config/Code
+```powershell
+New-Item -ItemType Directory -Force -Path "$HOME\.config\Code"
 ```
 
 Create `~/.config/Code/zed-style.css` with the Zed-inspired breadcrumb/tab/sidebar styling (included in this repo).
@@ -516,7 +460,7 @@ Install the following VS Code extensions:
 
 ### Enable Custom CSS
 
-1. Open the Command Palette (`Cmd+Shift+P`) and run **Enable Custom CSS and JS**
+1. Open the Command Palette (`Ctrl+Shift+P`) and run **Enable Custom CSS and JS**
 2. VS Code will prompt to restart — click **Restart**
 3. If a warning appears: _"Your Code installation appears to be corrupt. Please reinstall."_ — click **Don't Show Again** (this is normal when using Custom CSS and JS Loader)
 4. After restart, the Zed-inspired styling from `zed-style.css` will be applied
