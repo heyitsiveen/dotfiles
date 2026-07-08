@@ -1,6 +1,6 @@
 {
   "name": "@heyitsiveen/dotfiles",
-  "version": "1.1.9",
+  "version": "1.1.10",
   "description": "Interactive CLI to set up dotfiles for macOS and Windows 11",
   "type": "module",
   "bin": {
