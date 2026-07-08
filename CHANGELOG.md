@@ -3,6 +3,12 @@
 All notable changes to `@heyitsiveen/dotfiles` are documented here.
 Format loosely follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/).
 
+## [Unreleased]
+
+### Changed
+
+- Updated the `mattpocock/skills` reference (`docs/skills.md` quick-reference + table, and the full `docs/matt-pocock-workflow.md` deep dive, both platforms) to upstream **v1.1.0** (2026-07-08). The main chain is now `grill-with-docs → to-spec → to-tickets → implement → code-review`: `/to-prd` was renamed to `/to-spec`, and `/to-plan` + `/to-issues` were merged into `/to-tickets` (`/to-issues` deleted), which now slices a **wide refactor** by expand–contract so CI stays green batch to batch. Four skills graduated out of the upstream `in-progress/` bucket into the promoted set and are now documented in full: `wayfinder` (plan work too big for one session as a shared `wayfinder:map` on the tracker — framed as a situational on-ramp, not the main spine), `code-review` (now carries a fixed ~12-smell Fowler baseline on its Standards axis), `research` (a background agent that investigates primary sources and leaves one cited note), and `prototype` (now model-invoked). `grilling` gained a confirmation gate plus a facts-vs-decisions split; `tdd` is now red→green (refactoring moved to `code-review`); `triage` folds in external PRs; and `writing-great-skills` adds the negation ("elephant") and negative-space ("void") steering failure modes. `wayfinder` moved out of the "Not promoted / drafts" table accordingly.
+
 ## [1.1.9] — 2026-07-06
 
 ### Added

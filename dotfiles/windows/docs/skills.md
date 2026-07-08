@@ -140,37 +140,39 @@ npx skills add coreyhaines31/marketingskills
 
 ### Quick reference — official order
 
-The numbered walk through the current official pipeline (2026-07-01). Model and session notes are sourced; gaps are marked rather than guessed.
+The numbered walk through the current official pipeline (2026-07-08, v1.1.0). Model and session notes are sourced; gaps are marked rather than guessed.
 
 **Step 1.** `/setup-matt-pocock-skills` — model: any (not specified by Pocock) · session: any, **once per repo**
 When to use: before first use in a repo — wires issue tracker, triage labels, and domain-doc paths into `docs/agents/*.md`.
 
 **Step 2.** `/grill-with-docs` — model: big frontier model (his daily driver: Opus 4.8, **medium** effort) · session: **new**
-When to use: every coding task in a repo — relentless interview that maintains `CONTEXT.md` + ADRs as decisions land. `/grill-me` instead only for plans outside a codebase ("I stopped using /grill-me for coding").
+When to use: every coding task in a repo — relentless interview that maintains `CONTEXT.md` + ADRs as decisions land. `/grill-me` instead only for plans outside a codebase ("I stopped using /grill-me for coding"). Both signpost up to /wayfinder when the effort is too big for one session.
 
-**Step 3.** `/to-prd` — model: same as step 2 · session: **same as step 2** ("Do not clear the context… just to write a PRD")
-When to use: multi-session work only — synthesizes the grilled conversation into a PRD on the issue tracker. If the work fits one session, skip steps 3–4 and run `/implement` in place.
+**Step 3.** `/to-spec` (was `/to-prd`) — model: same as step 2 · session: **same as step 2** ("Do not clear the context… just to write a spec")
+When to use: multi-session work only — synthesizes the grilled conversation into a **spec** (opens "you may know this as a PRD") on the issue tracker. If the work fits one session, skip steps 3–4 and run `/implement` in place.
 
-**Step 4.** `/to-issues` — model: same · session: **same as steps 2–3** (grill → prd → issues in "one unbroken window")
-When to use: break the PRD into tracer-bullet vertical slices with Blocked-by edges, published blockers-first.
+**Step 4.** `/to-tickets` (was `/to-plan` + `/to-issues`, merged) — model: same · session: **same as steps 2–3** (grill → spec → tickets in "one unbroken window")
+When to use: break the spec into tracer-bullet **tickets** with blocking edges — text in a local `tickets.md`, or native blocking links on a real tracker (frontier tickets run several agents at once). Handles wide refactors via expand–contract batching.
 
-**Step 5.** `/implement` — model: smaller is fine here ("Sonnet for implementation"; the plan + codebase carry it) · session: **new — one per issue** (or in place, same session, if the work fit the grilling window)
-When to use: build from the PRD/issues — drives `/tdd` at pre-agreed seams, typechecks + single test files regularly, full suite once at the end, then hands to `/code-review` and commits.
+**Step 5.** `/implement` — model: smaller is fine here ("Sonnet for implementation"; the plan + codebase carry it) · session: **new — one per ticket** (or in place, same session, if the work fit the grilling window)
+When to use: build from the spec/tickets — drives `/tdd` at pre-agreed seams, typechecks + single test files regularly, full suite once at the end, then hands to `/code-review` and commits.
 
 **Step 6.** `/code-review` — model: Opus ("I need the smarts") · session: **fresh context — never the implementer's window** ("the reviewer will be dumber than the thing that implemented it")
-When to use: after every implement — two parallel sub-agents check **Standards** (repo rules + Fowler-smell baseline) and **Spec** (diff vs the originating issue/PRD).
+When to use: after every implement — two parallel sub-agents check **Standards** (repo rules + a fixed Fowler-smell baseline) and **Spec** (diff vs the originating ticket/spec).
 
 **Between any steps** — `/handoff`: packages just the relevant context into a markdown file so you can continue in a **new, clean session**. Two triggers: (1) this session is growing toward the ~100–120k-token **dumb zone** (watch the token statusline) — hand off and continue the same work fresh; (2) a side-question needs throwaway code to answer — hand off that one question to a second session, build the `/prototype` there, then `/handoff` the conclusion back while your main session stays clean (his "DIY sub-agent" pattern). Contrast: `/compact` summarizes **in place** and the same session continues — legitimate only for long single-threaded debugging.
 
-**Off the chain** — `/triage` (issues/PRs you didn't create) · `/diagnosing-bugs` (something's broken) · `/improve-codebase-architecture` (every few days).
+**On-ramps** — `/wayfinder` (greenfield or too big for one session; new in v1.1.0) · `/triage` (issues/PRs you didn't create) · `/diagnosing-bugs` (something's broken) · `/improve-codebase-architecture` (every few days).
 
-**Standing rules (not steps)** — Docs: PRD = destination, issues = journey, both die at sprint end (close, don't keep); `CONTEXT.md` = glossary only; ADR only when hard-to-reverse + surprising + real trade-off · CLAUDE.md: nearly empty — undiscoverable AND globally relevant only; hooks over prose; never `/init` · Humans own planning + QA; agents own implementation.
+**Support (model-invoked)** — `/research` (background agent → cited notes) · `/prototype` (throwaway code for a design question) feed the chain or wayfinder.
+
+**Standing rules (not steps)** — Docs: spec = destination, tickets = journey, both die at sprint end (close, don't keep); `CONTEXT.md` = glossary only; ADR only when hard-to-reverse + surprising + real trade-off · CLAUDE.md: nearly empty — undiscoverable AND globally relevant only; hooks over prose; never `/init` · Humans own planning + QA; agents own implementation.
 
 Per-step effort/thinking settings: not specified by Pocock — the only sourced setting is his general daily driver "Opus 4.8 with medium effort" (Ondrej interview, 2026-06-18). Sonnet-implements/Opus-reviews is from the AI Engineer workshop (2026-04-24).
 
-Verified 2026-07-02 — sources: [things-people-get-wrong](https://www.aihero.dev/things-people-get-wrong-with-grill-me-and-grill-with-docs) (2026-05-25) · [skills-handoff](https://www.aihero.dev/skills-handoff) (2026-05-13) · [skills-domain-model](https://www.aihero.dev/skills-domain-model) (2026-05-05) · [mattpocock/skills](https://github.com/mattpocock/skills) ask-matt/implement/code-review SKILL.md (2026-07-01) · [AI Engineer workshop](https://www.youtube.com/watch?v=-QFHIoCo-Ko) (2026-04-24) · [David Ondrej interview](https://www.youtube.com/watch?v=nQwJVHCtDDY) (2026-06-18)
+Verified 2026-07-09 — sources: [mattpocock/skills CHANGELOG v1.1.0](https://github.com/mattpocock/skills/blob/main/CHANGELOG.md) + README (2026-07-08) · v1.1 launch tweet · [things-people-get-wrong](https://www.aihero.dev/things-people-get-wrong-with-grill-me-and-grill-with-docs) (2026-05-25) · [skills-handoff](https://www.aihero.dev/skills-handoff) (2026-05-13) · [AI Engineer workshop](https://www.youtube.com/watch?v=-QFHIoCo-Ko) (2026-04-24) · [David Ondrej interview](https://www.youtube.com/watch?v=nQwJVHCtDDY) (2026-06-18)
 
-_Small, composable skills for real engineering — deliberately not a process-owning framework. On-ramps: `triage` turns raw issues and external PRs into agent-ready briefs; `diagnosing-bugs` (renamed from `diagnose` in v1.0.0) for anything broken. `improve-codebase-architecture` fights entropy; `handoff` carries context across sessions; `ask-matt` routes you when unsure. Standalone: `teach` (multi-session learning) and `writing-great-skills`. Since v1.0.0 (2026-06-17), skills split into **user-invoked** orchestrators (you type them) and **model-invoked** disciplines the model reaches for — `grilling`, `domain-modeling`, and `codebase-design` are the shared layer other skills call. Deep reference with per-skill walkthroughs, model/session strategy, and sources: [matt-pocock-workflow.md](matt-pocock-workflow.md)._
+_Small, composable skills for real engineering — deliberately not a process-owning framework. Main chain: `grill-with-docs → to-spec → to-tickets → implement → code-review`. On-ramps: `wayfinder` (new in v1.1.0) maps work too big for one session; `triage` turns raw issues and external PRs into agent-ready briefs; `diagnosing-bugs` for anything broken. Support: `research` (background-agent reading legwork) and `prototype` (design questions). `improve-codebase-architecture` fights entropy; `handoff` carries context across sessions; `ask-matt` routes you when unsure. Since v1.0.0 (2026-06-17), skills split into **user-invoked** orchestrators (you type them) and **model-invoked** disciplines the model reaches for — `grilling`, `domain-modeling`, and `codebase-design` are the shared layer other skills call. **v1.1.0 (2026-07-08)** renamed `to-prd`→`to-spec`, merged `to-issues`→`to-tickets`, graduated `wayfinder`/`code-review`/`research`/`prototype`, and sharpened `grilling`. Deep reference with per-skill walkthroughs, model/session strategy, and sources: [matt-pocock-workflow.md](matt-pocock-workflow.md)._
 
 ```bash
 npx skills add mattpocock/skills
@@ -180,23 +182,25 @@ npx skills add mattpocock/skills
 | ------------------------------- | ---------- | ----------------------------------------------------------------------------- |
 | `setup-matt-pocock-skills`      | user       | Run once per repo — sets up issue tracker, triage labels, and doc layout      |
 | `ask-matt`                      | user       | Router that points you to the right skill or flow for your situation          |
+| `wayfinder`                     | user       | Map work too big for one session into tracker tickets (new in v1.1.0)         |
 | `grill-me`                      | user       | Interview you relentlessly about a plan — for plans outside a codebase        |
 | `grill-with-docs`               | user       | Grill a plan against the domain model, updating CONTEXT.md and ADRs inline    |
-| `grilling`                      | model      | The shared interview loop behind grill-me/grill-with-docs — one question at a time |
+| `grilling`                      | model      | Shared interview loop — one question at a time; v1.1.0 confirmation gate      |
 | `domain-modeling`               | model      | Maintain the domain glossary (CONTEXT.md) and ADRs as decisions land          |
 | `codebase-design`               | model      | Deep-module vocabulary — interfaces, seams, depth, the deletion test          |
-| `prototype`                     | model      | Build throwaway code to answer a design question (state/logic or UI)          |
-| `to-prd`                        | user       | Turn the current conversation into a PRD on the issue tracker                 |
-| `to-issues`                     | user       | Break a plan or PRD into tracer-bullet vertical-slice issues                  |
+| `prototype`                     | model      | Throwaway code to answer a design question — model-invoked in v1.1.0          |
+| `research`                      | model      | Background agent → one cited primary-source note (new in v1.1.0)              |
+| `to-spec`                       | user       | Synthesize the conversation into a spec on the tracker (was `to-prd`)         |
+| `to-tickets`                    | user       | Break a spec/plan into tracer-bullet tickets with blocking edges              |
 | `triage`                        | user       | Move issues and external PRs through triage roles into agent-ready briefs     |
-| `implement`                     | user       | Build from a PRD/issues — tdd at pre-agreed seams, then code-review, commit   |
-| `tdd`                           | model      | Test-driven development — spec-like tests only at pre-agreed seams            |
-| `code-review`                   | model      | Two-axis review (Standards + Spec) in parallel sub-agents since a fixed point |
+| `implement`                     | user       | Build from a spec/tickets — tdd at pre-agreed seams, then code-review         |
+| `tdd`                           | model      | Test-driven development — spec-like tests at pre-agreed seams (red→green)     |
+| `code-review`                   | model      | Two-axis review (Standards + Fowler baseline, Spec) — graduated v1.1.0        |
 | `diagnosing-bugs`               | model      | Disciplined loop for hard bugs — feedback loop first, falsifiable hypotheses  |
 | `improve-codebase-architecture` | user       | Scan for deepening opportunities, visual HTML report, grill through your pick |
 | `resolving-merge-conflicts`     | model      | Resolve in-progress merge/rebase conflicts from primary sources — never abort |
 | `setup-pre-commit`              | model      | Husky + lint-staged pre-commit scaffold — format, typecheck, test on commit   |
 | `git-guardrails-claude-code`    | model      | PreToolUse hook blocking dangerous git — push, reset --hard, clean -f, -D     |
 | `handoff`                       | user       | Compact a conversation into a handoff doc so a fresh agent can continue       |
-| `writing-great-skills`          | user       | Reference for authoring predictable, well-scoped skills                       |
+| `writing-great-skills`          | user       | Reference for authoring predictable skills (v1.1.0 adds 2 failure modes)      |
 | `teach`                         | user       | Learn a concept over multiple sessions in a stateful workspace                |
