@@ -3,6 +3,12 @@
 All notable changes to `@heyitsiveen/dotfiles` are documented here.
 Format loosely follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/).
 
+## [Unreleased]
+
+### Changed
+
+- Reframed the `mattpocock/skills` reference (`docs/skills.md` quick-reference + intro + table, and the full `docs/matt-pocock-workflow.md` deep dive, both platforms) so **`/wayfinder` is the default entry point / main spine** and `/grill-with-docs` is the single-session shortcut — reversing 1.1.10's "situational on-ramp, not the main spine" framing. The main chain is now `wayfinder → to-spec → to-tickets → implement → code-review`, with `grill-with-docs` (or `grill-me`) branching straight into `to-spec` when an idea fits one session. Driver: Matt Pocock's [v1.1 launch video](https://www.youtube.com/watch?v=A8mokin_YOs) (2026-07-08), where he says to "default to Wayfinder instead" of grill-with-docs and to "get obsessed with Wayfinder," especially for anything touching the front-end. Kept inline as a **sourced caveat** that this is his *spoken* position running ahead of his *written* docs: the live `ask-matt` router still lists grill as main-flow step 1 and files wayfinder under on-ramps, and the v1.1.0 CHANGELOG still calls crowning wayfinder "a v2-sized move, not a 1.1" — no newer version (no v1.2) or dedicated wayfinder post existed at 2026-07-10.
+
 ## [1.1.10] — 2026-07-09
 
 ### Changed
