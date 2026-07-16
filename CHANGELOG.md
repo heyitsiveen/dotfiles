@@ -3,6 +3,12 @@
 All notable changes to `@heyitsiveen/dotfiles` are documented here.
 Format loosely follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/).
 
+## [1.1.12] — 2026-07-17
+
+### Added
+
+- New global agent rule (`dotfiles/macos/.claude/CLAUDE.md` and `dotfiles/windows/.claude/CLAUDE.md`, both platforms): "When reporting information to me, be extremely concise and sacrifice grammar for the sake of concision." Extends the existing plan-concision rule to all reporting. Renumbered the trailing rules (unresolved-questions list, no-global-installs) so the list stays sequential.
+
 ## [1.1.11] — 2026-07-10
 
 ### Changed
