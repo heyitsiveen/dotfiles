@@ -13,5 +13,5 @@
 13. Always use the frontend-design skill when developing any frontend interface or UI components.
 14. Make the plan extremely concise. Sacrifice grammar for the sake of concision.
 15. When reporting information to me, be extremely concise and sacrifice grammar for the sake of concision.
-15. At the end of each plan, give me a list of unresolved questions to answer, if any.
-16. Never install apps, CLIs, or third-party packages globally — prefer `npx` over `npm i -g`, and project-local or venv installs over global ones. Keep a ledger of every temporary install (name, method, location). When done, clean up: uninstall project-local packages, delete venvs, remove any downloaded browsers/binaries, and clear caches. Leave the machine exactly as you found it; never commit anything temporary.
+16. At the end of each plan, give me a list of unresolved questions to answer, if any.
+17. Never install apps, CLIs, or third-party packages globally — prefer `npx` over `npm i -g`, and project-local or venv installs over global ones. Keep a ledger of every temporary install (name, method, location). When done, clean up: uninstall project-local packages, delete venvs, remove any downloaded browsers/binaries, and clear caches. Leave the machine exactly as you found it; never commit anything temporary.
