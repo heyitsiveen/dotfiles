@@ -138,51 +138,25 @@ npx skills add coreyhaines31/marketingskills
 
 ## Engineering Workflow — [mattpocock/skills](https://github.com/mattpocock/skills)
 
-### Quick reference — recommended order
+> [!TIP]
+> 1. **Always start at `/ask-matt`** — whenever you have an idea, a change, or you're unsure what to run next, describe the situation and follow the flow it names before invoking anything else. It's the router: it picks the skill or flow and does no work itself ([ask-matt SKILL.md](https://github.com/mattpocock/skills/blob/main/skills/engineering/ask-matt/SKILL.md)).
+>
+> 2. **Parallelize a wayfinder map's sub-issues with Claude Code sub-agents — AFK tickets only.** Chart mode already fires a `/research` subagent per research ticket, and unblocked AFK task and implementation tickets can each go to a sub-agent in its own git worktree — the sub-agent equivalent of Matt's parallel sessions (inferred). HITL tickets (grilling, prototype — the default type) only resolve through the live human, so never delegate those ([wayfinder SKILL.md](https://github.com/mattpocock/skills/blob/main/skills/engineering/wayfinder/SKILL.md)).
 
-The numbered walk as Pocock **recommends** it after the v1.1 video — **`/wayfinder`-led** (his stated default), `/grill-with-docs` as the single-session shortcut. (Repo's written `ask-matt` router still lists grill first as of 2026-07-10.) Model and session notes are sourced; gaps are marked rather than guessed.
-
-**Step 1.** `/setup-matt-pocock-skills` — model: any (not specified by Pocock) · session: any, **once per repo**
-When to use: before first use in a repo — wires issue tracker, triage labels, and domain-doc paths into `docs/agents/*.md`.
-
-**Step 2.** `/wayfinder` — model: big frontier model (his daily driver: Opus 4.8, **medium** effort) · session: **spans several by design**
-When to use: **the default entry for any non-trivial change** — per the v1.1 video, reach for it wherever you'd have used `/grill-with-docs`, especially anything touching the front-end. Charts the work as a shared map of investigation tickets (research / prototype / grilling / task) on the tracker, resolves them one at a time, then hands to `/to-spec`. **Shortcut:** `/grill-with-docs` (session: **new**) when the idea fits one window — relentless interview maintaining `CONTEXT.md` + ADRs, straight to `/to-spec`; `/grill-me` for plans outside a codebase ("I stopped using /grill-me for coding").
-
-**Step 3.** `/to-spec` (was `/to-prd`) — model: same as step 2 · session: **new, fed by the wayfinder map** (or same window on the grill shortcut — "Do not clear the context… just to write a spec")
-When to use: multi-session work — synthesizes the completed `/wayfinder` map (or, on the grill shortcut, the grilled conversation) into a **spec** (opens "you may know this as a PRD") on the issue tracker. If a grilled idea fits one session, skip steps 3–4 and run `/implement` in place.
-
-**Step 4.** `/to-tickets` (was `/to-plan` + `/to-issues`, merged) — model: same · session: **same as steps 2–3** (grill → spec → tickets in "one unbroken window")
-When to use: break the spec into tracer-bullet **tickets** with blocking edges — text in a local `tickets.md`, or native blocking links on a real tracker (frontier tickets run several agents at once). Handles wide refactors via expand–contract batching.
-
-**Step 5.** `/implement` — model: smaller is fine here ("Sonnet for implementation"; the plan + codebase carry it) · session: **new — one per ticket** (or in place, same session, if the work fit the grilling window)
-When to use: build from the spec/tickets — drives `/tdd` at pre-agreed seams, typechecks + single test files regularly, full suite once at the end, then hands to `/code-review` and commits.
-
-**Step 6.** `/code-review` — model: Opus ("I need the smarts") · session: **fresh context — never the implementer's window** ("the reviewer will be dumber than the thing that implemented it")
-When to use: after every implement — two parallel sub-agents check **Standards** (repo rules + a fixed Fowler-smell baseline) and **Spec** (diff vs the originating ticket/spec).
-
-**Between any steps** — `/handoff`: packages just the relevant context into a markdown file so you can continue in a **new, clean session**. Two triggers: (1) this session is growing toward the ~100–120k-token **dumb zone** (watch the token statusline) — hand off and continue the same work fresh; (2) a side-question needs throwaway code to answer — hand off that one question to a second session, build the `/prototype` there, then `/handoff` the conclusion back while your main session stays clean (his "DIY sub-agent" pattern). Contrast: `/compact` summarizes **in place** and the same session continues — legitimate only for long single-threaded debugging.
-
-**On-ramps** — `/triage` (issues/PRs you didn't create) · `/diagnosing-bugs` (something's broken) · `/improve-codebase-architecture` (every few days). (`/wayfinder` moved up to the default entry — Step 2 — per the v1.1 video.)
-
-**Support (model-invoked)** — `/research` (background agent → cited notes) · `/prototype` (throwaway code for a design question) feed the chain or wayfinder.
-
-**Standing rules (not steps)** — Docs: spec = destination, tickets = journey, both die at sprint end (close, don't keep); `CONTEXT.md` = glossary only; ADR only when hard-to-reverse + surprising + real trade-off · CLAUDE.md: nearly empty — undiscoverable AND globally relevant only; hooks over prose; never `/init` · Humans own planning + QA; agents own implementation.
-
-Per-step effort/thinking settings: not specified by Pocock — the only sourced setting is his general daily driver "Opus 4.8 with medium effort" (Ondrej interview, 2026-06-18). Sonnet-implements/Opus-reviews is from the AI Engineer workshop (2026-04-24).
-
-Verified 2026-07-10 — the Wayfinder-first reframe follows Pocock's [v1.1 launch video](https://www.youtube.com/watch?v=A8mokin_YOs) (2026-07-08: "default to Wayfinder instead"); his written `ask-matt` router still reads grill-first as of 2026-07-10. Sources: [mattpocock/skills CHANGELOG v1.1.0](https://github.com/mattpocock/skills/blob/main/CHANGELOG.md) + README + ask-matt SKILL.md (live 2026-07-10) · v1.1 launch video + tweet · [things-people-get-wrong](https://www.aihero.dev/things-people-get-wrong-with-grill-me-and-grill-with-docs) (2026-05-25) · [skills-handoff](https://www.aihero.dev/skills-handoff) (2026-05-13) · [AI Engineer workshop](https://www.youtube.com/watch?v=-QFHIoCo-Ko) (2026-04-24) · [David Ondrej interview](https://www.youtube.com/watch?v=nQwJVHCtDDY) (2026-06-18)
-
-_Small, composable skills for real engineering — deliberately not a process-owning framework. Main chain (Wayfinder-led per the v1.1 video): `wayfinder → to-spec → to-tickets → implement → code-review`, with `grill-with-docs` (or `grill-me`) as the single-session shortcut into `to-spec`. `wayfinder` maps work too big for one session as a shared tracker map; per Pocock's [v1.1 video](https://www.youtube.com/watch?v=A8mokin_YOs) it's now the **default entry point** ("default to Wayfinder instead" of grill-with-docs), though his written `ask-matt` router still reads grill-first as of 2026-07-10. On-ramps: `triage` turns raw issues and external PRs into agent-ready briefs; `diagnosing-bugs` for anything broken. Support: `research` (background-agent reading legwork) and `prototype` (design questions). `improve-codebase-architecture` fights entropy; `handoff` carries context across sessions; `ask-matt` routes you when unsure. Since v1.0.0 (2026-06-17), skills split into **user-invoked** orchestrators (you type them) and **model-invoked** disciplines the model reaches for — `grilling`, `domain-modeling`, and `codebase-design` are the shared layer other skills call. **v1.1.0 (2026-07-08)** renamed `to-prd`→`to-spec`, merged `to-issues`→`to-tickets`, graduated `wayfinder`/`code-review`/`research`/`prototype`, and sharpened `grilling`. Deep reference with per-skill walkthroughs, model/session strategy, and sources: [matt-pocock-workflow.md](matt-pocock-workflow.md)._
+_Small, composable skills for real engineering — deliberately not a process-owning framework. Main chain: `grill-with-docs → to-spec → to-tickets → implement → code-review` (the flow Pocock demos; his `ask-matt` router encodes it), with `grill-me` for plans outside a codebase. `wayfinder` is the upstream on-ramp when work is too big for one session — it maps the effort as a shared tracker map of investigation tickets; Pocock's [v1.1 video](https://www.youtube.com/watch?v=A8mokin_YOs) calls it his front door ("default to Wayfinder instead"), but the written flow keeps grill-with-docs as the spine. On-ramps: `triage` turns raw issues and external PRs into agent-ready briefs; `diagnosing-bugs` for anything broken. Support: `research` (background-agent reading legwork) and `prototype` (design questions). `improve-codebase-architecture` fights entropy; `handoff` carries context across sessions; `ask-matt` routes you when unsure. Since v1.0.0 (2026-06-17), skills split into **user-invoked** orchestrators (you type them) and **model-invoked** disciplines the model reaches for — `grilling`, `domain-modeling`, and `codebase-design` are the shared layer other skills call. **v1.1.0 (2026-07-08)** renamed `to-prd`→`to-spec`, merged `to-issues`→`to-tickets`, graduated `wayfinder`/`code-review`/`research`/`prototype`, and sharpened `grilling`; the repo now also ships a **Claude Code plugin** (reports v1.2.0 — `/plugin install mattpocock-skills@mattpocock` — a read-only, always-current bundle of the 22 promoted skills). **40 skills** total (22 promoted + 18 experimental). Full **recommended-order walkthrough** (per-step model/session/effort notes), per-skill cards, install & repair, session/CLAUDE.md strategy, and sources: [matt-pocock-workflow.md](matt-pocock-workflow.md)._
 
 ```bash
 npx skills add mattpocock/skills
+# or install as a Claude Code plugin (read-only, always-current, 22 promoted skills, reports v1.2.0):
+#   /plugin marketplace add mattpocock/skills
+#   /plugin install mattpocock-skills@mattpocock
 ```
 
 | Skill                           | Invocation | Description                                                                   |
 | ------------------------------- | ---------- | ----------------------------------------------------------------------------- |
 | `setup-matt-pocock-skills`      | user       | Run once per repo — sets up issue tracker, triage labels, and doc layout      |
 | `ask-matt`                      | user       | Router that points you to the right skill or flow for your situation          |
-| `wayfinder`                     | user       | Default entry (v1.1 video); maps work too big for one session as a map        |
+| `wayfinder`                     | user       | On-ramp for work too big for one session — maps it as a shared tracker map    |
 | `grill-me`                      | user       | Interview you relentlessly about a plan — for plans outside a codebase        |
 | `grill-with-docs`               | user       | Grill a plan against the domain model, updating CONTEXT.md and ADRs inline    |
 | `grilling`                      | model      | Shared interview loop — one question at a time; v1.1.0 confirmation gate      |
