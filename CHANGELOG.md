@@ -3,6 +3,17 @@
 All notable changes to `@heyitsiveen/dotfiles` are documented here.
 Format loosely follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/).
 
+## [1.1.13] — 2026-07-17
+
+### Changed
+
+- Synced the `mattpocock/skills` reference (`docs/skills.md` quick-reference/intro/table + the full `docs/matt-pocock-workflow.md` deep dive, both platforms) to upstream HEAD [`e9fcdf9`](https://github.com/mattpocock/skills/commit/e9fcdf9) (2026-07-14). **Reverted 1.1.11's wayfinder-first framing:** the main chain is `grill-with-docs → to-spec → to-tickets → implement → code-review` again, with **`/wayfinder` as the on-ramp for efforts too big for one session** — the flow the written SKILL.md and `ask-matt` router actually encode. Matt's v1.1-video "default to Wayfinder instead" is kept as a sourced *spoken* caveat, not the spine. Also adopted model-tier vocabulary (Smartest/Latest = Fable 5, Fast/Cheap = Haiku 4.5; Pocock names skills, never models), added the two new `in-progress/` skills (`setup-ts-deep-modules`, `to-questionnaire`) and the 40-skill count (22 promoted + 18 experimental), and documented `/wayfinder`'s research-subagent parallelism (PRs #534/#535/#538). Recorded as deep-dive ADR #10.
+- Slimmed `docs/skills.md`'s Engineering Workflow section (both platforms): removed the numbered "Quick reference — recommended order" walkthrough that duplicated the deep dive — it now points to `matt-pocock-workflow.md` for per-step model/session/effort detail — and added an `ask-matt`/`wayfinder` **TIP callout** (start at `/ask-matt`; parallelize a wayfinder map's AFK tickets with sub-agents) adapted from the upstream README.
+
+### Added
+
+- Documented the **Claude Code plugin** install path for `mattpocock/skills` (`/plugin marketplace add mattpocock/skills` → `/plugin install mattpocock-skills@mattpocock`) in both docs: a read-only, always-current bundle of the 22 promoted skills that reports **v1.2.0** (native plugin on `main` since 2026-07-13, PR #536) while the newest upstream git tag/CHANGELOG entry is still v1.1.0.
+
 ## [1.1.12] — 2026-07-17
 
 ### Added
