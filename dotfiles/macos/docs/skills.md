@@ -110,11 +110,14 @@ _Craft-focused design engineering and motion from Emil Kowalski (animations.dev)
 npx skills add emilkowalski/skills
 ```
 
-| Skill                  | Description                                                                            |
-| ---------------------- | -------------------------------------------------------------------------------------- |
-| `emil-design-eng`      | Craft-focused design engineering — animation framework, component patterns, gestures   |
-| `review-animations`    | Review animation & motion code against a high craft bar — ten non-negotiable standards |
-| `animation-vocabulary` | Turn a loose description of a motion effect into the precise term                      |
+| Skill                          | Description                                                                            |
+| ------------------------------ | -------------------------------------------------------------------------------------- |
+| `emil-design-eng`              | Craft-focused design engineering — animation framework, component patterns, gestures   |
+| `apple-design`                 | Apple's fluid, physical motion & interface design — springs, gestures, materials, type |
+| `review-animations`            | Review animation & motion code against a high craft bar — ten non-negotiable standards |
+| `improve-animations`           | Audit a codebase's motion, then produce prioritized findings & fix plans (read-only)   |
+| `find-animation-opportunities` | Sweep an interface for moments that genuinely benefit from motion — restraint-first    |
+| `animation-vocabulary`         | Turn a loose description of a motion effect into the precise term                      |
 
 ## CSS Transitions — [jakubantalik/transitions.dev](https://github.com/jakubantalik/transitions.dev)
 

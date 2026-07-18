@@ -3,6 +3,12 @@
 All notable changes to `@heyitsiveen/dotfiles` are documented here.
 Format loosely follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/).
 
+## [Unreleased]
+
+### Added
+
+- Documented three more `emilkowalski/skills` in the Emil Kowalski table (`docs/skills.md`, both platforms): `apple-design` (Apple's fluid, physical motion & interface design — springs, gestures, materials, type), `improve-animations` (read-only audit that produces prioritized findings & fix plans), and `find-animation-opportunities` (restraint-first sweep for moments that genuinely benefit from motion). The section now covers all six upstream skills alongside the existing `emil-design-eng`, `review-animations`, and `animation-vocabulary`.
+
 ## [1.1.13] — 2026-07-17
 
 ### Changed
