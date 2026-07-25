@@ -3,6 +3,12 @@
 All notable changes to `@heyitsiveen/dotfiles` are documented here.
 Format loosely follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/).
 
+## [1.1.15] — 2026-07-25
+
+### Changed
+
+- Rewrote the no-global-installs rule (rule 17, `dotfiles/macos/.claude/CLAUDE.md` and `dotfiles/windows/.claude/CLAUDE.md`, both platforms) as a check-installed-first ladder: a CLI already installed (on PATH, as a project dependency, or an npm script) is invoked directly (`shopify theme dev`, `npm run …`) instead of through a runner; a missing tool runs through the ecosystem's on-demand runner (`npx` / `pnpm dlx` / `bunx` / `pipx run`), never a global install; and only when a runner can't work (persistent binary/venv needed) does a project-local or venv install go on the cleanup ledger. Also scoped the ledger/cleanup step to standalone CLIs that would otherwise need a global install — packages meant as project dependencies install normally through the project's own package manager as part of regular setup, so nothing temporary gets tracked and the rule doesn't trigger.
+
 ## [1.1.14] — 2026-07-19
 
 ### Added
