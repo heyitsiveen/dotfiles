@@ -66,7 +66,7 @@ dotfiles/
 │   │   │   ├── 30-aliases.fish      # Git, tmux, HTTPie, btop abbreviations
 │   │   │   ├── 40-fzf.fish          # FZF with Solarized Dark colors + fd/bat/eza
 │   │   │   ├── 50-tools.fish        # bat, eza, zoxide, ripgrep, delta setup
-│   │   │   ├── 60-tmux.fish         # Auto-attach to 'main' session
+│   │   │   ├── 60-tmux.fish         # Auto-attach to 'main' (disabled)
 │   │   │   └── 70-tide.fish         # Tide prompt with selectable palettes
 │   │   └── functions/               # Autoloaded functions
 │   │       ├── _tide_palette_heyitsiveen.fish
@@ -344,12 +344,12 @@ The Fish configuration uses a **modular structure** in `conf.d/`:
 | `30-aliases.fish`     | Git, tmux, HTTPie, btop abbreviations             |
 | `40-fzf.fish`         | FZF with Solarized Dark colors + fd/bat/eza       |
 | `50-tools.fish`       | bat, eza, zoxide, ripgrep, delta setup            |
-| `60-tmux.fish`        | Auto-attach to 'main' session                     |
+| `60-tmux.fish`        | Auto-attach to 'main' - disabled                  |
 | `70-tide.fish`        | Tide prompt with selectable palettes              |
 
 `00-platform.fish` is loaded first and is now used by `10-homebrew.fish` to choose the preferred Homebrew path for macOS vs Linux/WSL.
 `config.fish` enables `fnm env --use-on-cd`, adds `~/.local/bin`, and exports Bun paths when available.
-`60-tmux.fish` auto-attaches only for interactive local shells and skips existing tmux sessions, VS Code terminals, and SSH sessions.
+`60-tmux.fish` ships with its auto-attach block **commented out** - new terminals no longer drop into tmux. Start it yourself with `tmux new-session -A -s main` (or `tn main` / `ta main`). Uncomment the block to restore auto-attach; it only ever fired for interactive local shells and skipped existing tmux sessions, VS Code terminals, and SSH sessions.
 
 ### CLI Tools
 
