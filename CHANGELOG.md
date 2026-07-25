@@ -3,6 +3,13 @@
 All notable changes to `@heyitsiveen/dotfiles` are documented here.
 Format loosely follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/).
 
+## [1.2.0] — 2026-07-25
+
+### Changed
+
+- **Tmux no longer auto-attaches on shell startup.** The auto-attach block in `dotfiles/macos/.config/fish/conf.d/60-tmux.fish` is now commented out instead of removed, so opening a terminal lands you in plain Fish rather than the `main` tmux session. Start tmux explicitly with `tmux new-session -A -s main` (or the `tn main` / `ta main` abbreviations), and uncomment the block to restore the previous behaviour. Documented in `dotfiles/macos/README.md` (directory tree, `conf.d` table, and the `60-tmux.fish` note).
+- Synced `.claude/settings.json` across both platforms (`dotfiles/macos` and `dotfiles/windows`) with the maintainer's live Claude Code config: added the `heyitsiveen`, `mattpocock`, and `anthropic-agent-skills` marketplaces plus the `heyitsiveen-skills-personal` and `document-skills` plugins; dropped `superpowers`, `feature-dev`, `skill-creator`, `commit-commands`, and the explanatory/learning output styles; pinned `model: opus[1m]`; and set `effortLevel: medium`, `tui: fullscreen`, `autoMemoryEnabled: false`, `autoCompactEnabled: false`, and the input/agent notification preferences. Both platforms now ship an identical file.
+
 ## [1.1.15] — 2026-07-25
 
 ### Changed
