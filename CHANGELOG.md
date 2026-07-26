@@ -3,7 +3,11 @@
 All notable changes to `@heyitsiveen/dotfiles` are documented here.
 Format loosely follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/).
 
-## [Unreleased]
+## [2.0.0] — 2026-07-26
+
+### Breaking
+
+- **The dotfiles no longer set up fnm.** On macOS, `config.fish` exports `PNPM_HOME` instead of running `fnm env --use-on-cd`; on Windows, `Profile.ps1` gains an equivalent `$env:PNPM_HOME` block. Node installed via `pnpm runtime` ships **without** `npm`, `npx`, and `corepack` — use `pnpm` and `pnpx`. Updating costs you fnm's per-directory Node switching in non-pnpm projects (`devEngines.runtime` replaces `.nvmrc`, but only inside pnpm projects). The previous fnm block is retained commented out in both shell configs, so rolling back is uncommenting it and reinstalling fnm.
 
 ### Changed
 
