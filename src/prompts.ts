@@ -303,7 +303,7 @@ async function showUpdateNotification(updatePromise?: Promise<string | null>): P
   const latest = await updatePromise;
   if (!latest) return;
   const msg = `Update available: ${VERSION} → ${latest}`;
-  const cmd = 'Run: bunx @heyitsiveen/dotfiles@latest';
+  const cmd = 'Run: pnpm dlx @heyitsiveen/dotfiles@latest';
   const w = Math.max(msg.length, cmd.length) + 4;
   log.message(
     [

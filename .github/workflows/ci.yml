@@ -16,21 +16,27 @@ jobs:
     steps:
       - uses: actions/checkout@v6
 
-      - uses: actions/setup-node@v6
+      # Installs the standalone pnpm binary and the Node version declared in
+      # package.json → devEngines.runtime. No actions/setup-node, no npm.
+      - uses: pnpm/setup@v1
         with:
-          node-version: 22
-          cache: 'npm'
+          cache: true
 
-      - run: npm ci
+      # Previously (replaced by pnpm/setup — kept for reference):
+      # - uses: actions/setup-node@v6
+      #   with:
+      #     node-version: 22
+      #     cache: 'npm'
+      # - run: npm ci
 
       - name: Typecheck
-        run: npx tsc --noEmit
+        run: pnpm exec tsc --noEmit
 
       - name: Lint
-        run: npx oxlint src/
+        run: pnpm exec oxlint src/
 
       - name: Format check
-        run: npx oxfmt --check src/
+        run: pnpm exec oxfmt --check src/
 
       - name: Build
-        run: npm run build
+        run: pnpm run build

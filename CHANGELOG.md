@@ -3,6 +3,21 @@
 All notable changes to `@heyitsiveen/dotfiles` are documented here.
 Format loosely follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/).
 
+## [Unreleased]
+
+### Changed
+
+- **Migrated the whole repo from npm to pnpm.** `pnpm-lock.yaml` replaces `package-lock.json`; `packageManager: "pnpm@11.17.0"` and `devEngines.runtime` (Node `^24.0.0`, `onFail: "download"`) pin the toolchain so pnpm provisions the Node runtime itself — contributors no longer need Node pre-installed. `scripts/check.mjs` and `.husky/pre-commit` now call `pnpm exec` instead of `npx`; `prepare`/`prepublishOnly` call `pnpm run`.
+- **CI/publish rebuilt on `pnpm/setup@v1`.** One step replaces `actions/setup-node` + `npm ci` + the cache step in both `ci.yml` and `publish.yml`; it reads the Node version from `devEngines.runtime`. Publishing is now `pnpm publish --access public` over the same OIDC Trusted Publishing flow (no `NPM_TOKEN`). The previous npm steps are kept commented out in both workflows as a documented fallback.
+- **Dotfiles payload now sets up Node via pnpm instead of fnm** (`dotfiles/macos/.config/fish/config.fish`): `PNPM_HOME` export replaces the `fnm env --use-on-cd` block, which is retained commented out. Node installed by `pnpm runtime` deliberately ships without npm/npx/corepack — Corepack was removed from Node 25+, so the old `corepack enable` path is a dead end. Per-project Node pinning moves from `.nvmrc` to `devEngines.runtime`; the trade-off is the loss of fnm's `cd`-triggered auto-switching in non-pnpm projects.
+- Rewrote `TECH_STACK.md`'s package-management, CI/CD, and release sections — they described a bun-driven pipeline that no longer matched the actual workflows. Updated `README.md`, `CONTRIBUTING.md`, and `docs/testing-and-publishing.md` to pnpm commands throughout.
+- Windows tree-sitter-cli install hint (`src/platform.ts`) now suggests `pnpm add -g tree-sitter-cli`, with the npm command kept in the description for users without pnpm. The Node version guard in `src/index.ts` points at `pnpm runtime set node lts -g` instead of nvm/fnm/volta.
+
+### Added
+
+- `docs/pnpm-setup.md` — contributor guide for this repo: installing standalone pnpm, how `devEngines` provisions Node, commands, the husky hook, CI, and the release flow.
+- `dotfiles/macos/docs/node-pnpm-setup.md` — end-user guide shipped with the dotfiles: why pnpm owns Node, fresh install, migrating off fnm/nvm/volta, daily commands, per-project pinning, and gotchas.
+
 ## [1.2.0] — 2026-07-25
 
 ### Changed

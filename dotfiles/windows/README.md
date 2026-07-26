@@ -16,6 +16,7 @@
 - [Setup Guide](#setup-guide)
   - [Option A: Interactive Wizard](#option-a-interactive-wizard)
   - [Option B: Manual Setup](docs/manual-setup.md)
+- [Node + pnpm Setup](docs/node-pnpm-setup.md)
 - [Tool Configuration Details](#tool-configuration-details)
 - [Command Reference](docs/command-reference.md)
   - [Custom Functions](docs/command-reference.md#custom-functions)
@@ -45,7 +46,7 @@
 | **Monitoring**      | [btop](https://github.com/aristocratos/btop) (optional), [fastfetch](https://github.com/fastfetch-cli/fastfetch)                                                          | Beautiful system stats                                        |
 | **Git**             | [lazygit](https://github.com/jesseduffield/lazygit), delta                                                                                                                | TUI interface, enhanced diffs                                 |
 | **HTTP**            | [HTTPie](https://httpie.io/)                                                                                                                                              | Human-friendly HTTP client                                    |
-| **Node**            | [fnm](https://github.com/Schniz/fnm)                                                                                                                                      | Fast Node.js version manager                                  |
+| **Node / Packages** | [pnpm](https://pnpm.io/)                                                                                                                                                  | Package manager **and** Node version manager — see [docs/node-pnpm-setup.md](docs/node-pnpm-setup.md) |
 | **Editor**          | [VS Code](https://code.visualstudio.com/)                                                                                                                                 | Zed-inspired custom CSS, Solarized Dark theme, JetBrains Mono |
 
 ---
@@ -122,7 +123,7 @@ dotfiles-windows/
 
 - **Git** — For cloning and version control
 - **winget** — Windows Package Manager (included in Windows 11)
-- **Node.js ≥ 20** or **Bun** — Required to run the setup wizard
+- **Node.js ≥ 20** (or **Bun**) — Required to run the setup wizard. Easiest route: install pnpm (below), then `pnpm runtime set node lts -g`
 - **Developer Mode** — Required for symlink creation without admin
 
 ### Core Dependencies
@@ -141,7 +142,12 @@ winget install --id BurntSushi.ripgrep.MSVC
 winget install --id dandavison.delta
 winget install --id ajeetdsouza.zoxide
 winget install --id JesseDuffield.lazygit
-winget install --id Schniz.fnm
+# pnpm — package manager AND Node version manager (installs Node itself)
+iwr https://get.pnpm.io/install.ps1 -useb | iex
+pnpm runtime set node lts -g
+
+# Previously (replaced by pnpm — kept for reference):
+# winget install --id Schniz.fnm
 winget install --id fastfetch-cli.fastfetch
 ```
 
@@ -189,11 +195,11 @@ cd ~/Developer/dotfiles-windows/setup
 # bun (primary — fastest, runs TypeScript directly)
 bun install && bun run dev
 
-# npm
-npm install && npm start
-
 # pnpm
 pnpm install && pnpm start
+
+# npm
+npm install && npm start
 
 # yarn
 yarn install && yarn start
@@ -271,7 +277,7 @@ The PowerShell configuration uses a **modular structure** with `modules/` and `f
 | `prompt.ps1`      | oh-my-posh init with theme from preference file|
 | `tools.ps1`       | bat, eza, zoxide, ripgrep, delta, PSReadLine   |
 
-`Profile.ps1` dot-sources all `modules/*.ps1` and `functions/*.ps1` alphabetically, then inits fnm and adds bun to PATH.
+`Profile.ps1` dot-sources all `modules/*.ps1` and `functions/*.ps1` alphabetically, then adds Bun and pnpm (`$env:PNPM_HOME`) to PATH. Node lives under `PNPM_HOME` — see [docs/node-pnpm-setup.md](docs/node-pnpm-setup.md).
 
 ### CLI Tools
 

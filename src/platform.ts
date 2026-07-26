@@ -107,8 +107,8 @@ export function getDependencyTools(platform: Platform): ToolDep[] {
       name: 'tree-sitter-cli',
       binary: 'tree-sitter',
       description:
-        'LazyVim parser compiler (requires C compiler — VS Build Tools or scoop install gcc)',
-      installCmd: 'npm i -g tree-sitter-cli',
+        'LazyVim parser compiler (requires C compiler — VS Build Tools or scoop install gcc). No pnpm? Use: npm i -g tree-sitter-cli',
+      installCmd: 'pnpm add -g tree-sitter-cli',
       required: true,
       forGroup: 'Neovim'
     }

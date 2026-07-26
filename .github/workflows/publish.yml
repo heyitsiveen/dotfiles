@@ -14,24 +14,37 @@ jobs:
     steps:
       - uses: actions/checkout@v6
 
-      - uses: actions/setup-node@v6
+      # Installs the standalone pnpm binary and the Node version declared in
+      # package.json → devEngines.runtime. No actions/setup-node, no npm.
+      - uses: pnpm/setup@v1
         with:
-          node-version: 24
-          registry-url: 'https://registry.npmjs.org'
-          cache: 'npm'
+          cache: true
 
-      - run: npm ci
+      # Previously (replaced by pnpm/setup — kept for reference):
+      # - uses: actions/setup-node@v6
+      #   with:
+      #     node-version: 24
+      #     registry-url: 'https://registry.npmjs.org'
+      #     cache: 'npm'
+      # - run: npm ci
 
       - name: Typecheck
-        run: npx tsc --noEmit
+        run: pnpm exec tsc --noEmit
 
       - name: Lint
-        run: npx oxlint src/
+        run: pnpm exec oxlint src/
 
       - name: Format check
-        run: npx oxfmt --check src/
+        run: pnpm exec oxfmt --check src/
 
       - name: Build
-        run: npm run build
+        run: pnpm run build
 
-      - run: npm publish --access public
+      # Authenticates via OIDC Trusted Publishing (permissions.id-token: write).
+      # No NPM_TOKEN. OIDC publishing regressed in pnpm 11.0.8 and was fixed in
+      # pnpm/pnpm#11526 — this repo pins pnpm 11.17.0 via packageManager.
+      - run: pnpm publish --access public --no-git-checks
+
+      # Fallback if pnpm's OIDC handshake ever breaks again — restore the
+      # actions/setup-node step above (it provides the npm CLI + registry-url):
+      # - run: npm publish --access public

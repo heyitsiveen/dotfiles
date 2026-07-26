@@ -11,7 +11,7 @@ if (nodeMajor < 22) {
       process.versions.node +
       '.\n' +
       '\n' +
-      '  Upgrade:  \x1b[36mhttps://nodejs.org/\x1b[0m  (or via nvm / fnm / volta)\n' +
+      '  Upgrade:  \x1b[36mpnpm runtime set node lts -g\x1b[0m  (or https://nodejs.org/)\n' +
       '\n'
   );
   process.exit(1);
@@ -75,7 +75,7 @@ const main = defineCommand({
       // Flag bypass: --uninstall
       if (args.uninstall) {
         if (!manifest) {
-          log.error('No installation found. Run `npx @heyitsiveen/dotfiles` to install.');
+          log.error('No installation found. Run `pnpm dlx @heyitsiveen/dotfiles` to install.');
           process.exit(1);
         }
         const { uninstallFlow } = await import('./prompts.js');

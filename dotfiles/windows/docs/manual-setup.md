@@ -37,9 +37,26 @@ winget install --id ajeetdsouza.zoxide
 
 ```powershell
 winget install --id JesseDuffield.lazygit
-winget install --id Schniz.fnm
 winget install --id fastfetch-cli.fastfetch
 winget install --id httpie.cli
+```
+
+## 4b. Node + pnpm
+
+pnpm is the package manager **and** the Node version manager — it installs Node
+itself, so nothing needs to be present first:
+
+```powershell
+iwr https://get.pnpm.io/install.ps1 -useb | iex
+pnpm runtime set node lts -g
+```
+
+Node installed this way ships **without** npm/npx/corepack — that's intentional.
+Full walkthrough, including migrating off fnm/nvm-windows: [node-pnpm-setup.md](node-pnpm-setup.md).
+
+```powershell
+# Previously (replaced by pnpm — kept for reference):
+# winget install --id Schniz.fnm
 ```
 
 Optional: `scoop install btop` (system monitor — no winget package) and `winget install --id DEVCOM.JetBrainsMonoNerdFont` (Nerd Font, needed for icons in eza/oh-my-posh).
@@ -66,7 +83,7 @@ Copy-Item -Recurse -Force .\.config\bat\themes "$env:APPDATA\bat\themes"
 pwsh
 ```
 
-`Profile.ps1` dot-sources everything under `modules/` and `functions/` alphabetically, then inits fnm and adds Bun to PATH.
+`Profile.ps1` dot-sources everything under `modules/` and `functions/` alphabetically, then adds Bun and pnpm (`$env:PNPM_HOME`) to PATH. Node lives under `PNPM_HOME` — see [node-pnpm-setup.md](node-pnpm-setup.md).
 
 ## 6. OXC (Formatter & Linter)
 
@@ -74,20 +91,24 @@ pwsh
 
 ```powershell
 # Linter
-npm add -g oxlint
+pnpm add -g oxlint
 
 # Formatter
-npm add -g oxfmt
+pnpm add -g oxfmt
+
+# Previously (replaced by pnpm — kept for reference):
+# npm add -g oxlint
+# npm add -g oxfmt
 ```
 
 ### Install Per-Project
 
 ```powershell
-# npm
-npm add -D oxlint oxfmt
-
 # pnpm
 pnpm add -D oxlint oxfmt
+
+# npm
+npm add -D oxlint oxfmt
 
 # yarn
 yarn add -D oxlint oxfmt

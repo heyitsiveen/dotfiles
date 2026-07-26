@@ -182,7 +182,7 @@ Meta-position: "Everyone's obsessed with the model and I think they should be mo
 
 ```bash
 # fresh install — interactive picker; make sure to select setup-matt-pocock-skills
-npx skills@latest add mattpocock/skills
+pnpx skills@latest add mattpocock/skills
 # then, once per repo, inside the agent:
 /setup-matt-pocock-skills
 ```
@@ -196,10 +196,10 @@ npx skills@latest add mattpocock/skills
 
 The `skills.sh` installer instead **copies editable files** into your setup (you can hack on them) and lets you pick from the whole 40-skill repo — the promoted 22 are the supported set.
 
-Known trap: `npx skills update` only refreshes skills you already have **by name** — it never picks up new upstream skills and can't follow renames. This bites hard across v1.1.0's renames (`to-prd`→`to-spec`, `to-issues`→`to-tickets`, `decision-mapping`→`wayfinder`, `review`→`code-review`): `update` leaves the old names installed and never adds the new ones. Re-run `add` to pull the current set. Non-interactive repair:
+Known trap: `pnpx skills update` only refreshes skills you already have **by name** — it never picks up new upstream skills and can't follow renames. This bites hard across v1.1.0's renames (`to-prd`→`to-spec`, `to-issues`→`to-tickets`, `decision-mapping`→`wayfinder`, `review`→`code-review`): `update` leaves the old names installed and never adds the new ones. Re-run `add` to pull the current set. Non-interactive repair:
 
 ```bash
-npx skills@latest add mattpocock/skills \
+pnpx skills@latest add mattpocock/skills \
   -s grilling -s domain-modeling -s codebase-design \
   -s diagnosing-bugs -s code-review -s research -s implement \
   -s to-spec -s to-tickets -s wayfinder \
@@ -299,7 +299,7 @@ Recorded during the grilling sessions that produced this doc:
 3. **"Five-phase loop" treated as a claim, not a fact** — refuted at source; the five-step skill chain and 7-phase framework are what's real.
 4. **Full census over promoted-only** — including the shared model-invoked layer and clearly-marked drafts; drafts get one line each because they rename weekly.
 5. **X claims allowed via mirrors, always marked** *[via secondary source]*; unverifiable claims excluded.
-6. **Local install repaired** (2026-07-02): added `grilling`, `domain-modeling`, `codebase-design`, `diagnosing-bugs`, `code-review`, `implement` — an install predating v1.0.0 had wrappers pointing at skills that were never installed (`npx skills update` can't add new upstream skills).
+6. **Local install repaired** (2026-07-02): added `grilling`, `domain-modeling`, `codebase-design`, `diagnosing-bugs`, `code-review`, `implement` — an install predating v1.0.0 had wrappers pointing at skills that were never installed (`pnpx skills update` can't add new upstream skills).
 7. **One quick-ref only** (2026-07-02): the numbered "Quick reference — official order" replaced "The system on one page" rather than stacking beside it — never add a second summary view; extend this one. `/handoff` is documented as a between-steps tool, not a numbered step, because no primary source sequences it.
 8. **v1.1.0 sync (2026-07-09):** promoted `wayfinder` out of the drafts table into a full user-invoked entry now that it graduated to `engineering/`; added `research` (new) and reframed `code-review`/`prototype` as graduated; renamed `to-prd`→`to-spec` and `to-issues`→`to-tickets` throughout, keeping the quick-ref at the same six numbered steps and documenting `/wayfinder` as a situational on-ramp (per Pocock's explicit "not the main spine", changelog #464). Sourced from the GitHub v1.1.0 CHANGELOG + README (2026-07-08) and the launch tweet; the aihero.dev v1.1 article itself was unreachable (404/402), so no quotes are drawn from it. *(Superseded on 2026-07-10 by #9 on the wayfinder-vs-grill framing.)*
 9. **Wayfinder crowned the default entry (2026-07-10):** flipped the whole doc so `/wayfinder` is the main-spine front door and `/grill-with-docs` is the single-session shortcut. Driver: the [v1.1 launch video](https://www.youtube.com/watch?v=A8mokin_YOs) (2026-07-08), where Pocock says to "default to Wayfinder instead" of grill-with-docs and to "get obsessed with Wayfinder," especially for front-end work — a **spoken** position that runs ahead of his **written** docs (the live `ask-matt` router still lists grill as main-flow step 1 and files wayfinder under on-ramps; the v1.1.0 CHANGELOG still calls crowning wayfinder "a v2-sized move, not a 1.1"). Decision: follow his latest stated position (the video) but keep the written-docs lag visible as a sourced caveat, so the doc neither hides the flip nor pretends the repo text has caught up. No newer version (no v1.2) and no dedicated wayfinder post existed at 2026-07-10. *(Superseded on 2026-07-16 by #10.)*

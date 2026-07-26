@@ -30,3 +30,15 @@ if (Test-Path $bunBin) {
     $env:PATH = "$bunBin;$env:PATH"
 }
 
+# --- Node + pnpm ---
+# pnpm owns both the package manager and the Node runtime.
+# Node lives under $env:PNPM_HOME (`pnpm runtime set node lts -g`) and ships
+# WITHOUT npm/npx/corepack by design - use `pnpm` and `pnpx` instead.
+# See docs/node-pnpm-setup.md.
+$env:PNPM_HOME = Join-Path $env:LOCALAPPDATA 'pnpm'
+if (Test-Path $env:PNPM_HOME) {
+    if ($env:PATH -notlike "*$env:PNPM_HOME*") {
+        $env:PATH = "$env:PNPM_HOME;$env:PATH"
+    }
+}
+

@@ -4,14 +4,15 @@ Thanks for your interest in `@heyitsiveen/dotfiles`. This is a small CLI project
 
 ## Development setup
 
-Requires Node.js `>=22` and npm. Bun works too if you prefer it.
+Requires **pnpm** — see [docs/pnpm-setup.md](docs/pnpm-setup.md). You don't need
+Node installed first; pnpm provisions it from `devEngines.runtime` (Node `^24`).
 
 ```bash
 git clone https://github.com/heyitsiveen/dotfiles.git
 cd dotfiles
-npm install       # installs deps + runs husky (pre-commit hooks)
-npm run build     # bundles src/ → dist/index.mjs
-npm run check     # typecheck + lint + format check
+pnpm install       # installs deps + Node runtime + runs husky (pre-commit hooks)
+pnpm run build     # bundles src/ → dist/index.mjs
+pnpm run check     # typecheck + lint + format check
 ```
 
 To run the CLI locally:
@@ -24,7 +25,7 @@ node dist/index.mjs --dry-run
 
 - Open an issue first for larger changes so we can align on approach.
 - Keep PRs focused — one feature or fix per PR.
-- Run `npm run check` before pushing. The pre-commit hook (husky + lint-staged) will format and lint staged files automatically.
+- Run `pnpm run check` before pushing. The pre-commit hook (husky + lint-staged) will format and lint staged files automatically.
 - Commit messages follow the [Conventional Commits](https://www.conventionalcommits.org/) style: `feat(scope): ...`, `fix(scope): ...`, `docs(scope): ...`, `chore(scope): ...`.
 
 ## What's in scope

@@ -2,10 +2,12 @@
 
 Skills from [skills.sh](https://skills.sh) extend Claude Code with domain-specific knowledge and best practices.
 
+> Commands use `pnpx` (pnpm's one-off runner). This machine has no `npm`/`npx` — see [node-pnpm-setup.md](node-pnpm-setup.md). Upstream docs write these as `npx skills add …`.
+
 ## Anthropic — [anthropics/skills](https://github.com/anthropics/skills)
 
 ```bash
-npx skills add anthropics/skills
+pnpx skills add anthropics/skills
 ```
 
 | Skill              | Description                                                   |
@@ -24,7 +26,7 @@ npx skills add anthropics/skills
 ## Vercel — [vercel-labs](https://github.com/vercel-labs) / [vercel](https://github.com/vercel)
 
 ```bash
-npx skills add vercel-labs/agent-skills vercel-labs/next-skills vercel/ai vercel/turborepo
+pnpx skills add vercel-labs/agent-skills vercel-labs/next-skills vercel/ai vercel/turborepo
 ```
 
 | Skill                         | Description                                            |
@@ -39,7 +41,7 @@ npx skills add vercel-labs/agent-skills vercel-labs/next-skills vercel/ai vercel
 ## Expo — [expo/skills](https://github.com/expo/skills)
 
 ```bash
-npx skills add expo/skills
+pnpx skills add expo/skills
 ```
 
 | Skill                  | Description                                         |
@@ -53,7 +55,7 @@ npx skills add expo/skills
 ## Better Auth — [better-auth/skills](https://github.com/better-auth/skills)
 
 ```bash
-npx skills add better-auth/skills
+pnpx skills add better-auth/skills
 ```
 
 | Skill                                      | Description                                                           |
@@ -67,7 +69,7 @@ npx skills add better-auth/skills
 ## Remotion — [remotion-dev/skills](https://github.com/remotion-dev/skills)
 
 ```bash
-npx skills add remotion-dev/skills
+pnpx skills add remotion-dev/skills
 ```
 
 | Skill                     | Description                           |
@@ -77,7 +79,7 @@ npx skills add remotion-dev/skills
 ## Shadcn — [shadcn/ui](https://github.com/shadcn/ui)
 
 ```bash
-npx skills add https://github.com/shadcn/ui --skill shadcn
+pnpx skills add https://github.com/shadcn/ui --skill shadcn
 ```
 
 | Skill     | Description                                                              |
@@ -89,7 +91,7 @@ npx skills add https://github.com/shadcn/ui --skill shadcn
 _Skills for Figma's official Dev Mode MCP server — design → code, Code Connect, design-system rules, and writing to the canvas. Formerly `figma/dev-mode-mcp-server-guide`, which now redirects here._
 
 ```bash
-npx skills add figma/mcp-server-guide
+pnpx skills add figma/mcp-server-guide
 ```
 
 | Skill                              | Description                                                              |
@@ -107,7 +109,7 @@ npx skills add figma/mcp-server-guide
 _Craft-focused design engineering and motion from Emil Kowalski (animations.dev)._
 
 ```bash
-npx skills add emilkowalski/skills
+pnpx skills add emilkowalski/skills
 ```
 
 | Skill                          | Description                                                                            |
@@ -122,7 +124,7 @@ npx skills add emilkowalski/skills
 ## CSS Transitions — [jakubantalik/transitions.dev](https://github.com/jakubantalik/transitions.dev)
 
 ```bash
-npx skills add https://github.com/jakubantalik/transitions.dev --skill transitions-dev
+pnpx skills add https://github.com/jakubantalik/transitions.dev --skill transitions-dev
 ```
 
 | Skill             | Description                                                               |
@@ -132,7 +134,7 @@ npx skills add https://github.com/jakubantalik/transitions.dev --skill transitio
 ## Marketing Skills — [coreyhaines31/marketingskills](https://skills.sh/coreyhaines31/marketingskills/seo-audit)
 
 ```bash
-npx skills add coreyhaines31/marketingskills
+pnpx skills add coreyhaines31/marketingskills
 ```
 
 | Skill       | Description                                                                                                   |
@@ -149,7 +151,7 @@ npx skills add coreyhaines31/marketingskills
 _Small, composable skills for real engineering — deliberately not a process-owning framework. Main chain: `grill-with-docs → to-spec → to-tickets → implement → code-review` (the flow Pocock demos; his `ask-matt` router encodes it), with `grill-me` for plans outside a codebase. `wayfinder` is the upstream on-ramp when work is too big for one session — it maps the effort as a shared tracker map of investigation tickets; Pocock's [v1.1 video](https://www.youtube.com/watch?v=A8mokin_YOs) calls it his front door ("default to Wayfinder instead"), but the written flow keeps grill-with-docs as the spine. On-ramps: `triage` turns raw issues and external PRs into agent-ready briefs; `diagnosing-bugs` for anything broken. Support: `research` (background-agent reading legwork) and `prototype` (design questions). `improve-codebase-architecture` fights entropy; `handoff` carries context across sessions; `ask-matt` routes you when unsure. Since v1.0.0 (2026-06-17), skills split into **user-invoked** orchestrators (you type them) and **model-invoked** disciplines the model reaches for — `grilling`, `domain-modeling`, and `codebase-design` are the shared layer other skills call. **v1.1.0 (2026-07-08)** renamed `to-prd`→`to-spec`, merged `to-issues`→`to-tickets`, graduated `wayfinder`/`code-review`/`research`/`prototype`, and sharpened `grilling`; the repo now also ships a **Claude Code plugin** (reports v1.2.0 — `/plugin install mattpocock-skills@mattpocock` — a read-only, always-current bundle of the 22 promoted skills). **40 skills** total (22 promoted + 18 experimental). Full **recommended-order walkthrough** (per-step model/session/effort notes), per-skill cards, install & repair, session/CLAUDE.md strategy, and sources: [matt-pocock-workflow.md](matt-pocock-workflow.md)._
 
 ```bash
-npx skills add mattpocock/skills
+pnpx skills add mattpocock/skills
 # or install as a Claude Code plugin (read-only, always-current, 22 promoted skills, reports v1.2.0):
 #   /plugin marketplace add mattpocock/skills
 #   /plugin install mattpocock-skills@mattpocock

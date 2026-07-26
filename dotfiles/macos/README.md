@@ -16,6 +16,7 @@
 - [Setup Guide](#setup-guide)
   - [Option A: Automated Setup (GNU Stow)](#option-a-automated-setup-gnu-stow)
   - [Option B: Manual Setup](docs/manual-setup.md)
+- [Node + pnpm Setup](docs/node-pnpm-setup.md)
 - [Tool Configuration Details](#tool-configuration-details)
 - [Command Reference](docs/command-reference.md)
   - [Custom Functions](docs/command-reference.md#custom-functions)
@@ -47,7 +48,7 @@
 | **Monitoring**      | [btop](https://github.com/aristocratos/btop), [fastfetch](https://github.com/fastfetch-cli/fastfetch)                                                                     | Beautiful system stats                                        |
 | **Git**             | [lazygit](https://github.com/jesseduffield/lazygit), delta                                                                                                                | TUI interface, enhanced diffs                                 |
 | **HTTP**            | [HTTPie](https://httpie.io/)                                                                                                                                              | Human-friendly HTTP client                                    |
-| **Node**            | [fnm](https://github.com/Schniz/fnm)                                                                                                                                      | Fast Node.js version manager                                  |
+| **Node / Packages** | [pnpm](https://pnpm.io/)                                                                                                                                                  | Package manager **and** Node version manager — see [docs/node-pnpm-setup.md](docs/node-pnpm-setup.md) |
 | **Editor**          | [VS Code](https://code.visualstudio.com/)                                                                                                                                 | Zed-inspired custom CSS, Solarized Dark theme, JetBrains Mono |
 
 ---
@@ -58,7 +59,7 @@
 dotfiles/
 ├── .config/
 │   ├── fish/
-│   │   ├── config.fish              # Lean entry point, fnm setup, ~/.local/bin + Bun
+│   │   ├── config.fish              # Lean entry point, ~/.local/bin + Bun + pnpm/Node
 │   │   ├── conf.d/                  # Modular configs (loaded in order)
 │   │   │   ├── 00-platform.fish     # OS detection ($OS_TYPE)
 │   │   │   ├── 10-homebrew.fish     # Cross-platform Homebrew init
@@ -103,6 +104,7 @@ dotfiles/
 │   ├── fresh-macos-setup.md
 │   ├── manual-setup.md
 │   ├── mcp-servers.md
+│   ├── node-pnpm-setup.md
 │   └── skills.md
 ├── .claude/                         # Claude Code configuration
 │   ├── CLAUDE.md                    # Project instructions
@@ -133,11 +135,21 @@ dotfiles/
 
 ### Core Dependencies
 
-All tools are installed via Homebrew:
+Most tools are installed via Homebrew:
 
 ```bash
-fish fd fzf bat eza zoxide ripgrep delta tmux jq httpie btop fastfetch lazygit fnm
+fish fd fzf bat eza zoxide ripgrep delta tmux jq httpie btop fastfetch lazygit
 ```
+
+pnpm is **not** installed via Homebrew — that formula needs a separate Node
+install. Use the standalone binary, which then installs Node itself:
+
+```bash
+PNPM_HOME="$HOME/.local/share/pnpm" curl -fsSL https://get.pnpm.io/install.sh | sh -
+pnpm runtime set node lts -g
+```
+
+See [docs/node-pnpm-setup.md](docs/node-pnpm-setup.md) for the full story.
 
 ### Optional
 
@@ -172,7 +184,15 @@ cd ~/dotfiles
 #### 3. Install CLI Tools
 
 ```bash
-brew install fish fd fzf bat eza zoxide ripgrep delta tmux jq httpie btop fastfetch lazygit fnm
+brew install fish fd fzf bat eza zoxide ripgrep delta tmux jq httpie btop fastfetch lazygit
+```
+
+Then Node + pnpm (standalone installer, not Homebrew — see
+[docs/node-pnpm-setup.md](docs/node-pnpm-setup.md)):
+
+```bash
+PNPM_HOME="$HOME/.local/share/pnpm" curl -fsSL https://get.pnpm.io/install.sh | sh -
+pnpm runtime set node lts -g
 ```
 
 #### 4. Deploy with Stow
@@ -223,7 +243,9 @@ echo $SHELL                 # → /opt/homebrew/bin/fish
 
 This changes your **account's login shell** — the `UserShell` field in `dscl`, not just whichever shell your terminal happens to launch. This matters because GUI apps that spawn their own embedded terminal (Zed, Claude Desktop, etc.) use that account-level setting, not whatever shell you have open elsewhere. Skip this step and those apps keep opening macOS's stock login shell, zsh, regardless of Fish being installed.
 
-This repo ships **zero zsh dotfiles** on purpose — every PATH addition (fnm, Bun, `~/.local/bin`) lives only in Fish's `config.fish`/`conf.d/` (see [Fish Shell](#fish-shell) under Tool Configuration Details below). A bare zsh still finds `brew`, because the Homebrew installer drops `/opt/homebrew/bin` into the system-wide `/etc/paths.d/homebrew`, which macOS's `path_helper` merges into every login shell automatically. It will **not** find `node`, `npm`, `npx`, or Bun — those need the fnm/Bun exports that only exist in the Fish config. If some other tool ever spawns `/bin/zsh` or `/bin/sh` directly instead of your configured login shell, that's why those commands go missing there even though they work everywhere else.
+This repo ships **zero zsh dotfiles** on purpose — every PATH addition (pnpm, Bun, `~/.local/bin`) lives only in Fish's `config.fish`/`conf.d/` (see [Fish Shell](#fish-shell) under Tool Configuration Details below). A bare zsh still finds `brew`, because the Homebrew installer drops `/opt/homebrew/bin` into the system-wide `/etc/paths.d/homebrew`, which macOS's `path_helper` merges into every login shell automatically. It will **not** find `node`, `pnpm`, or Bun — those need the `PNPM_HOME`/`BUN_INSTALL` exports that only exist in the Fish config. If some other tool ever spawns `/bin/zsh` or `/bin/sh` directly instead of your configured login shell, that's why those commands go missing there even though they work everywhere else.
+
+Separately: `npm` and `npx` don't exist on this machine **at all**, in any shell. Node is installed by pnpm, which deliberately omits the bundled npm/npx/corepack. Reach for `pnpm` and `pnpx` instead.
 
 #### 6. Fisher + Tide (Already Configured)
 
@@ -337,7 +359,7 @@ The Fish configuration uses a **modular structure** in `conf.d/`:
 
 | File                  | Purpose                                           |
 | --------------------- | ------------------------------------------------- |
-| `config.fish`         | Lean entry point, fnm setup, ~/.local/bin + Bun   |
+| `config.fish`         | Lean entry point, ~/.local/bin + Bun + pnpm/Node  |
 | `00-platform.fish`    | OS detection - sets `$OS_TYPE` (macos/linux/wsl)  |
 | `10-homebrew.fish`    | Homebrew init with path order based on `$OS_TYPE` |
 | `20-environment.fish` | EDITOR/VISUAL fallback chain                      |
@@ -348,7 +370,7 @@ The Fish configuration uses a **modular structure** in `conf.d/`:
 | `70-tide.fish`        | Tide prompt with selectable palettes              |
 
 `00-platform.fish` is loaded first and is now used by `10-homebrew.fish` to choose the preferred Homebrew path for macOS vs Linux/WSL.
-`config.fish` enables `fnm env --use-on-cd`, adds `~/.local/bin`, and exports Bun paths when available.
+`config.fish` adds `~/.local/bin`, exports Bun paths when available, and exports `PNPM_HOME` (`~/.local/share/pnpm`) — which is where both pnpm and the Node runtime it manages live. The old fnm block is kept commented in that file for reference. See [docs/node-pnpm-setup.md](docs/node-pnpm-setup.md).
 `60-tmux.fish` ships with its auto-attach block **commented out** - new terminals no longer drop into tmux. Start it yourself with `tmux new-session -A -s main` (or `tn main` / `ta main`). Uncomment the block to restore auto-attach; it only ever fired for interactive local shells and skipped existing tmux sessions, VS Code terminals, and SSH sessions.
 
 ### CLI Tools

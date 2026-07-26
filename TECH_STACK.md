@@ -2,7 +2,7 @@
 
 Reference doc for the stack, tools, and release pipeline of `@heyitsiveen/dotfiles` — an interactive CLI that sets up dotfiles for macOS and Windows 11.
 
-> **The split personality of this repo:** The **CLI itself** is a Node/TypeScript ESM bundle (`src/` → `dist/`), but the **payload it ships** is shell-level dotfiles (Fish config, PowerShell scripts, Lua for Neovim, etc.). The `files` field in `package.json` bundles the raw `dotfiles/` tree into the npm tarball, so a single `bunx @heyitsiveen/dotfiles` pulls both the compiled CLI and the source dotfiles together.
+> **The split personality of this repo:** The **CLI itself** is a Node/TypeScript ESM bundle (`src/` → `dist/`), but the **payload it ships** is shell-level dotfiles (Fish config, PowerShell scripts, Lua for Neovim, etc.). The `files` field in `package.json` bundles the raw `dotfiles/` tree into the npm tarball, so a single `pnpm dlx @heyitsiveen/dotfiles` pulls both the compiled CLI and the source dotfiles together.
 
 ---
 
@@ -38,14 +38,18 @@ Compiler config: `tsconfig.json` (strict, `noEmit: true`, `target: ES2025`, `mod
 
 | Tool | Role |
 |---|---|
-| **Bun** | Dev + CI install + local scripts (`bun install`, `bun run build`) — primary |
-| **npm** | Publish only (OIDC Trusted Publishing via `id-token: write`) |
+| **pnpm** | Everything — install, scripts, CI, and publish. Pinned via `packageManager: "pnpm@11.17.0"` |
+| **pnpm runtime** | Also supplies **Node itself**. Version declared in `devEngines.runtime`, resolved + checksummed into `pnpm-lock.yaml` |
 | **tsdown** | Bundler — compiles `src/index.ts` → `dist/index.mjs` (ESM, node22 target, shims enabled) |
 | **TypeScript** | Typechecking only (`--noEmit`) — tsdown does the actual transpile/bundle |
 
 Build config: `tsdown.config.ts`.
 
-> **Why split bun and npm?** Bun is faster for installs and script execution locally and in CI. But npm publishing with OIDC (Trusted Publishing) requires the official `npm publish` command on `registry.npmjs.org` with `id-token: write` — `bun publish` doesn't integrate with npm's OIDC flow. So the workflow uses bun for everything **except** the final `npm publish` step (see `.github/workflows/publish.yml:44`).
+> **Why pnpm for everything?** Previously this repo ran npm in CI (and the docs here described a bun-based flow that no longer matched reality). One tool now covers all of it: pnpm installs deps, runs scripts, provisions the Node runtime, and publishes. Corepack — the old way to pin a package manager — was removed from Node 25+, so `packageManager` is enforced by the pnpm binary itself rather than by Node.
+>
+> **Why not `brew install pnpm`?** That formula is the JS bundle and requires a separate Node install. The standalone binary bundles its own Node and can `pnpm self-update`.
+>
+> **Bun** is no longer part of the build/CI path. It's still fine as a local scratch runtime, but `pnpm-lock.yaml` is the source of truth.
 
 ---
 
@@ -100,16 +104,16 @@ All source lives in `src/` and compiles to a single `dist/index.mjs`.
 
 | Workflow | Trigger | Steps |
 |---|---|---|
-| **CI** (`ci.yml`) | push/PR to `main` | `bun ci` → typecheck → lint → format check → build |
-| **Publish** (`publish.yml`) | GitHub Release published | Same checks + `npm publish --access public` (OIDC) |
+| **CI** (`ci.yml`) | push/PR to `main` | `pnpm/setup` → typecheck → lint → format check → build |
+| **Publish** (`publish.yml`) | GitHub Release published | Same checks + `pnpm publish --access public` (OIDC) |
 
 Both use:
-- `oven-sh/setup-bun@v2` for bun
-- `actions/setup-node@v6` only on publish (for `npm publish`)
-- `actions/cache@v5` keyed on `bun.lock` hash
+- `pnpm/setup@v1` — installs the standalone pnpm binary **and** the Node version from `devEngines.runtime`, then runs `pnpm install`. Replaces `actions/setup-node` + `oven-sh/setup-bun` + a separate cache step (`cache: true` handles the pnpm store).
 - `concurrency` group that cancels in-progress runs on new pushes (CI only)
 
-> **Why OIDC Trusted Publishing over `NPM_TOKEN`?** Trusted Publishing uses short-lived OIDC tokens minted per-workflow-run — no long-lived secret stored in GitHub. If the repo is ever compromised, there's no token to exfiltrate. The cost: you must configure the GitHub repo + workflow as a trusted publisher on npmjs.com once. After that, `npm publish` "just works" in CI with `id-token: write` permission (`.github/workflows/publish.yml:9`).
+> **Why OIDC Trusted Publishing over `NPM_TOKEN`?** Trusted Publishing uses short-lived OIDC tokens minted per-workflow-run — no long-lived secret stored in GitHub. If the repo is ever compromised, there's no token to exfiltrate. The cost: you must configure the GitHub repo + workflow as a trusted publisher on npmjs.com once. After that, publishing "just works" in CI with `id-token: write` permission (`.github/workflows/publish.yml:9`).
+>
+> **pnpm + OIDC caveat:** OIDC publishing regressed in pnpm 11.0.8 ([pnpm#11513](https://github.com/pnpm/pnpm/issues/11513)) and was fixed in [pnpm#11526](https://github.com/pnpm/pnpm/pull/11526). This repo pins 11.17.0. `publish.yml` keeps the old `actions/setup-node` + `npm publish` steps as commented-out fallback in case it ever breaks again.
 
 ---
 
@@ -150,30 +154,30 @@ Three themes applied uniformly across every themeable tool via `src/theme.ts`:
 | **Vercel** | Minimal, high-contrast dark theme |
 | **Vesper** | Soft, warm dark theme with orange accents |
 
-Theme state persists in `~/.config/heyitsiveen/dotfiles/` (the `MANIFEST_DIR` constant). Switch with `bunx @heyitsiveen/dotfiles --theme <name>` — the CLI rewrites every installed tool's theme config in one pass.
+Theme state persists in `~/.config/heyitsiveen/dotfiles/` (the `MANIFEST_DIR` constant). Switch with `pnpm dlx @heyitsiveen/dotfiles --theme <name>` — the CLI rewrites every installed tool's theme config in one pass.
 
 ---
 
 ## Release Flow
 
 ```
-local:   npm version patch → git push --tags
+local:   pnpm version patch → git push --tags
 github:  gh release create vX.Y.Z → triggers publish.yml
-ci:      bun ci → checks → build → npm publish (OIDC)
+ci:      pnpm/setup → checks → build → pnpm publish (OIDC)
 npm:     package goes live
 ```
 
-> **Why `npm version` not `bun version`?** `npm version` creates an annotated tag (`v1.0.3`) that CI keys off via `on.release.types: [published]`. Bun's version command exists but doesn't create the git tag the same way. Bun stays as your dev/install tool; npm owns versioning + publish.
+> `pnpm version patch` creates the annotated tag (`v1.0.3`) that CI keys off via `on.release.types: [published]`.
 
 `package.json` helper scripts that run automatically:
-- `"prepare"`: runs on `npm install` — installs husky hooks + builds
-- `"prepublishOnly"`: runs before `npm publish` — executes full check pipeline
+- `"prepare"`: runs on `pnpm install` — installs husky hooks + builds
+- `"prepublishOnly"`: runs before `pnpm publish` — executes full check pipeline
 
 ---
 
 ## TL;DR
 
-**CLI:** Node 22 + TypeScript 6 (strict, ESM) → tsdown bundle → Bun-driven dev loop → oxc (oxlint/oxfmt) for quality → @clack/prompts + citty for UX → husky/lint-staged pre-commit gate → GitHub Actions CI + OIDC publish to npm.
+**CLI:** Node 24 (provisioned by pnpm) + TypeScript 6 (strict, ESM) → tsdown bundle → pnpm-driven dev loop → oxc (oxlint/oxfmt) for quality → @clack/prompts + citty for UX → husky/lint-staged pre-commit gate → GitHub Actions CI + OIDC publish to npm.
 
 **Payload:** Fish/Tide/Fisher (macOS) & PowerShell/oh-my-posh (Windows), plus cross-platform WezTerm, Neovim/LazyVim, bat, btop, ripgrep, tmux, Claude Code.
 

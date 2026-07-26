@@ -5,9 +5,9 @@ import { execSync } from 'node:child_process';
 intro('heyitsiveen check');
 
 const steps = [
-  { name: 'Typecheck', cmd: 'npx tsc --noEmit' },
-  { name: 'Lint', cmd: 'npx oxlint src/' },
-  { name: 'Format', cmd: 'npx oxfmt --check src/' },
+  { name: 'Typecheck', cmd: 'pnpm exec tsc --noEmit' },
+  { name: 'Lint', cmd: 'pnpm exec oxlint src/' },
+  { name: 'Format', cmd: 'pnpm exec oxfmt --check src/' },
 ];
 
 let failed = false;

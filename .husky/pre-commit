@@ -1,2 +1,8 @@
-npx lint-staged
-npx tsc --noEmit
+# Git hooks run under /bin/sh, which does not source your interactive shell
+# config. If pnpm lives in the default PNPM_HOME and isn't already on PATH
+# (GUI git clients, editors, non-login shells), add it. No-op otherwise.
+[ -d "${PNPM_HOME:-$HOME/.local/share/pnpm}/bin" ] &&
+  PATH="${PNPM_HOME:-$HOME/.local/share/pnpm}/bin:$PATH"
+
+pnpm exec lint-staged
+pnpm exec tsc --noEmit

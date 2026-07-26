@@ -116,7 +116,26 @@ brew install tmux
 ## 6. Utility Tools
 
 ```bash
-brew install lazygit jq httpie btop fastfetch fnm
+brew install lazygit jq httpie btop fastfetch
+```
+
+## 6b. Node + pnpm
+
+pnpm is the package manager **and** the Node version manager. Do **not**
+`brew install pnpm` — that formula requires a separate Node install. Use the
+standalone binary, which needs nothing pre-installed:
+
+```bash
+PNPM_HOME="$HOME/.local/share/pnpm" curl -fsSL https://get.pnpm.io/install.sh | sh -
+pnpm runtime set node lts -g
+```
+
+Node installed this way ships **without** npm/npx/corepack — that's intentional.
+Full walkthrough, including migrating off fnm/nvm: [node-pnpm-setup.md](node-pnpm-setup.md).
+
+```bash
+# Previously (replaced by pnpm — kept for reference):
+# brew install fnm
 ```
 
 ## 7. Copy Configuration Files
@@ -141,20 +160,24 @@ cp -r .config/ripgrep/* ~/.config/ripgrep/
 
 ```bash
 # Linter
-npm add -g oxlint
+pnpm add -g oxlint
 
 # Formatter
-npm add -g oxfmt
+pnpm add -g oxfmt
+
+# Previously (replaced by pnpm — kept for reference):
+# npm add -g oxlint
+# npm add -g oxfmt
 ```
 
 ### Install Per-Project
 
 ```bash
-# npm
-npm add -D oxlint oxfmt
-
 # pnpm
 pnpm add -D oxlint oxfmt
+
+# npm
+npm add -D oxlint oxfmt
 
 # yarn
 yarn add -D oxlint oxfmt

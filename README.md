@@ -21,14 +21,14 @@ Interactive CLI to set up dotfiles for macOS and Windows 11. One command to inst
 ## Quick Start
 
 ```bash
-npx @heyitsiveen/dotfiles@latest
+pnpm dlx @heyitsiveen/dotfiles@latest
 ```
 
 Or with other package runners:
 
 ```bash
+npx @heyitsiveen/dotfiles@latest
 bunx @heyitsiveen/dotfiles@latest
-pnpm dlx @heyitsiveen/dotfiles@latest
 yarn dlx @heyitsiveen/dotfiles@latest
 ```
 
@@ -38,7 +38,7 @@ yarn dlx @heyitsiveen/dotfiles@latest
 
 | Prerequisite | Why | Install |
 |---|---|---|
-| [Node.js >= 22](https://nodejs.org/) | Running the CLI | `brew install node` or [nodejs.org](https://nodejs.org/) |
+| [Node.js >= 22](https://nodejs.org/) | Running the CLI | `pnpm runtime set node lts -g`, `brew install node`, or [nodejs.org](https://nodejs.org/) |
 | [Nerd Font](https://www.nerdfonts.com/) | Icons in Tide, oh-my-posh, Neovim | [nerdfonts.com](https://www.nerdfonts.com/) (recommended: JetBrains Mono NF) |
 | [Homebrew](https://brew.sh/) (macOS) / [winget](https://aka.ms/getwinget) (Windows) | Installing tools | [brew.sh](https://brew.sh/) / pre-installed on Windows 11 |
 
@@ -54,7 +54,7 @@ The CLI automatically detects all tools and offers to install missing ones via H
 | Fish Shell / PowerShell | `brew install fish` | `winget install Microsoft.PowerShell` |
 | Ghostty / WezTerm | `brew install --cask ghostty` | `winget install wez.wezterm` |
 | Neovim | `brew install neovim` | `winget install Neovim.Neovim` |
-| tree-sitter-cli | `brew install tree-sitter-cli` | `npm i -g tree-sitter-cli` |
+| tree-sitter-cli | `brew install tree-sitter-cli` | `pnpm add -g tree-sitter-cli` (or `npm i -g tree-sitter-cli`) |
 | C compiler | `xcode-select --install` | [VS Build Tools](https://visualstudio.microsoft.com/visual-cpp-build-tools/) |
 
 > **Note:** tree-sitter-cli and a C compiler are only needed if you install Neovim. LazyVim uses them to compile syntax parsers. macOS usually has the C compiler pre-installed via Xcode Command Line Tools.
@@ -116,9 +116,9 @@ Three themes are available across all tools:
 Switch themes instantly across all installed tools:
 
 ```bash
-npx @heyitsiveen/dotfiles --theme vercel
-npx @heyitsiveen/dotfiles --theme vesper
-npx @heyitsiveen/dotfiles --theme solarized-dark
+pnpm dlx @heyitsiveen/dotfiles --theme vercel
+pnpm dlx @heyitsiveen/dotfiles --theme vesper
+pnpm dlx @heyitsiveen/dotfiles --theme solarized-dark
 ```
 
 ## CLI Flags
@@ -154,21 +154,25 @@ Subsequent runs detect the existing installation and offer:
 
 ## Development
 
+This repo uses **pnpm**. See [docs/pnpm-setup.md](docs/pnpm-setup.md) if you don't
+have it — you don't need Node installed first, pnpm brings its own.
+
 ```bash
-# Install dependencies
-npm install
+# Install dependencies (Node is fetched automatically per devEngines.runtime)
+pnpm install
 
 # Build
-npm run build
+pnpm run build
 
 # Run locally
 node dist/index.mjs
 
 # Run all checks (typecheck + lint + format)
-npm run check
+pnpm run check
 
-# Or with bun
-bun install && bun run build && bun run check
+# Previously (replaced by pnpm — kept for reference):
+# npm install && npm run build && npm run check
+# bun install && bun run build && bun run check
 ```
 
 **Pre-commit hooks** are set up via [husky](https://typicode.github.io/husky/) + [lint-staged](https://github.com/lint-staged/lint-staged). Every `git commit` automatically:

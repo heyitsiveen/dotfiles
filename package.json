@@ -29,8 +29,16 @@
     "fmt": "oxfmt src/",
     "fmt:check": "oxfmt --check src/",
     "check": "node scripts/check.mjs",
-    "prepublishOnly": "npm run check",
-    "prepare": "husky && npm run build"
+    "prepublishOnly": "pnpm run check",
+    "prepare": "husky && pnpm run build"
+  },
+  "packageManager": "pnpm@11.17.0",
+  "devEngines": {
+    "runtime": {
+      "name": "node",
+      "version": "^24.0.0",
+      "onFail": "download"
+    }
   },
   "lint-staged": {
     "src/**/*.ts": [

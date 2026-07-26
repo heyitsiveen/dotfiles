@@ -5,7 +5,7 @@
 Only the latest published version of `@heyitsiveen/dotfiles` on npm receives security fixes. Upgrade with:
 
 ```bash
-npx @heyitsiveen/dotfiles@latest
+pnpm dlx @heyitsiveen/dotfiles@latest
 ```
 
 ## Reporting a Vulnerability
@@ -21,7 +21,7 @@ Include:
 
 - A description of the issue.
 - Steps to reproduce (or a minimal proof of concept).
-- The version you reproduced it on (`npx @heyitsiveen/dotfiles --version`) and your OS.
+- The version you reproduced it on (`pnpm dlx @heyitsiveen/dotfiles --version`) and your OS.
 - Any suggested remediation.
 
 ## What happens next
