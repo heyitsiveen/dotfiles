@@ -3,6 +3,12 @@
 All notable changes to `@heyitsiveen/dotfiles` are documented here.
 Format loosely follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/).
 
+## [2.0.1] — 2026-08-04
+
+### Changed
+
+- Completed the Emil Kowalski section of `docs/skills.md` (both macOS and Windows payloads) — added `pick-ui-library` and `prototype`, the two skills from [emilkowalski/skills](https://github.com/emilkowalski/skills) the reference was missing, bringing it to all 8. Both are user-invoked only (`disable-model-invocation: true`); a note records how Emil's `prototype` coexists with Matt Pocock's namespaced `mattpocock-skills:prototype`.
+
 ## [2.0.0] — 2026-07-26
 
 ### Breaking

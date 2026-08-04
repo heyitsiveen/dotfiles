@@ -120,6 +120,11 @@ pnpx skills add emilkowalski/skills
 | `improve-animations`           | Audit a codebase's motion, then produce prioritized findings & fix plans (read-only)   |
 | `find-animation-opportunities` | Sweep an interface for moments that genuinely benefit from motion — restraint-first    |
 | `animation-vocabulary`         | Turn a loose description of a motion effect into the precise term                      |
+| `pick-ui-library`              | Curated, opinionated library picks per frontend task — charts, OTP, DnD, toasts, state |
+| `prototype`                    | Build several genuinely different versions of a UI piece behind a live visual picker   |
+
+> [!NOTE]
+> `pick-ui-library` and `prototype` are **user-invoked only** (`disable-model-invocation: true`) — the model never reaches for them; type the skill name. Emil's `prototype` shares its name with Matt Pocock's model-invoked `prototype` (throwaway code to answer a design question); they coexist because Pocock's arrives namespaced via the plugin (`mattpocock-skills:prototype`) while Emil's owns the bare `prototype` slug in `~/.agents/skills`.
 
 ## CSS Transitions — [jakubantalik/transitions.dev](https://github.com/jakubantalik/transitions.dev)
 
