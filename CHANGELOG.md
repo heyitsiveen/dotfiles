@@ -3,6 +3,17 @@
 All notable changes to `@heyitsiveen/dotfiles` are documented here.
 Format loosely follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/).
 
+## [2.0.2] — 2026-08-06
+
+### Changed
+
+- Audited `docs/skills.md` (both macOS and Windows payloads) against what is actually installed on the machine. Added rows for `web-artifacts-builder`, `agent-browser`, `animate`, and `better-auth-security-best-practices`; renamed `create-auth-skill` to `create-auth` to match the real slug; added sections for [nextlevelbuilder/ui-ux-pro-max-skill](https://github.com/nextlevelbuilder/ui-ux-pro-max-skill) and [jeffallan/claude-skills](https://github.com/jeffallan/claude-skills); bumped the mattpocock plugin to v1.2.2 / 35 bundled skills.
+- A re-audit against `~/.agents/.skill-lock.json` and the installed-plugin manifests found no further gaps — every skill present on disk has a row. Four lock entries (`mattpocock/skills`, `figma/mcp-server-guide` → `figma-implement-design`, `anthropics/knowledge-work-plugins` → `system-design`, `pproenca/dot-skills` → `emilkowal-animations`) no longer have folders on disk and were deliberately left undocumented.
+
+### Added
+
+- `.claude/skills/update-skills-doc/` — repo-maintenance skill that audits `docs/skills.md` against the installed skills-sh and plugin manifests, documents a newly added skill or provider, then syncs the canonical copy to the macOS and Windows payloads (preserving the one-line `This setup has no npm/npx` Windows delta). Excluded from the published package via `.npmignore`.
+
 ## [2.0.1] — 2026-08-04
 
 ### Changed

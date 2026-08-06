@@ -23,6 +23,9 @@ dotfiles/windows/SKIPPED.md
 docs/
 PRD.md
 
+# Repo-maintenance skills (not part of the shipped dotfiles)
+.claude/
+
 # OS artifacts
 **/.DS_Store
 **/_MACOSX
