@@ -10,33 +10,35 @@ Skills from [skills.sh](https://skills.sh) extend Claude Code with domain-specif
 pnpx skills add anthropics/skills
 ```
 
-| Skill              | Description                                                   |
-| ------------------ | ------------------------------------------------------------- |
-| `frontend-design`  | Production-grade frontend interfaces with high design quality |
-| `skill-creator`    | Build new skills that extend agent capabilities               |
-| `pdf`              | PDF extraction, creation, merging, splitting, and forms       |
-| `docx`             | Document creation, editing, tracked changes, and analysis     |
-| `xlsx`             | Spreadsheet creation, formulas, and data analysis             |
-| `mcp-builder`      | Guide for creating MCP servers                                |
-| `canvas-design`    | Visual art creation in PNG and PDF formats                    |
-| `doc-coauthoring`  | Collaborative documentation and iterative refinement          |
-| `theme-factory`    | Styling toolkit with 10 preset themes and custom generation   |
-| `brand-guidelines` | Brand colors and typography standards                         |
+| Skill                   | Description                                                      |
+| ----------------------- | ---------------------------------------------------------------- |
+| `frontend-design`       | Production-grade frontend interfaces with high design quality    |
+| `skill-creator`         | Build new skills that extend agent capabilities                  |
+| `pdf`                   | PDF extraction, creation, merging, splitting, and forms          |
+| `docx`                  | Document creation, editing, tracked changes, and analysis        |
+| `xlsx`                  | Spreadsheet creation, formulas, and data analysis                |
+| `mcp-builder`           | Guide for creating MCP servers                                   |
+| `canvas-design`         | Visual art creation in PNG and PDF formats                       |
+| `doc-coauthoring`       | Collaborative documentation and iterative refinement             |
+| `theme-factory`         | Styling toolkit with 10 preset themes and custom generation      |
+| `brand-guidelines`      | Brand colors and typography standards                            |
+| `web-artifacts-builder` | Multi-component claude.ai artifacts — React, Tailwind, shadcn/ui |
 
 ## Vercel — [vercel-labs](https://github.com/vercel-labs) / [vercel](https://github.com/vercel)
 
 ```bash
-pnpx skills add vercel-labs/agent-skills vercel-labs/next-skills vercel/ai vercel/turborepo
+pnpx skills add vercel-labs/agent-skills vercel-labs/next-skills vercel-labs/agent-browser vercel/ai vercel/turborepo
 ```
 
-| Skill                         | Description                                            |
-| ----------------------------- | ------------------------------------------------------ |
-| `vercel-react-best-practices` | React/Next.js performance optimization (45 rules)      |
-| `web-design-guidelines`       | UI code compliance with Web Interface Guidelines       |
-| `vercel-react-native-skills`  | React Native and Expo mobile best practices            |
-| `next-best-practices`         | Next.js file conventions, RSC, data patterns, metadata |
-| `ai-sdk`                      | Build AI features with Vercel AI SDK                   |
-| `turborepo`                   | Monorepo best practices with Turborepo                 |
+| Skill                         | Description                                                             |
+| ----------------------------- | ----------------------------------------------------------------------- |
+| `vercel-react-best-practices` | React/Next.js performance optimization (45 rules)                       |
+| `web-design-guidelines`       | UI code compliance with Web Interface Guidelines                        |
+| `vercel-react-native-skills`  | React Native and Expo mobile best practices                             |
+| `next-best-practices`         | Next.js file conventions, RSC, data patterns, metadata                  |
+| `ai-sdk`                      | Build AI features with Vercel AI SDK                                    |
+| `turborepo`                   | Monorepo best practices with Turborepo                                  |
+| `agent-browser`               | Browser & Electron automation CLI for agents — CDP, a11y-tree snapshots |
 
 ## Expo — [expo/skills](https://github.com/expo/skills)
 
@@ -58,13 +60,14 @@ pnpx skills add expo/skills
 pnpx skills add better-auth/skills
 ```
 
-| Skill                                      | Description                                                           |
-| ------------------------------------------ | --------------------------------------------------------------------- |
-| `better-auth-best-practices`               | Full server + client setup — DB adapters, sessions, plugins, security |
-| `create-auth-skill`                        | Scaffold auth end to end — framework/DB detection, handlers, OAuth, UI |
-| `email-and-password-best-practices`        | Email verification, password-reset flows, policy & custom hashing     |
-| `organization-best-practices`              | Multi-tenant orgs — members, invitations, roles/permissions, teams    |
-| `two-factor-authentication-best-practices` | 2FA — TOTP, email/SMS OTP, backup codes, trusted-device handling      |
+| Skill                                      | Description                                                                                                 |
+| ------------------------------------------ | ----------------------------------------------------------------------------------------------------------- |
+| `better-auth-best-practices`               | Full server + client setup — DB adapters, sessions, plugins, security                                       |
+| `create-auth`                              | Scaffold auth end to end — framework/DB detection, handlers, OAuth, UI                                      |
+| `better-auth-security-best-practices`      | Harden a deployment — rate limits, secrets, CSRF, trusted origins, cookie & token encryption, audit logging |
+| `email-and-password-best-practices`        | Email verification, password-reset flows, policy & custom hashing                                           |
+| `organization-best-practices`              | Multi-tenant orgs — members, invitations, roles/permissions, teams                                          |
+| `two-factor-authentication-best-practices` | 2FA — TOTP, email/SMS OTP, backup codes, trusted-device handling                                            |
 
 ## Remotion — [remotion-dev/skills](https://github.com/remotion-dev/skills)
 
@@ -82,9 +85,9 @@ pnpx skills add remotion-dev/skills
 pnpx skills add https://github.com/shadcn/ui --skill shadcn
 ```
 
-| Skill     | Description                                                              |
-| --------- | ------------------------------------------------------------------------ |
-| `shadcn`  | Complete shadcn/ui component management — add, search, fix, and compose  |
+| Skill    | Description                                                             |
+| -------- | ----------------------------------------------------------------------- |
+| `shadcn` | Complete shadcn/ui component management — add, search, fix, and compose |
 
 ## Figma — [figma/mcp-server-guide](https://github.com/figma/mcp-server-guide)
 
@@ -100,7 +103,7 @@ pnpx skills add figma/mcp-server-guide
 | `figma-generate-design`            | Build a full page, screen, or layout in Figma from code or a description |
 | `figma-implement-design`           | Implement a Figma design as production code                              |
 | `figma-code-connect`               | Map Figma components to code components (Code Connect)                   |
-| `figma-create-design-system-rules` | Create design-system rules so generated code matches your system        |
+| `figma-create-design-system-rules` | Create design-system rules so generated code matches your system         |
 | `figma-create-new-file`            | Create a new blank Figma, FigJam, or Slides file                         |
 | `figma-generate-diagram`           | Generate a flowchart or diagram in FigJam                                |
 
@@ -112,16 +115,17 @@ _Craft-focused design engineering and motion from Emil Kowalski (animations.dev)
 pnpx skills add emilkowalski/skills
 ```
 
-| Skill                          | Description                                                                            |
-| ------------------------------ | -------------------------------------------------------------------------------------- |
-| `emil-design-eng`              | Craft-focused design engineering — animation framework, component patterns, gestures   |
-| `apple-design`                 | Apple's fluid, physical motion & interface design — springs, gestures, materials, type |
-| `review-animations`            | Review animation & motion code against a high craft bar — ten non-negotiable standards |
-| `improve-animations`           | Audit a codebase's motion, then produce prioritized findings & fix plans (read-only)   |
-| `find-animation-opportunities` | Sweep an interface for moments that genuinely benefit from motion — restraint-first    |
-| `animation-vocabulary`         | Turn a loose description of a motion effect into the precise term                      |
-| `pick-ui-library`              | Curated, opinionated library picks per frontend task — charts, OTP, DnD, toasts, state |
-| `prototype`                    | Build several genuinely different versions of a UI piece behind a live visual picker   |
+| Skill                          | Description                                                                                      |
+| ------------------------------ | ------------------------------------------------------------------------------------------------ |
+| `emil-design-eng`              | Craft-focused design engineering — animation framework, component patterns, gestures             |
+| `animate`                      | Build an animation from scratch and write it — purpose, tool, properties, curve, interrupt, exit |
+| `apple-design`                 | Apple's fluid, physical motion & interface design — springs, gestures, materials, type           |
+| `review-animations`            | Review animation & motion code against a high craft bar — ten non-negotiable standards           |
+| `improve-animations`           | Audit a codebase's motion, then produce prioritized findings & fix plans (read-only)             |
+| `find-animation-opportunities` | Sweep an interface for moments that genuinely benefit from motion — restraint-first              |
+| `animation-vocabulary`         | Turn a loose description of a motion effect into the precise term                                |
+| `pick-ui-library`              | Curated, opinionated library picks per frontend task — charts, OTP, DnD, toasts, state           |
+| `prototype`                    | Build several genuinely different versions of a UI piece behind a live visual picker             |
 
 > [!NOTE]
 > `pick-ui-library` and `prototype` are **user-invoked only** (`disable-model-invocation: true`) — the model never reaches for them; type the skill name. Emil's `prototype` shares its name with Matt Pocock's model-invoked `prototype` (throwaway code to answer a design question); they coexist because Pocock's arrives namespaced via the plugin (`mattpocock-skills:prototype`) while Emil's owns the bare `prototype` slug in `~/.agents/skills`.
@@ -135,6 +139,31 @@ pnpx skills add https://github.com/jakubantalik/transitions.dev --skill transiti
 | Skill             | Description                                                               |
 | ----------------- | ------------------------------------------------------------------------- |
 | `transitions-dev` | Twelve drop-in, framework-free CSS transitions with reduced-motion guards |
+
+## UI/UX Pro Max — [nextlevelbuilder/ui-ux-pro-max-skill](https://github.com/nextlevelbuilder/ui-ux-pro-max-skill)
+
+_Searchable local design database — styles, palettes, font pairings, product types, UX guidelines, icons, GSAP presets, and chart types across 22 stacks._
+
+```bash
+pnpx skills add https://github.com/nextlevelbuilder/ui-ux-pro-max-skill --skill ui-ux-pro-max
+```
+
+| Skill           | Description                                                                               |
+| --------------- | ----------------------------------------------------------------------------------------- |
+| `ui-ux-pro-max` | Priority-ranked UI/UX recommendations for layout, color, type, a11y, motion, and data viz |
+
+## Shopify — [jeffallan/claude-skills](https://github.com/jeffallan/claude-skills)
+
+```bash
+pnpx skills add jeffallan/claude-skills
+```
+
+| Skill            | Description                                                                             |
+| ---------------- | --------------------------------------------------------------------------------------- |
+| `shopify-expert` | Themes, Liquid, apps, Hydrogen, checkout extensions, Functions, and Storefront API work |
+
+> [!NOTE]
+> Overlaps the official `shopify-plugin` in [plugins.md](plugins.md), which ships per-API skills (`shopify-liquid`, `shopify-admin`, `shopify-hydrogen`, …) sourced from Shopify's own docs. Prefer the plugin for API specifics; this one is a single generalist skill.
 
 ## Marketing Skills — [coreyhaines31/marketingskills](https://skills.sh/coreyhaines31/marketingskills/seo-audit)
 
@@ -153,11 +182,11 @@ pnpx skills add coreyhaines31/marketingskills
 >
 > 2. **Parallelize a wayfinder map's sub-issues with Claude Code sub-agents — AFK tickets only.** Chart mode already fires a `/research` subagent per research ticket, and unblocked AFK task and implementation tickets can each go to a sub-agent in its own git worktree — the sub-agent equivalent of Matt's parallel sessions (inferred). HITL tickets (grilling, prototype — the default type) only resolve through the live human, so never delegate those ([wayfinder SKILL.md](https://github.com/mattpocock/skills/blob/main/skills/engineering/wayfinder/SKILL.md)).
 
-_Small, composable skills for real engineering — deliberately not a process-owning framework. Main chain: `grill-with-docs → to-spec → to-tickets → implement → code-review` (the flow Pocock demos; his `ask-matt` router encodes it), with `grill-me` for plans outside a codebase. `wayfinder` is the upstream on-ramp when work is too big for one session — it maps the effort as a shared tracker map of investigation tickets; Pocock's [v1.1 video](https://www.youtube.com/watch?v=A8mokin_YOs) calls it his front door ("default to Wayfinder instead"), but the written flow keeps grill-with-docs as the spine. On-ramps: `triage` turns raw issues and external PRs into agent-ready briefs; `diagnosing-bugs` for anything broken. Support: `research` (background-agent reading legwork) and `prototype` (design questions). `improve-codebase-architecture` fights entropy; `handoff` carries context across sessions; `ask-matt` routes you when unsure. Since v1.0.0 (2026-06-17), skills split into **user-invoked** orchestrators (you type them) and **model-invoked** disciplines the model reaches for — `grilling`, `domain-modeling`, and `codebase-design` are the shared layer other skills call. **v1.1.0 (2026-07-08)** renamed `to-prd`→`to-spec`, merged `to-issues`→`to-tickets`, graduated `wayfinder`/`code-review`/`research`/`prototype`, and sharpened `grilling`; the repo now also ships a **Claude Code plugin** (reports v1.2.0 — `/plugin install mattpocock-skills@mattpocock` — a read-only, always-current bundle of the 22 promoted skills). **40 skills** total (22 promoted + 18 experimental). Full **recommended-order walkthrough** (per-step model/session/effort notes), per-skill cards, install & repair, session/CLAUDE.md strategy, and sources: [matt-pocock-workflow.md](matt-pocock-workflow.md)._
+_Small, composable skills for real engineering — deliberately not a process-owning framework. Main chain: `grill-with-docs → to-spec → to-tickets → implement → code-review` (the flow Pocock demos; his `ask-matt` router encodes it), with `grill-me` for plans outside a codebase. `wayfinder` is the upstream on-ramp when work is too big for one session — it maps the effort as a shared tracker map of investigation tickets; Pocock's [v1.1 video](https://www.youtube.com/watch?v=A8mokin_YOs) calls it his front door ("default to Wayfinder instead"), but the written flow keeps grill-with-docs as the spine. On-ramps: `triage` turns raw issues and external PRs into agent-ready briefs; `diagnosing-bugs` for anything broken. Support: `research` (background-agent reading legwork) and `prototype` (design questions). `improve-codebase-architecture` fights entropy; `handoff` carries context across sessions; `ask-matt` routes you when unsure. Since v1.0.0 (2026-06-17), skills split into **user-invoked** orchestrators (you type them) and **model-invoked** disciplines the model reaches for — `grilling`, `domain-modeling`, and `codebase-design` are the shared layer other skills call. **v1.1.0 (2026-07-08)** renamed `to-prd`→`to-spec`, merged `to-issues`→`to-tickets`, graduated `wayfinder`/`code-review`/`research`/`prototype`, and sharpened `grilling`; the repo now also ships a **Claude Code plugin** (reports v1.2.2 — `/plugin install mattpocock-skills@mattpocock` — a read-only, always-current bundle, now **35 skills**: the promoted set plus in-progress and writing skills). **40 skills** total (22 promoted + 18 experimental). Full **recommended-order walkthrough** (per-step model/session/effort notes), per-skill cards, install & repair, session/CLAUDE.md strategy, and sources: [matt-pocock-workflow.md](matt-pocock-workflow.md)._
 
 ```bash
 pnpx skills add mattpocock/skills
-# or install as a Claude Code plugin (read-only, always-current, 22 promoted skills, reports v1.2.0):
+# or install as a Claude Code plugin (read-only, always-current, 35 skills, reports v1.2.2):
 #   /plugin marketplace add mattpocock/skills
 #   /plugin install mattpocock-skills@mattpocock
 ```
