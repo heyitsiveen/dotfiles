@@ -62,6 +62,7 @@ dotfiles/
 │   │   ├── config.fish              # Lean entry point, ~/.local/bin + Bun + pnpm/Node
 │   │   ├── conf.d/                  # Modular configs (loaded in order)
 │   │   │   ├── 00-platform.fish     # OS detection ($OS_TYPE)
+│   │   │   ├── 05-terminal-compat.fish # Disable fish's terminal DA query
 │   │   │   ├── 10-homebrew.fish     # Cross-platform Homebrew init
 │   │   │   ├── 20-environment.fish  # EDITOR/VISUAL fallback chain
 │   │   │   ├── 30-aliases.fish      # Git, tmux, HTTPie, btop abbreviations
@@ -361,6 +362,7 @@ The Fish configuration uses a **modular structure** in `conf.d/`:
 | --------------------- | ------------------------------------------------- |
 | `config.fish`         | Lean entry point, ~/.local/bin + Bun + pnpm/Node  |
 | `00-platform.fish`    | OS detection - sets `$OS_TYPE` (macos/linux/wsl)  |
+| `05-terminal-compat.fish` | Disables fish's Primary Device Attribute query (`no-query-term`) |
 | `10-homebrew.fish`    | Homebrew init with path order based on `$OS_TYPE` |
 | `20-environment.fish` | EDITOR/VISUAL fallback chain                      |
 | `30-aliases.fish`     | Git, tmux, HTTPie, btop abbreviations             |
@@ -370,6 +372,7 @@ The Fish configuration uses a **modular structure** in `conf.d/`:
 | `70-tide.fish`        | Tide prompt with selectable palettes              |
 
 `00-platform.fish` is loaded first and is now used by `10-homebrew.fish` to choose the preferred Homebrew path for macOS vs Linux/WSL.
+`05-terminal-compat.fish` sets the `no-query-term` feature flag. fish 4.1+ queries the terminal for its Primary Device Attribute (`\e[0c`) to unlock optional features; terminals that never answer (the Claude Code desktop terminal, for one) make fish stall 10 seconds at startup and print a warning. Feature flags are read before config is sourced, so the flag applies from the next shell onward, and the guard makes the universal set idempotent — `fish_variables` is not shipped, so the file is what makes it reproducible on a fresh machine.
 `config.fish` adds `~/.local/bin`, exports Bun paths when available, and exports `PNPM_HOME` (`~/.local/share/pnpm`) — which is where both pnpm and the Node runtime it manages live. The old fnm block is kept commented in that file for reference. See [docs/node-pnpm-setup.md](docs/node-pnpm-setup.md).
 `60-tmux.fish` ships with its auto-attach block **commented out** - new terminals no longer drop into tmux. Start it yourself with `tmux new-session -A -s main` (or `tn main` / `ta main`). Uncomment the block to restore auto-attach; it only ever fired for interactive local shells and skipped existing tmux sessions, VS Code terminals, and SSH sessions.
 

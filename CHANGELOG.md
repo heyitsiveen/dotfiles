@@ -3,6 +3,13 @@
 All notable changes to `@heyitsiveen/dotfiles` are documented here.
 Format loosely follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/).
 
+## [2.0.3] — 2026-09-19
+
+### Added
+
+- `dotfiles/macos/.config/fish/conf.d/05-terminal-compat.fish` — sets the `no-query-term` fish feature flag. fish 4.1+ probes the terminal with a Primary Device Attribute query (`\e[0c`); terminals that never answer (the Claude Code desktop terminal among them) make fish stall 10 seconds on startup and print `warning: fish could not read response to Primary Device Attribute query`. Feature flags are read before config is sourced, so the flag applies from the next shell onward; the `contains` guard keeps the universal set idempotent, and the file is what makes it reproducible since `fish_variables` is not shipped. Cost of the flag: fish skips the optional capabilities it would otherwise detect from the reply.
+- README and TECH_STACK conf.d counts and the macOS payload README's `conf.d/` tree and table updated for the new module (8 → 9).
+
 ## [2.0.2] — 2026-08-06
 
 ### Changed

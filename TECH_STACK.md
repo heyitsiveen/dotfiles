@@ -123,7 +123,7 @@ Both use:
 
 | Tool | Description |
 |---|---|
-| **Fish** | `config.fish`, 8 `conf.d/` modules, 7 functions, 3 Tide palettes, Fisher + Tide committed in-repo |
+| **Fish** | `config.fish`, 9 `conf.d/` modules, 7 functions, 3 Tide palettes, Fisher + Tide committed in-repo |
 | **Ghostty / WezTerm** | Terminal emulators, JetBrains Mono NF, themed |
 | **tmux** | 6 config files split by concern (keybinds, statusbar, pane, popup, notifications) |
 | **Neovim** | LazyVim-based, solarized-osaka, Snacks, Mason (oxfmt + oxlint), conform |
