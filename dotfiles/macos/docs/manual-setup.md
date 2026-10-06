@@ -53,7 +53,7 @@ echo $SHELL                 # → /opt/homebrew/bin/fish
 
 See **Set Fish as Default Shell** (step 5) in the main [README](../README.md) for why the `chsh` step matters and a zsh-PATH gotcha it avoids.
 
-Fisher and Tide are committed to this repo under `.config/fish/` — they are copied over in step 7 below, so you don't need to bootstrap Fisher or run `tide configure`. The committed `fish_plugins` manifest declares `jorgebucaran/fisher` and `ilancosman/tide@v6`, and `fish_variables` holds the prompt settings for the `heyitsiveen` palette.
+Fisher and Tide are committed to this repo under `.config/fish/` — they are copied over in step 7 below, so you don't need to bootstrap Fisher or run `tide configure`. On first install, `conf.d/_tide_init.fish` auto-configures the prompt (Rainbow, Angled separators, Two-line Sharp style) via `tide configure --auto` — no interactive wizard runs. The committed `fish_plugins` manifest declares `jorgebucaran/fisher` and `ilancosman/tide@v6`, and `fish_variables` holds the prompt settings for the `heyitsiveen` palette.
 
 <details>
 <summary><strong>Fallback: reinstall Fisher and Tide if the prompt is broken</strong></summary>
@@ -72,12 +72,14 @@ Then run:
 # Re-bootstrap Fisher
 curl -sL https://raw.githubusercontent.com/jorgebucaran/fisher/main/functions/fisher.fish | source && fisher install jorgebucaran/fisher
 
-# Reinstall everything in fish_plugins — fires _tide_init_install which auto-configures the prompt
+# Reinstall everything in fish_plugins
 fisher update
 
-# Restore your palette choice afterward
-tide_palette heyitsiveen
+# Last resort only — re-runs the interactive wizard
+tide configure
 ```
+
+> **Warning:** Running `tide configure` without `--auto` launches an interactive wizard that overwrites the Tide universal variables in `fish_variables`. Restore the shipped look with `tide_palette heyitsiveen` (or `vercel` / `vesper`) afterward.
 
 </details>
 

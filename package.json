@@ -15,6 +15,7 @@
     "dist",
     "dotfiles",
     "!dotfiles/*/docs",
+    "!dotfiles/*/.claude/skills",
     "!dotfiles/*/README.md",
     "!dotfiles/*/LICENSE",
     "!dotfiles/macos/.stow-local-ignore",

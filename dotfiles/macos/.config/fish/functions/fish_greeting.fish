@@ -1,2 +1,2 @@
-function fish_greeting -d "Disable default greeting"
+function fish_greeting
 end

@@ -25,6 +25,7 @@ PRD.md
 
 # Repo-maintenance skills (not part of the shipped dotfiles)
 .claude/
+dotfiles/*/.claude/skills/
 
 # OS artifacts
 **/.DS_Store

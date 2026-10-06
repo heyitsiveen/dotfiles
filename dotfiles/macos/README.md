@@ -250,7 +250,7 @@ Separately: `npm` and `npx` don't exist on this machine **at all**, in any shell
 
 #### 6. Fisher + Tide (Already Configured)
 
-Fisher and Tide ship pre-configured in this repo. Stow symlinks them into place in step 4 — there is nothing to install and no wizard to run. On first launch, `_tide_init_install` runs `tide configure --auto` with the correct settings, so the full prompt structure is applied automatically. `conf.d/70-tide.fish` then applies the `heyitsiveen` palette, and `tide_palette <name>` switches between `heyitsiveen`, `vercel`, and `vesper` (persisted via the `dotfiles_tide_palette` universal variable).
+Fisher and Tide ship pre-configured in this repo. Stow symlinks them into place in step 4 — there is nothing to install and no wizard to run. On first install, `conf.d/_tide_init.fish` auto-configures the prompt (Rainbow, Angled separators, Two-line Sharp style) via `tide configure --auto`, so no interactive wizard runs. On first launch, `conf.d/70-tide.fish` applies the committed `heyitsiveen` palette automatically, and `tide_palette <name>` switches between `heyitsiveen`, `vercel`, and `vesper` (persisted via the `dotfiles_tide_palette` universal variable).
 
 <details>
 <summary><strong>Fallback: reinstall Fisher and Tide if the prompt is broken</strong></summary>
@@ -269,12 +269,14 @@ Then run:
 # Re-bootstrap Fisher (rewrites functions/fisher.fish from upstream)
 curl -sL https://raw.githubusercontent.com/jorgebucaran/fisher/main/functions/fisher.fish | source && fisher install jorgebucaran/fisher
 
-# Reinstall everything declared in fish_plugins — fires _tide_init_install which auto-configures the prompt
+# Reinstall everything declared in fish_plugins (Tide included)
 fisher update
 
-# Restore your palette choice afterward
-tide_palette heyitsiveen
+# Last resort only — re-runs the interactive wizard
+tide configure
 ```
+
+> **Warning:** Running `tide configure` without `--auto` launches an interactive wizard that overwrites the Tide universal variables in `fish_variables`. Restore the shipped look with `tide_palette heyitsiveen` (or `vercel` / `vesper`) afterward.
 
 </details>
 
@@ -372,7 +374,7 @@ The Fish configuration uses a **modular structure** in `conf.d/`:
 | `70-tide.fish`        | Tide prompt with selectable palettes              |
 
 `00-platform.fish` is loaded first and is now used by `10-homebrew.fish` to choose the preferred Homebrew path for macOS vs Linux/WSL.
-`05-terminal-compat.fish` sets the `no-query-term` feature flag. fish 4.1+ queries the terminal for its Primary Device Attribute (`\e[0c`) to unlock optional features; terminals that never answer (the Claude Code desktop terminal, for one) make fish stall 10 seconds at startup and print a warning. Feature flags are read before config is sourced, so the flag applies from the next shell onward, and the guard makes the universal set idempotent — `fish_variables` is not shipped, so the file is what makes it reproducible on a fresh machine.
+`05-terminal-compat.fish` sets the `no-query-term` feature flag. fish 4.1+ queries the terminal for its Primary Device Attribute (`\e[0c`) to unlock optional features; terminals that never answer (the Claude Code desktop terminal, for one) make fish stall 10 seconds at startup and print a warning. Feature flags are read before config is sourced, so the flag applies from the next shell onward, and the guard makes the universal set idempotent — `fish_variables` is gitignored, so the file is what makes it reproducible on a fresh machine.
 `config.fish` adds `~/.local/bin`, exports Bun paths when available, and exports `PNPM_HOME` (`~/.local/share/pnpm`) — which is where both pnpm and the Node runtime it manages live. The old fnm block is kept commented in that file for reference. See [docs/node-pnpm-setup.md](docs/node-pnpm-setup.md).
 `60-tmux.fish` ships with its auto-attach block **commented out** - new terminals no longer drop into tmux. Start it yourself with `tmux new-session -A -s main` (or `tn main` / `ta main`). Uncomment the block to restore auto-attach; it only ever fired for interactive local shells and skipped existing tmux sessions, VS Code terminals, and SSH sessions.
 
@@ -423,8 +425,6 @@ The Fish configuration uses a **modular structure** in `conf.d/`:
 
 Configuration for [Claude Code](https://claude.ai/code).
 
-> ⚠️ **This is the author's personal Claude Code setup.** `settings.json` enables specific plugins, sets `effortLevel: xhigh`, `advisorModel: opus`, and skips dangerous-mode permission prompts. `.claude.json` wires three MCP servers (exa, grep, better-auth). `CLAUDE.md` is the author's 13-rule instruction set. If you prefer Claude Code defaults, **deselect "Claude Code"** in the CLI — or replace the installed files afterward.
-
 #### Files
 
 | Path                    | Purpose                   |
@@ -470,13 +470,21 @@ It starts with custom functions, then shell abbreviations, tmux keybindings, FZF
 
 ### Tide Prompt Configuration
 
-Re-run the Tide wizard anytime:
+The prompt is auto-configured on install by `conf.d/_tide_init.fish` using `tide configure --auto` (Rainbow, Angled separators, Two-line Sharp style). To re-apply or reset to this style:
+
+```bash
+tide configure --auto --style=Rainbow --prompt_colors='True color' --show_time='24-hour format' \
+  --rainbow_prompt_separators=Angled --powerline_prompt_heads=Sharp --powerline_prompt_tails=Sharp \
+  --powerline_prompt_style='Two lines, character and frame' --prompt_connection=Disconnected \
+  --powerline_right_prompt_frame=Yes --prompt_connection_andor_frame_color=Lightest \
+  --prompt_spacing=Sparse --icons='Many icons' --transient=No
+```
+
+Or run the interactive wizard manually:
 
 ```bash
 tide configure
 ```
-
-Or manually edit prompt items in your Fish config.
 
 This repo ships with three Tide palettes:
 
@@ -704,6 +712,18 @@ zoxide import --from z ~/.z
 ## Fresh macOS Setup Guide
 
 For recommended macOS apps and a fresh-Mac settings checklist, see [Fresh macOS Setup Guide](docs/fresh-macos-setup.md).
+
+---
+
+## Contributing
+
+Run `./scripts/check.sh` before committing. It parses every shipped fish and lua file, and asserts that no repo-management file would be stowed into `$HOME`. Enable the pre-commit hook once per clone:
+
+```sh
+git config core.hooksPath .githooks
+```
+
+The rules that need judgement rather than a check — portability across macOS/Linux/WSL, `conf.d/` ordering, vendored plugin files, theme palette coverage — live in [CODING_STANDARDS.md](CODING_STANDARDS.md), read at review time.
 
 ---
 

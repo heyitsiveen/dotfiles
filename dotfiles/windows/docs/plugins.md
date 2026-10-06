@@ -24,34 +24,6 @@ If the Anthropic marketplace is not yet added, run this inside Claude Code:
 
 ---
 
-### Superpowers
-
-[Plugin Page](https://claude.com/plugins/superpowers)
-
-```
-/plugin install superpowers@claude-plugins-official
-```
-
-**What it does:** Composable skills for structured software development — test-driven development (red-green-refactor cycles), systematic debugging (4-phase root cause investigation), brainstorming (Socratic requirement refinement), subagent-driven development with built-in code review, and skill authoring. After three failed debug attempts, triggers architectural review.
-
-**How to use:** Skills trigger by context or via slash commands: `/brainstorming`, `/writing-plans`, `/executing-plans`, `/systematic-debugging`, `/test-driven-development`, `/requesting-code-review`, `/verification-before-completion`.
-
----
-
-### Skill Creator
-
-[Plugin Page](https://claude.com/plugins/skill-creator)
-
-```
-/plugin install skill-creator@claude-plugins-official
-```
-
-**What it does:** Meta-plugin for authoring, evaluating, and improving skills. Provides four specialized agents — Executor (runs skills against evaluation prompts), Grader (scores outputs against expectations), Comparator (blind A/B comparisons between skill versions), and Analyzer (suggests targeted improvements based on results). Four workflow modes structure the process: Create, Eval, Improve, and Benchmark. Includes utility scripts for skill initialization, configuration validation, evaluation preparation, and results aggregation with variance analysis.
-
-**How to use:** Run `/skill-creator` and select a mode. Example prompts: "Create a new skill that reviews PRs for security issues", "Run evals on my code-review skill", "Improve my deploy skill based on these test cases", "Benchmark my skill across 10 runs and show variance".
-
----
-
 ### Context7
 
 [Plugin Page](https://claude.com/plugins/context7)
@@ -91,20 +63,6 @@ If the Anthropic marketplace is not yet added, run this inside Claude Code:
 **What it does:** Pre-tool hook that intercepts Write, Edit, and MultiEdit operations and scans code for dangerous patterns before changes are applied. Detects eight major vulnerability categories including command injection in GitHub Actions workflows, unsafe `child_process.exec()` calls, `eval()` and `new Function()` usage, XSS vectors like `dangerouslySetInnerHTML` and `innerHTML`, Python pickle deserialization risks, and `os.system()` command injection. Warnings include specific remediation advice — e.g., using `execFileNoThrow()` instead of `child_process.exec()` to prevent shell injection.
 
 **How to use:** Activates automatically once installed — no commands needed. When Claude attempts to write code containing unsafe patterns, a warning with remediation advice appears before the edit proceeds. Warnings are session-scoped so each one surfaces only once.
-
----
-
-### Feature Dev
-
-[Plugin Page](https://claude.com/plugins/feature-dev)
-
-```
-/plugin install feature-dev@claude-plugins-official
-```
-
-**What it does:** Guided 7-phase feature development: discovery, requirements, architecture, implementation, review, and summary. Deploys three specialized agents — code-explorer (traces execution paths and maps architecture), code-architect (proposes approaches with documented trade-offs), and code-reviewer (confidence-scored findings for bugs, security, and conventions).
-
-**How to use:** Run `/feature-dev` with a description or alone for the guided workflow. Example: `/feature-dev Add user authentication with OAuth`.
 
 ---
 
@@ -190,3 +148,19 @@ If the Anthropic marketplace is not yet added, run this inside Claude Code:
 **What it does:** Connects Claude Code to Shopify's documentation, API schemas, code validation, and store management via CLI. Prevents AI from guessing at Shopify implementations by providing verified resources. Auto-updates via the plugin method.
 
 **How to use:** Triggers on Shopify-related tasks. Provides domain-specific skills: Liquid templating, Admin API, Storefront API, Polaris UI, Hydrogen storefronts, Shopify Functions, POS, checkout extensions, and more. Requires Node.js 18+.
+
+---
+
+## Claude Plugins Community — [anthropics/claude-plugins-community](https://github.com/anthropics/claude-plugins-community)
+
+### HTML Plan
+
+```
+/plugin marketplace add anthropics/claude-plugins-community
+/plugin install html-plan@claude-community
+```
+
+**What it does:** Writes an implementation plan as a single interactive HTML page instead of prose. The plan is a tree of claims (why › what › how › where), each one proved by exactly one exhibit — a UI mockup, state machine, call stack, schema, or code. Decisions you need to make are attached to the claim they change, not collected in a list at the end. By Thariq Shihipar.
+
+**How to use:** Run `/html-plan <what to build>`, or ask for a plan, RFC, or design before building anything touching more than a couple of files. Open the page, expand the tree level by level, answer the decisions, edit schemas, and comment inline; it gives you one response to copy back. The agent waits for that response before it writes any code.
+

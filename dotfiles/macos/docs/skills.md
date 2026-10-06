@@ -13,7 +13,6 @@ pnpx skills add anthropics/skills
 | Skill                   | Description                                                      |
 | ----------------------- | ---------------------------------------------------------------- |
 | `frontend-design`       | Production-grade frontend interfaces with high design quality    |
-| `skill-creator`         | Build new skills that extend agent capabilities                  |
 | `pdf`                   | PDF extraction, creation, merging, splitting, and forms          |
 | `docx`                  | Document creation, editing, tracked changes, and analysis        |
 | `xlsx`                  | Spreadsheet creation, formulas, and data analysis                |
@@ -91,10 +90,12 @@ pnpx skills add https://github.com/shadcn/ui --skill shadcn
 
 ## Figma — [figma/mcp-server-guide](https://github.com/figma/mcp-server-guide)
 
-_Skills for Figma's official Dev Mode MCP server — design → code, Code Connect, design-system rules, and writing to the canvas. Formerly `figma/dev-mode-mcp-server-guide`, which now redirects here._
+_Skills for Figma's official Dev Mode MCP server — design → code, Code Connect, design-system rules, and writing to the canvas. Formerly `figma/dev-mode-mcp-server-guide`, which now redirects here. Figma also ships a **Claude Code plugin** (reports v2.2.120 — a read-only, always-current bundle, now **16 skills**) that has moved past this repo: it ships `figma-design-to-code` in place of `figma-implement-design`, drops `figma-create-design-system-rules`, and adds design-system, shader, SwiftUI, motion, FigJam, and Slides skills. Prefer the plugin — the rows below are the skills-sh catalogue. Plugin entry: [plugins.md](plugins.md)._
 
 ```bash
 pnpx skills add figma/mcp-server-guide
+# or install as a Claude Code plugin (read-only, always-current, 16 skills, reports v2.2.120):
+#   /plugin install figma@claude-plugins-official
 ```
 
 | Skill                              | Description                                                              |
@@ -182,11 +183,11 @@ pnpx skills add coreyhaines31/marketingskills
 >
 > 2. **Parallelize a wayfinder map's sub-issues with Claude Code sub-agents — AFK tickets only.** Chart mode already fires a `/research` subagent per research ticket, and unblocked AFK task and implementation tickets can each go to a sub-agent in its own git worktree — the sub-agent equivalent of Matt's parallel sessions (inferred). HITL tickets (grilling, prototype — the default type) only resolve through the live human, so never delegate those ([wayfinder SKILL.md](https://github.com/mattpocock/skills/blob/main/skills/engineering/wayfinder/SKILL.md)).
 
-_Small, composable skills for real engineering — deliberately not a process-owning framework. Main chain: `grill-with-docs → to-spec → to-tickets → implement → code-review` (the flow Pocock demos; his `ask-matt` router encodes it), with `grill-me` for plans outside a codebase. `wayfinder` is the upstream on-ramp when work is too big for one session — it maps the effort as a shared tracker map of investigation tickets; Pocock's [v1.1 video](https://www.youtube.com/watch?v=A8mokin_YOs) calls it his front door ("default to Wayfinder instead"), but the written flow keeps grill-with-docs as the spine. On-ramps: `triage` turns raw issues and external PRs into agent-ready briefs; `diagnosing-bugs` for anything broken. Support: `research` (background-agent reading legwork) and `prototype` (design questions). `improve-codebase-architecture` fights entropy; `handoff` carries context across sessions; `ask-matt` routes you when unsure. Since v1.0.0 (2026-06-17), skills split into **user-invoked** orchestrators (you type them) and **model-invoked** disciplines the model reaches for — `grilling`, `domain-modeling`, and `codebase-design` are the shared layer other skills call. **v1.1.0 (2026-07-08)** renamed `to-prd`→`to-spec`, merged `to-issues`→`to-tickets`, graduated `wayfinder`/`code-review`/`research`/`prototype`, and sharpened `grilling`; the repo now also ships a **Claude Code plugin** (reports v1.2.2 — `/plugin install mattpocock-skills@mattpocock` — a read-only, always-current bundle, now **35 skills**: the promoted set plus in-progress and writing skills). **40 skills** total (22 promoted + 18 experimental). Full **recommended-order walkthrough** (per-step model/session/effort notes), per-skill cards, install & repair, session/CLAUDE.md strategy, and sources: [matt-pocock-workflow.md](matt-pocock-workflow.md)._
+_Small, composable skills for real engineering — deliberately not a process-owning framework. Main chain: `grill-with-docs → to-spec → to-tickets → implement → code-review → retro` (the flow Pocock demos; his `ask-matt` router encodes it, with `implement-spec` as the whole-spec alternative to per-ticket `implement`), with `grill-me` for plans outside a codebase. `wayfinder` is the upstream on-ramp when work is too big for one session — it maps the effort as a shared tracker map of decision tickets; Pocock's [v1.1 video](https://www.youtube.com/watch?v=A8mokin_YOs) calls it his front door ("default to Wayfinder instead"), but the written flow keeps grill-with-docs as the spine. On-ramps: `triage` turns raw issues and external PRs into agent-ready briefs; `diagnosing-bugs` for anything broken. Support: `research` (background-agent reading legwork) and `prototype` (design questions). `improve-codebase-architecture` fights entropy; `handoff` and `claude-handoff` carry context across sessions; `ask-matt` routes you when unsure. Since v1.0.0 (2026-06-17), skills split into **user-invoked** orchestrators (you type them) and **model-invoked** disciplines the model reaches for — `grilling`, `domain-modeling`, and `codebase-design` are the shared layer other skills call. The domain glossary has moved from `CONTEXT.md` to **`GLOSSARY.md`** repo-wide. **v1.3.0** graduated `implement-spec`, `pr`, and `retro` into Engineering and retired `resolving-merge-conflicts` outright — nothing replaces it, the agent works a conflict without a skill; **v1.3.1** is the patch that repoints `ask-matt` at `/retro` once a fix lands. The table below also catches up eleven skills that shipped earlier and this doc had never listed — `chief-of-staff` among them, never named in any changelog — plus the `writing-great-skills`→`writing-for-agents` rename. **38 skills** across four trays — engineering (20), in-progress (7), productivity (7), misc (4); `deprecated/` is empty by design, since a retired skill is deleted and the changeset that removes it names its replacement. Full **recommended-order walkthrough** (per-step model/session/effort notes), per-skill cards, install & repair, session/CLAUDE.md strategy, and sources: [matt-pocock-workflow.md](matt-pocock-workflow.md)._
 
 ```bash
 pnpx skills add mattpocock/skills
-# or install as a Claude Code plugin (read-only, always-current, 35 skills, reports v1.2.2):
+# or install as a Claude Code plugin (read-only, always-current, 38 skills, reports v1.3.1):
 #   /plugin marketplace add mattpocock/skills
 #   /plugin install mattpocock-skills@mattpocock
 ```
@@ -197,23 +198,37 @@ pnpx skills add mattpocock/skills
 | `ask-matt`                      | user       | Router that points you to the right skill or flow for your situation          |
 | `wayfinder`                     | user       | On-ramp for work too big for one session — maps it as a shared tracker map    |
 | `grill-me`                      | user       | Interview you relentlessly about a plan — for plans outside a codebase        |
-| `grill-with-docs`               | user       | Grill a plan against the domain model, updating CONTEXT.md and ADRs inline    |
-| `grilling`                      | model      | Shared interview loop — one question at a time; v1.1.0 confirmation gate      |
-| `domain-modeling`               | model      | Maintain the domain glossary (CONTEXT.md) and ADRs as decisions land          |
+| `grill-with-docs`               | user       | Grill a plan against the domain model, updating GLOSSARY.md and ADRs inline   |
+| `grilling`                      | model      | Shared interview loop — one question at a time, with a confirmation gate      |
+| `domain-modeling`               | model      | Maintain the domain glossary (GLOSSARY.md) and ADRs as decisions land         |
 | `codebase-design`               | model      | Deep-module vocabulary — interfaces, seams, depth, the deletion test          |
-| `prototype`                     | model      | Throwaway code to answer a design question — model-invoked in v1.1.0          |
-| `research`                      | model      | Background agent → one cited primary-source note (new in v1.1.0)              |
-| `to-spec`                       | user       | Synthesize the conversation into a spec on the tracker (was `to-prd`)         |
+| `prototype`                     | model      | Throwaway code to answer a design question                                    |
+| `research`                      | model      | Background agent → one cited primary-source note                              |
+| `to-spec`                       | user       | Synthesize the conversation into a spec on the tracker — no interview         |
+| `to-questionnaire`              | user       | Turn a decision you can't answer into a questionnaire for someone else        |
 | `to-tickets`                    | user       | Break a spec/plan into tracer-bullet tickets with blocking edges              |
 | `triage`                        | user       | Move issues and external PRs through triage roles into agent-ready briefs     |
-| `implement`                     | user       | Build from a spec/tickets — tdd at pre-agreed seams, then code-review         |
+| `implement`                     | user       | Build a piece of work from a spec or set of tickets                           |
+| `implement-spec`                | user       | Build the output of `to-spec` and `to-tickets` in code                        |
 | `tdd`                           | model      | Test-driven development — spec-like tests at pre-agreed seams (red→green)     |
-| `code-review`                   | model      | Two-axis review (Standards + Fowler baseline, Spec) — graduated v1.1.0        |
-| `diagnosing-bugs`               | model      | Disciplined loop for hard bugs — feedback loop first, falsifiable hypotheses  |
+| `code-review`                   | model      | Two-axis review (Standards, Spec) run as parallel sub-agents                  |
+| `pr`                            | model      | Write a PR body                                                               |
+| `diagnosing-bugs`               | model      | Diagnosis loop for hard bugs and performance regressions                      |
 | `improve-codebase-architecture` | user       | Scan for deepening opportunities, visual HTML report, grill through your pick |
-| `resolving-merge-conflicts`     | model      | Resolve in-progress merge/rebase conflicts from primary sources — never abort |
+| `migrate-to-shoehorn`           | model      | Replace `as` assertions in tests with @total-typescript/shoehorn              |
+| `retro`                         | user       | Run a retrospective on a coding session                                       |
 | `setup-pre-commit`              | model      | Husky + lint-staged pre-commit scaffold — format, typecheck, test on commit   |
+| `setup-ts-deep-modules`         | user       | Wire dependency-cruiser in so each TypeScript package is a deep module        |
 | `git-guardrails-claude-code`    | model      | PreToolUse hook blocking dangerous git — push, reset --hard, clean -f, -D     |
+| `wizard`                        | model      | Generate an interactive bash wizard for steps only a human can perform        |
+| `scaffold-exercises`            | model      | Scaffold exercise dirs — sections, problems, solutions, explainers            |
 | `handoff`                       | user       | Compact a conversation into a handoff doc so a fresh agent can continue       |
-| `writing-great-skills`          | user       | Reference for authoring predictable skills (v1.1.0 adds 2 failure modes)      |
+| `claude-handoff`                | user       | Hand off to a fresh background agent that picks up the work immediately       |
+| `chief-of-staff`                | user       | Pursue a long-running goal in one session by coordinating subagents           |
+| `loop-me`                       | user       | Grill you about specs for the workflows you want to build                     |
+| `wait-what`                     | user       | Stop — that last message did not land, so re-pitch it                         |
+| `writing-for-agents`            | model      | Writing docs for agents — skills, AGENTS.md, CLAUDE.md                        |
+| `writing-fragments`             | user       | Writing, explore — mine raw fragments, no structure yet                       |
+| `writing-beats`                 | user       | Writing, exploit — assemble fragments into a journey of beats                 |
+| `writing-shape`                 | user       | Writing, exploit — shape raw material into an article, paragraph by paragraph |
 | `teach`                         | user       | Learn a concept over multiple sessions in a stateful workspace                |
