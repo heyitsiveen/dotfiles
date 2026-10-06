@@ -25,7 +25,8 @@ node dist/index.mjs --dry-run
 
 - Open an issue first for larger changes so we can align on approach.
 - Keep PRs focused — one feature or fix per PR.
-- Run `pnpm run check` before pushing. The pre-commit hook (husky + lint-staged) will format and lint staged files automatically.
+- Run `pnpm run check` before pushing: typecheck, lint, format, and the syntax of every shipped fish/lua/PowerShell config. The pre-commit hook (husky + lint-staged) formats and lints staged TypeScript and parses staged configs automatically.
+- Rules that need judgement rather than a check — theme/palette coverage, portability, macos/windows parity, manifest compatibility, installer safety — live in [`CODING_STANDARDS.md`](CODING_STANDARDS.md), read at review time.
 - Commit messages follow the [Conventional Commits](https://www.conventionalcommits.org/) style: `feat(scope): ...`, `fix(scope): ...`, `docs(scope): ...`, `chore(scope): ...`.
 
 ## What's in scope

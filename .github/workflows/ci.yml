@@ -38,5 +38,13 @@ jobs:
       - name: Format check
         run: pnpm exec oxfmt --check src/
 
+      # The configs this repo ships are most of it, and tsc/oxlint only see
+      # src/. pwsh is preinstalled on the runner; fish and lua are not.
+      - name: Install config parsers
+        run: sudo apt-get update && sudo apt-get install -y --no-install-recommends fish lua5.4
+
+      - name: Config syntax
+        run: node scripts/check-configs.mjs
+
       - name: Build
         run: pnpm run build

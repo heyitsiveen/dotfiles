@@ -30,6 +30,7 @@
     "fmt": "oxfmt src/",
     "fmt:check": "oxfmt --check src/",
     "check": "node scripts/check.mjs",
+    "check:configs": "node scripts/check-configs.mjs",
     "prepublishOnly": "pnpm run check",
     "prepare": "husky && pnpm run build"
   },
@@ -45,6 +46,9 @@
     "src/**/*.ts": [
       "oxfmt --write",
       "oxlint"
+    ],
+    "**/*.{fish,lua,ps1}": [
+      "node scripts/check-configs.mjs"
     ]
   },
   "repository": {

@@ -8,6 +8,8 @@ const steps = [
   { name: 'Typecheck', cmd: 'pnpm exec tsc --noEmit' },
   { name: 'Lint', cmd: 'pnpm exec oxlint src/' },
   { name: 'Format', cmd: 'pnpm exec oxfmt --check src/' },
+  // The configs this repo actually ships. tsc/oxlint only see src/.
+  { name: 'Configs', cmd: 'node scripts/check-configs.mjs' },
 ];
 
 let failed = false;
