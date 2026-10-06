@@ -3,6 +3,26 @@
 All notable changes to `@heyitsiveen/dotfiles` are documented here.
 Format loosely follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/).
 
+## [2.1.0] — 2026-10-07
+
+### Added
+
+- `dotfiles/macos/.config/Code/zed-style.css` — custom VS Code stylesheet that gives the editor chrome a Zed-like treatment: a flat `#141414` breadcrumbs bar, fixed 40px tall, with a hairline `#333333` underline. Loaded through a custom-CSS extension; macOS payload only. No installer change was needed — it walks the platform directory recursively rather than from a list of known tools, so a new `.config/` entry is picked up on its own.
+
+### Changed
+
+- `dotfiles/*/.claude/CLAUDE.md` — replaced the stale nine-rule instruction set with the current four: concise plans, concise reporting, an unresolved-questions list at the end of every plan, and the CLI-tooling rule (prefer an already-installed binary, else a one-off runner such as `pnpx`, never a global install, with a ledger and cleanup for anything temporary).
+- `docs/skills.md` (both payloads) — resynced to mattpocock plugin **v1.3.1**, 38 skills. Dropped `resolving-merge-conflicts` (deleted in v1.3.0, nothing replaces it), renamed `writing-great-skills` to `writing-for-agents` (now model-invoked), added `implement-spec`, `pr` and `retro`, and documented the eleven skills that shipped earlier but had never been listed. The domain-doc convention is now `GLOSSARY.md`/`GLOSSARY-MAP.md`, not `CONTEXT.md`. Version attribution corrected: v1.3.0 did the graduations and the removal, v1.3.1 only repoints `ask-matt` at `/retro`.
+- `docs/plugins.md` (both payloads) — added the html-plan plugin; removed Superpowers, Skill Creator and Feature Dev, none of which are installed.
+- `docs/matt-pocock-workflow.md` (both payloads) — resynced the deep reference to v1.3.1; the macOS and Windows copies were ten weeks stale.
+- `dotfiles/macos/.config/fish/conf.d/70-tide.fish` — comment accuracy only: the OS-icon fallback names Linux rather than "other platforms".
+- `dotfiles/macos/.config/fish/functions/fish_greeting.fish` — dropped the `-d "Disable default greeting"` description, which described the opposite of what the function now does.
+- `dotfiles/*/.config/nvim/lazyvim.json` — refreshed the LazyVim news marker.
+
+### Packaging
+
+- `dotfiles/*/.claude/skills/` is excluded from the published package via the `files` array. The payload now carries the `update-skills-doc` maintenance skill so the two repos match, but a skill that maintains this repo's own docs is not part of the shipped dotfiles. The existing `.npmignore` rule only covered the repo root; `files` takes precedence, so the exclusion belongs there.
+
 ## [2.0.3] — 2026-09-19
 
 ### Added
